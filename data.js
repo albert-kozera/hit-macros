@@ -1,0 +1,409 @@
+        const productsCSV = `Name,Kcal,B,T,W
+Jajko,145,14,10,0
+Płatki owsiane,389,16.9,6.9,66.3
+Skyr naturalny,64,12,0,4
+Banan,89,1.1,0.2,22.8
+Masło orzechowe,609,26,49,16
+Bataty,86,2,0,20
+Wołowina mielona chuda,148,21,7,0
+Mozzarella light,157,19,8.5,1
+Oliwa z oliwek,884,0,100,0
+Warzywa mieszane,25,2,0,3
+Chleb żytni razowy,227,5.9,1.7,51.2
+Chleb pełnoziarnisty,216,6,2,44
+Awokado,160,2,14.6,8.5
+Pomidor,19,0.9,0.2,4.1
+Odżywka białkowa whey,372,79,4,6
+Mleko 2%,50,3.3,2,4.8
+Serek wiejski,97,12,5,3
+Mąka pszenna,364,10,1,76
+Czekolada gorzka (70%),503,10,39,34
+Miód,324,0.3,0,81
+Masło,717,0.9,81.1,0.1
+Proszek do pieczenia,51,1.4,0.2,11
+Pinsa pełnoziarnista,250,8,4,45
+Ciasto pełnoziarniste (domowe),211,6.1,3.9,41.1
+Szynka chuda,110,20,3,1
+Passata pomidorowa,25,1,0,5
+Kakao,300,25,15,50
+Pita,260,9,3,50
+Kurczak pierś,110,23,1,0
+Jogurt naturalny,60,4,3,4
+Ser feta,260,14,21,4
+Twaróg chudy,90,18,0.5,4
+Truskawki,32,1,0,8
+Makaron pełnoziarnisty,350,12,2,70
+Sos sojowy,50,8,0,5
+Olej sezamowy,884,0,100,0
+Tortilla,300,8,8,50
+Parmezan,400,35,28,0
+Chleb tostowy,260,8,4,48
+Owoce mieszane,50,1,0,12
+Rzodkiewka,16,1,0,3
+Szczypiorek,30,3,0,5
+Bułka burger,250,8,3,48
+Ziemniaki,77,2,0,17
+Sałata,15,1,0,3
+Rukola,25,2,0,4
+Owoce jagodowe,50,1,0,12
+Gnocchi,150,4,1,30
+Pesto,450,5,40,5
+Papryka,30,1,0,6
+Kukurydza,90,3,1,18
+Salsa,40,1,0,8
+Syrop klonowy bez cukru,20,0,0,5`;
+
+        const categoriesCSV = `Product,Category
+Bataty,🥦 Warzywa i Owoce
+Banan,🥦 Warzywa i Owoce
+Warzywa mieszane,🥦 Warzywa i Owoce
+Awokado,🥦 Warzywa i Owoce
+Pomidor,🥦 Warzywa i Owoce
+Truskawki,🥦 Warzywa i Owoce
+Owoce mieszane,🥦 Warzywa i Owoce
+Rzodkiewka,🥦 Warzywa i Owoce
+Szczypiorek,🥦 Warzywa i Owoce
+Sałata,🥦 Warzywa i Owoce
+Rukola,🥦 Warzywa i Owoce
+Owoce jagodowe,🥦 Warzywa i Owoce
+Papryka,🥦 Warzywa i Owoce
+Kukurydza,🥦 Warzywa i Owoce
+Salsa,🥦 Warzywa i Owoce
+Ziemniaki,🥦 Warzywa i Owoce
+Gnocchi,🥦 Warzywa i Owoce
+Jajko,🥚 Nabiał i Jajka
+Skyr naturalny,🥚 Nabiał i Jajka
+Mozzarella light,🥚 Nabiał i Jajka
+Mleko 2%,🥚 Nabiał i Jajka
+Serek wiejski,🥚 Nabiał i Jajka
+Masło,🥚 Nabiał i Jajka
+Mąka pszenna,🌾 Spiżarnia / Suche
+Czekolada gorzka (70%),🌾 Spiżarnia / Suche
+Miód,🌾 Spiżarnia / Suche
+Proszek do pieczenia,🌾 Spiżarnia / Suche
+Pinsa pełnoziarnista,🌾 Spiżarnia / Suche
+Jogurt naturalny,🥚 Nabiał i Jajka
+Ser feta,🥚 Nabiał i Jajka
+Twaróg chudy,🥚 Nabiał i Jajka
+Parmezan,🥚 Nabiał i Jajka
+Wołowina mielona chuda,🥩 Mięso
+Szynka chuda,🥩 Mięso
+Kurczak pierś,🥩 Mięso
+Płatki owsiane,🌾 Spiżarnia / Suche
+Chleb żytni razowy,🌾 Spiżarnia / Suche
+Chleb pełnoziarnisty,🌾 Spiżarnia / Suche
+Masło orzechowe,🌾 Spiżarnia / Suche
+Oliwa z oliwek,🌾 Spiżarnia / Suche
+Odżywka białkowa whey,🌾 Spiżarnia / Suche
+Ciasto pełnoziarniste (domowe),🌾 Spiżarnia / Suche
+Passata pomidorowa,🌾 Spiżarnia / Suche
+Kakao,🌾 Spiżarnia / Suche
+Pita,🌾 Spiżarnia / Suche
+Makaron pełnoziarnisty,🌾 Spiżarnia / Suche
+Sos sojowy,🌾 Spiżarnia / Suche
+Olej sezamowy,🌾 Spiżarnia / Suche
+Tortilla,🌾 Spiżarnia / Suche
+Chleb tostowy,🌾 Spiżarnia / Suche
+Bułka burger,🌾 Spiżarnia / Suche
+Pesto,🌾 Spiżarnia / Suche
+Syrop klonowy bez cukru,🌾 Spiżarnia / Suche`;
+
+        const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
+4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
+4,Pancakes z serka wiejskiego,Oliwia,Jajko,2,szt
+4,Pancakes z serka wiejskiego,Oliwia,Mleko 2%,50,ml
+4,Pancakes z serka wiejskiego,Oliwia,Mąka pszenna,40,g
+4,Pancakes z serka wiejskiego,Oliwia,Odżywka białkowa whey,20,g
+4,Pancakes z serka wiejskiego,Oliwia,Proszek do pieczenia,5,g
+4,Pancakes z serka wiejskiego,Oliwia,Czekolada gorzka (70%),10,g
+4,Pancakes z serka wiejskiego,Oliwia,Masło,5,g
+4,Pancakes z serka wiejskiego,Oliwia,Miód,10,g
+4,Pancakes z serka wiejskiego,Albert,Serek wiejski,200,g
+4,Pancakes z serka wiejskiego,Albert,Jajko,2,szt
+4,Pancakes z serka wiejskiego,Albert,Mleko 2%,50,ml
+4,Pancakes z serka wiejskiego,Albert,Mąka pszenna,60,g
+4,Pancakes z serka wiejskiego,Albert,Odżywka białkowa whey,20,g
+4,Pancakes z serka wiejskiego,Albert,Proszek do pieczenia,5,g
+4,Pancakes z serka wiejskiego,Albert,Czekolada gorzka (70%),15,g
+4,Pancakes z serka wiejskiego,Albert,Masło,3,g
+4,Pancakes z serka wiejskiego,Albert,Miód,15,g
+1,Śniadanie – omlet,Oliwia,Jajko,2,szt
+1,Śniadanie – omlet,Oliwia,Płatki owsiane,40,g
+1,Śniadanie – omlet,Oliwia,Skyr naturalny,100,g
+1,Śniadanie – omlet,Oliwia,Banan,100,g
+1,Śniadanie – omlet,Oliwia,Masło orzechowe,5,g
+1,Śniadanie – omlet,Albert,Jajko,3,szt
+1,Śniadanie – omlet,Albert,Płatki owsiane,70,g
+1,Śniadanie – omlet,Albert,Skyr naturalny,150,g
+1,Śniadanie – omlet,Albert,Banan,150,g
+1,Śniadanie – omlet,Albert,Masło orzechowe,10,g
+1,Obiad – zapiekanka z batata,Oliwia,Bataty,300,g
+1,Obiad – zapiekanka z batata,Oliwia,Wołowina mielona chuda,150,g
+1,Obiad – zapiekanka z batata,Oliwia,Mozzarella light,40,g
+1,Obiad – zapiekanka z batata,Oliwia,Oliwa z oliwek,5,g
+1,Obiad – zapiekanka z batata,Oliwia,Warzywa mieszane,175,g
+1,Obiad – zapiekanka z batata,Albert,Bataty,450,g
+1,Obiad – zapiekanka z batata,Albert,Wołowina mielona chuda,220,g
+1,Obiad – zapiekanka z batata,Albert,Mozzarella light,60,g
+1,Obiad – zapiekanka z batata,Albert,Oliwa z oliwek,8,g
+1,Obiad – zapiekanka z batata,Albert,Warzywa mieszane,225,g
+1,Kolacja – grzanki z jajkiem,Oliwia,Chleb żytni razowy,80,g
+1,Kolacja – grzanki z jajkiem,Oliwia,Jajko,2,szt
+1,Kolacja – grzanki z jajkiem,Oliwia,Awokado,40,g
+1,Kolacja – grzanki z jajkiem,Oliwia,Pomidor,100,g
+1,Kolacja – grzanki z jajkiem,Albert,Chleb żytni razowy,130,g
+1,Kolacja – grzanki z jajkiem,Albert,Jajko,3,szt
+1,Kolacja – grzanki z jajkiem,Albert,Awokado,50,g
+1,Kolacja – grzanki z jajkiem,Albert,Pomidor,100,g
+1,Shake,Oliwia,Odżywka białkowa whey,25,g
+1,Shake,Oliwia,Mleko 2%,200,ml
+1,Shake,Albert,Odżywka białkowa whey,40,g
+1,Shake,Albert,Mleko 2%,350,ml
+2,Śniadanie – owsianka,Oliwia,Płatki owsiane,50,g
+2,Śniadanie – owsianka,Oliwia,Mleko 2%,200,ml
+2,Śniadanie – owsianka,Oliwia,Odżywka białkowa whey,20,g
+2,Śniadanie – owsianka,Oliwia,Banan,150,g
+2,Śniadanie – owsianka,Oliwia,Masło orzechowe,20,g
+2,Śniadanie – owsianka,Albert,Płatki owsiane,80,g
+2,Śniadanie – owsianka,Albert,Mleko 2%,300,ml
+2,Śniadanie – owsianka,Albert,Odżywka białkowa whey,25,g
+2,Śniadanie – owsianka,Albert,Banan,200,g
+2,Śniadanie – owsianka,Albert,Masło orzechowe,30,g
+2,Obiad – domowa pizza,Oliwia,Ciasto pełnoziarniste (domowe),107,g
+2,Obiad – domowa pizza,Oliwia,Mozzarella light,60,g
+2,Obiad – domowa pizza,Oliwia,Szynka chuda,50,g
+2,Obiad – domowa pizza,Oliwia,Passata pomidorowa,80,g
+2,Obiad – domowa pizza,Oliwia,Oliwa z oliwek,5,g
+2,Obiad – domowa pizza,Oliwia,Warzywa mieszane,100,g
+2,Obiad – domowa pizza,Albert,Ciasto pełnoziarniste (domowe),213,g
+2,Obiad – domowa pizza,Albert,Mozzarella light,90,g
+2,Obiad – domowa pizza,Albert,Szynka chuda,70,g
+2,Obiad – domowa pizza,Albert,Passata pomidorowa,100,g
+2,Obiad – domowa pizza,Albert,Oliwa z oliwek,7,g
+2,Obiad – domowa pizza,Albert,Warzywa mieszane,150,g
+2,Kolacja – jajka + awokado,Oliwia,Jajko,2,szt
+2,Kolacja – jajka + awokado,Oliwia,Chleb pełnoziarnisty,75,g
+2,Kolacja – jajka + awokado,Oliwia,Awokado,50,g
+2,Kolacja – jajka + awokado,Oliwia,Pomidor,100,g
+2,Kolacja – jajka + awokado,Albert,Jajko,3,szt
+2,Kolacja – jajka + awokado,Albert,Chleb pełnoziarnisty,130,g
+2,Kolacja – jajka + awokado,Albert,Awokado,70,g
+2,Kolacja – jajka + awokado,Albert,Pomidor,100,g
+2,Shake,Oliwia,Odżywka białkowa whey,25,g
+2,Shake,Oliwia,Mleko 2%,200,ml
+2,Shake,Albert,Odżywka białkowa whey,40,g
+2,Shake,Albert,Mleko 2%,350,ml
+3,Śniadanie – owsianka czekoladowa,Oliwia,Płatki owsiane,40,g
+3,Śniadanie – owsianka czekoladowa,Oliwia,Mleko 2%,106,ml
+3,Śniadanie – owsianka czekoladowa,Oliwia,Odżywka białkowa whey,17,g
+3,Śniadanie – owsianka czekoladowa,Oliwia,Banan,80,g
+3,Śniadanie – owsianka czekoladowa,Oliwia,Kakao,4,g
+3,Śniadanie – owsianka czekoladowa,Albert,Płatki owsiane,80,g
+3,Śniadanie – owsianka czekoladowa,Albert,Mleko 2%,129,ml
+3,Śniadanie – owsianka czekoladowa,Albert,Odżywka białkowa whey,22,g
+3,Śniadanie – owsianka czekoladowa,Albert,Banan,160,g
+3,Śniadanie – owsianka czekoladowa,Albert,Kakao,4,g
+3,Obiad – pita z kurczakiem,Oliwia,Pita,96,g
+3,Obiad – pita z kurczakiem,Oliwia,Kurczak pierś,103,g
+3,Obiad – pita z kurczakiem,Oliwia,Warzywa mieszane,142,g
+3,Obiad – pita z kurczakiem,Oliwia,Jogurt naturalny,42,g
+3,Obiad – pita z kurczakiem,Oliwia,Ser feta,48,g
+3,Obiad – pita z kurczakiem,Albert,Pita,194,g
+3,Obiad – pita z kurczakiem,Albert,Kurczak pierś,133,g
+3,Obiad – pita z kurczakiem,Albert,Warzywa mieszane,171,g
+3,Obiad – pita z kurczakiem,Albert,Jogurt naturalny,52,g
+3,Obiad – pita z kurczakiem,Albert,Ser feta,63,g
+3,Kolacja – jajka i awokado,Oliwia,Jajko,3,szt
+3,Kolacja – jajka i awokado,Oliwia,Awokado,96,g
+3,Kolacja – jajka i awokado,Oliwia,Chleb żytni razowy,72,g
+3,Kolacja – jajka i awokado,Oliwia,Pomidor,106,g
+3,Kolacja – jajka i awokado,Oliwia,Twaróg chudy,55,g
+3,Kolacja – jajka i awokado,Albert,Jajko,4,szt
+3,Kolacja – jajka i awokado,Albert,Awokado,125,g
+3,Kolacja – jajka i awokado,Albert,Chleb żytni razowy,144,g
+3,Kolacja – jajka i awokado,Albert,Pomidor,129,g
+3,Kolacja – jajka i awokado,Albert,Twaróg chudy,71,g
+3,Shake truskawkowy,Oliwia,Odżywka białkowa whey,21,g
+3,Shake truskawkowy,Oliwia,Mleko 2%,142,ml
+3,Shake truskawkowy,Oliwia,Truskawki,120,g
+3,Shake truskawkowy,Albert,Odżywka białkowa whey,27,g
+3,Shake truskawkowy,Albert,Mleko 2%,171,ml
+3,Shake truskawkowy,Albert,Truskawki,242,g
+4,Obiad – makaron azjatycki,Oliwia,Makaron pełnoziarnisty,71,g
+4,Obiad – makaron azjatycki,Oliwia,Kurczak pierś,97,g
+4,Obiad – makaron azjatycki,Oliwia,Warzywa mieszane,110,g
+4,Obiad – makaron azjatycki,Oliwia,Sos sojowy,10,g
+4,Obiad – makaron azjatycki,Oliwia,Olej sezamowy,6,g
+4,Obiad – makaron azjatycki,Albert,Makaron pełnoziarnisty,106,g
+4,Obiad – makaron azjatycki,Albert,Kurczak pierś,153,g
+4,Obiad – makaron azjatycki,Albert,Warzywa mieszane,496,g
+4,Obiad – makaron azjatycki,Albert,Sos sojowy,10,g
+4,Obiad – makaron azjatycki,Albert,Olej sezamowy,13,g
+4,Kolacja – tortilla z wołowiną,Oliwia,Tortilla,81,g
+4,Kolacja – tortilla z wołowiną,Oliwia,Wołowina mielona chuda,69,g
+4,Kolacja – tortilla z wołowiną,Oliwia,Mozzarella light,31,g
+4,Kolacja – tortilla z wołowiną,Oliwia,Warzywa mieszane,83,g
+4,Kolacja – tortilla z wołowiną,Oliwia,Jogurt naturalny,28,g
+4,Kolacja – tortilla z wołowiną,Albert,Tortilla,121,g
+4,Kolacja – tortilla z wołowiną,Albert,Wołowina mielona chuda,108,g
+4,Kolacja – tortilla z wołowiną,Albert,Mozzarella light,62,g
+4,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,376,g
+4,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,125,g
+4,Shake proteinowy,Oliwia,Odżywka białkowa whey,21,g
+4,Shake proteinowy,Oliwia,Mleko 2%,110,ml
+4,Shake proteinowy,Oliwia,Banan,102,g
+4,Shake proteinowy,Albert,Odżywka białkowa whey,33,g
+4,Shake proteinowy,Albert,Mleko 2%,496,ml
+4,Shake proteinowy,Albert,Banan,149,g
+5,Śniadanie – tosty francuskie,Oliwia,Chleb tostowy,72,g
+5,Śniadanie – tosty francuskie,Oliwia,Jajko,2,szt
+5,Śniadanie – tosty francuskie,Oliwia,Mleko 2%,128,ml
+5,Śniadanie – tosty francuskie,Oliwia,Odżywka białkowa whey,13,g
+5,Śniadanie – tosty francuskie,Oliwia,Owoce mieszane,72,g
+5,Śniadanie – tosty francuskie,Albert,Chleb tostowy,156,g
+5,Śniadanie – tosty francuskie,Albert,Jajko,3,szt
+5,Śniadanie – tosty francuskie,Albert,Mleko 2%,117,ml
+5,Śniadanie – tosty francuskie,Albert,Odżywka białkowa whey,17,g
+5,Śniadanie – tosty francuskie,Albert,Owoce mieszane,156,g
+5,Obiad – spaghetti bolognese,Oliwia,Makaron pełnoziarnisty,57,g
+5,Obiad – spaghetti bolognese,Oliwia,Wołowina mielona chuda,89,g
+5,Obiad – spaghetti bolognese,Oliwia,Passata pomidorowa,320,g
+5,Obiad – spaghetti bolognese,Oliwia,Parmezan,12,g
+5,Obiad – spaghetti bolognese,Oliwia,Oliwa z oliwek,6,g
+5,Obiad – spaghetti bolognese,Albert,Makaron pełnoziarnisty,126,g
+5,Obiad – spaghetti bolognese,Albert,Wołowina mielona chuda,121,g
+5,Obiad – spaghetti bolognese,Albert,Passata pomidorowa,289,g
+5,Obiad – spaghetti bolognese,Albert,Parmezan,17,g
+5,Obiad – spaghetti bolognese,Albert,Oliwa z oliwek,9,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Twaróg chudy,114,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Chleb żytni razowy,64,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Rzodkiewka,160,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Szczypiorek,10,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Jogurt naturalny,48,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Twaróg chudy,154,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Chleb żytni razowy,141,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,145,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Jogurt naturalny,44,g
+5,Shake proteinowy,Oliwia,Odżywka białkowa whey,19,g
+5,Shake proteinowy,Oliwia,Mleko 2%,320,ml
+5,Shake proteinowy,Oliwia,Banan,57,g
+5,Shake proteinowy,Oliwia,Masło orzechowe,12,g
+5,Shake proteinowy,Albert,Odżywka białkowa whey,26,g
+5,Shake proteinowy,Albert,Mleko 2%,289,ml
+5,Shake proteinowy,Albert,Banan,126,g
+5,Shake proteinowy,Albert,Masło orzechowe,17,g
+6,Śniadanie – twaróg z pomidorem,Oliwia,Twaróg chudy,150,g
+6,Śniadanie – twaróg z pomidorem,Oliwia,Chleb żytni razowy,67,g
+6,Śniadanie – twaróg z pomidorem,Oliwia,Pomidor,110,g
+6,Śniadanie – twaróg z pomidorem,Oliwia,Oliwa z oliwek,6,g
+6,Śniadanie – twaróg z pomidorem,Albert,Twaróg chudy,190,g
+6,Śniadanie – twaróg z pomidorem,Albert,Chleb żytni razowy,147,g
+6,Śniadanie – twaróg z pomidorem,Albert,Pomidor,171,g
+6,Śniadanie – twaróg z pomidorem,Albert,Oliwa z oliwek,8,g
+6,Obiad – burger wołowy,Oliwia,Bułka burger,54,g
+6,Obiad – burger wołowy,Oliwia,Wołowina mielona chuda,125,g
+6,Obiad – burger wołowy,Oliwia,Mozzarella light,23,g
+6,Obiad – burger wołowy,Oliwia,Warzywa mieszane,55,g
+6,Obiad – burger wołowy,Oliwia,Ziemniaki,169,g
+6,Obiad – burger wołowy,Oliwia,Oliwa z oliwek,6,g
+6,Obiad – burger wołowy,Albert,Bułka burger,119,g
+6,Obiad – burger wołowy,Albert,Wołowina mielona chuda,160,g
+6,Obiad – burger wołowy,Albert,Mozzarella light,29,g
+6,Obiad – burger wołowy,Albert,Warzywa mieszane,85,g
+6,Obiad – burger wołowy,Albert,Ziemniaki,370,g
+6,Obiad – burger wołowy,Albert,Oliwa z oliwek,8,g
+6,Kolacja – pinsa z mozzarellą,Oliwia,Pinsa pełnoziarnista,175,g
+6,Kolacja – pinsa z mozzarellą,Oliwia,Mozzarella light,70,g
+6,Kolacja – pinsa z mozzarellą,Oliwia,Szynka chuda,50,g
+6,Kolacja – pinsa z mozzarellą,Oliwia,Passata pomidorowa,33,g
+6,Kolacja – pinsa z mozzarellą,Oliwia,Rukola,20,g
+6,Kolacja – pinsa z mozzarellą,Albert,Pinsa pełnoziarnista,225,g
+6,Kolacja – pinsa z mozzarellą,Albert,Mozzarella light,88,g
+6,Kolacja – pinsa z mozzarellą,Albert,Szynka chuda,64,g
+6,Kolacja – pinsa z mozzarellą,Albert,Passata pomidorowa,52,g
+6,Kolacja – pinsa z mozzarellą,Albert,Rukola,20,g
+6,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
+6,Shake proteinowy,Oliwia,Mleko 2%,110,ml
+6,Shake proteinowy,Oliwia,Owoce jagodowe,67,g
+6,Shake proteinowy,Albert,Odżywka białkowa whey,32,g
+6,Shake proteinowy,Albert,Mleko 2%,171,ml
+6,Shake proteinowy,Albert,Owoce jagodowe,147,g
+7,Śniadanie – jajka i twaróg,Oliwia,Jajko,2,szt
+7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,78,g
+7,Śniadanie – jajka i twaróg,Oliwia,Awokado,65,g
+7,Śniadanie – jajka i twaróg,Oliwia,Chleb żytni razowy,63,g
+7,Śniadanie – jajka i twaróg,Oliwia,Pomidor,83,g
+7,Śniadanie – jajka i twaróg,Albert,Jajko,3,szt
+7,Śniadanie – jajka i twaróg,Albert,Twaróg chudy,100,g
+7,Śniadanie – jajka i twaróg,Albert,Awokado,86,g
+7,Śniadanie – jajka i twaróg,Albert,Chleb żytni razowy,121,g
+7,Śniadanie – jajka i twaróg,Albert,Pomidor,129,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Gnocchi,197,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Kurczak pierś,94,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Pesto,22,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Pomidor,83,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Parmezan,11,g
+7,Obiad – gnocchi z kurczakiem,Albert,Gnocchi,377,g
+7,Obiad – gnocchi z kurczakiem,Albert,Kurczak pierś,121,g
+7,Obiad – gnocchi z kurczakiem,Albert,Pesto,28,g
+7,Obiad – gnocchi z kurczakiem,Albert,Pomidor,129,g
+7,Obiad – gnocchi z kurczakiem,Albert,Parmezan,15,g
+7,Kolacja – kanapki z jajkiem,Oliwia,Chleb żytni razowy,79,g
+7,Kolacja – kanapki z jajkiem,Oliwia,Jajko,2,szt
+7,Kolacja – kanapki z jajkiem,Oliwia,Twaróg chudy,62,g
+7,Kolacja – kanapki z jajkiem,Oliwia,Warzywa mieszane,83,g
+7,Kolacja – kanapki z jajkiem,Albert,Chleb żytni razowy,150,g
+7,Kolacja – kanapki z jajkiem,Albert,Jajko,3,szt
+7,Kolacja – kanapki z jajkiem,Albert,Twaróg chudy,81,g
+7,Kolacja – kanapki z jajkiem,Albert,Warzywa mieszane,129,g
+7,Shake proteinowy z kakao,Oliwia,Odżywka białkowa whey,23,g
+7,Shake proteinowy z kakao,Oliwia,Mleko 2%,110,ml
+7,Shake proteinowy z kakao,Oliwia,Kakao,3,g
+7,Shake proteinowy z kakao,Oliwia,Banan,63,g
+7,Shake proteinowy z kakao,Albert,Odżywka białkowa whey,30,g
+7,Shake proteinowy z kakao,Albert,Mleko 2%,171,ml
+7,Shake proteinowy z kakao,Albert,Kakao,4,g
+7,Shake proteinowy z kakao,Albert,Banan,121,g
+8,Placki proteinowe,Oliwia,Płatki owsiane,30,g
+8,Placki proteinowe,Oliwia,Odżywka białkowa whey,30,g
+8,Placki proteinowe,Oliwia,Jajko,1,szt
+8,Placki proteinowe,Oliwia,Jogurt naturalny,60,g
+8,Placki proteinowe,Oliwia,Mleko 2%,50,ml
+8,Placki proteinowe,Oliwia,Syrop klonowy bez cukru,20,ml
+8,Placki proteinowe,Oliwia,Banan,60,g
+8,Placki proteinowe,Albert,Płatki owsiane,60,g
+8,Placki proteinowe,Albert,Odżywka białkowa whey,40,g
+8,Placki proteinowe,Albert,Jajko,2,szt
+8,Placki proteinowe,Albert,Jogurt naturalny,100,g
+8,Placki proteinowe,Albert,Mleko 2%,100,ml
+8,Placki proteinowe,Albert,Syrop klonowy bez cukru,50,ml
+8,Placki proteinowe,Albert,Banan,80,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Tortilla,80,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Kurczak pierś,104,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Mozzarella light,80,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Papryka,160,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Kukurydza,42,g
+8,Obiad – quesadilla z kurczakiem,Oliwia,Salsa,80,g
+8,Obiad – quesadilla z kurczakiem,Albert,Tortilla,150,g
+8,Obiad – quesadilla z kurczakiem,Albert,Kurczak pierś,121,g
+8,Obiad – quesadilla z kurczakiem,Albert,Mozzarella light,125,g
+8,Obiad – quesadilla z kurczakiem,Albert,Papryka,205,g
+8,Obiad – quesadilla z kurczakiem,Albert,Kukurydza,82,g
+8,Obiad – quesadilla z kurczakiem,Albert,Salsa,103,g
+8,Kolacja – twaróg z rzodkiewką,Oliwia,Twaróg chudy,134,g
+8,Kolacja – twaróg z rzodkiewką,Oliwia,Chleb żytni razowy,75,g
+8,Kolacja – twaróg z rzodkiewką,Oliwia,Rzodkiewka,160,g
+8,Kolacja – twaróg z rzodkiewką,Oliwia,Szczypiorek,10,g
+8,Kolacja – twaróg z rzodkiewką,Oliwia,Jogurt naturalny,48,g
+8,Kolacja – twaróg z rzodkiewką,Albert,Twaróg chudy,154,g
+8,Kolacja – twaróg z rzodkiewką,Albert,Chleb żytni razowy,147,g
+8,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,205,g
+8,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
+8,Kolacja – twaróg z rzodkiewką,Albert,Jogurt naturalny,62,g
+8,Shake proteinowy,Oliwia,Odżywka białkowa whey,22,g
+8,Shake proteinowy,Oliwia,Mleko 2%,320,ml
+8,Shake proteinowy,Oliwia,Banan,84,g
+8,Shake proteinowy,Albert,Odżywka białkowa whey,26,g
+8,Shake proteinowy,Albert,Mleko 2%,410,ml
+8,Shake proteinowy,Albert,Banan,162,g`;
