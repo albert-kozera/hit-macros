@@ -2,6 +2,10 @@
 
 An app that generates ready-to-follow meal plans that fit your macros.
 
+## Online
+
+https://albert-kozera.github.io/hit-macros/
+
 ## Struktura plików
 
 | Plik | Rola |
