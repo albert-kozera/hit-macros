@@ -130,16 +130,16 @@ Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Albert,Czekolada gorzka (70%),15,g
 4,Pancakes z serka wiejskiego,Albert,Masło,3,g
 4,Pancakes z serka wiejskiego,Albert,Miód,15,g
-1,Śniadanie – omlet,Oliwia,Jajko,2,szt
-1,Śniadanie – omlet,Oliwia,Płatki owsiane,40,g
-1,Śniadanie – omlet,Oliwia,Skyr naturalny,100,g
-1,Śniadanie – omlet,Oliwia,Banan,100,g
-1,Śniadanie – omlet,Oliwia,Masło orzechowe,5,g
-1,Śniadanie – omlet,Albert,Jajko,3,szt
-1,Śniadanie – omlet,Albert,Płatki owsiane,85,g
-1,Śniadanie – omlet,Albert,Skyr naturalny,150,g
-1,Śniadanie – omlet,Albert,Banan,150,g
-1,Śniadanie – omlet,Albert,Masło orzechowe,10,g
+1,Śniadanie – omlet ze skyrem i bananem,Oliwia,Jajko,2,szt
+1,Śniadanie – omlet ze skyrem i bananem,Oliwia,Płatki owsiane,40,g
+1,Śniadanie – omlet ze skyrem i bananem,Oliwia,Skyr naturalny,100,g
+1,Śniadanie – omlet ze skyrem i bananem,Oliwia,Banan,100,g
+1,Śniadanie – omlet ze skyrem i bananem,Oliwia,Masło orzechowe,5,g
+1,Śniadanie – omlet ze skyrem i bananem,Albert,Jajko,3,szt
+1,Śniadanie – omlet ze skyrem i bananem,Albert,Płatki owsiane,85,g
+1,Śniadanie – omlet ze skyrem i bananem,Albert,Skyr naturalny,150,g
+1,Śniadanie – omlet ze skyrem i bananem,Albert,Banan,150,g
+1,Śniadanie – omlet ze skyrem i bananem,Albert,Masło orzechowe,10,g
 1,Obiad – zapiekanka z batata,Oliwia,Bataty,300,g
 1,Obiad – zapiekanka z batata,Oliwia,Wołowina mielona chuda,150,g
 1,Obiad – zapiekanka z batata,Oliwia,Mozzarella light,40,g
@@ -150,14 +150,14 @@ Day,Meal,Person,Product,Amount,Unit
 1,Obiad – zapiekanka z batata,Albert,Mozzarella light,60,g
 1,Obiad – zapiekanka z batata,Albert,Oliwa z oliwek,8,g
 1,Obiad – zapiekanka z batata,Albert,Warzywa mieszane,225,g
-1,Kolacja – grzanki z jajkiem,Oliwia,Chleb żytni razowy,80,g
-1,Kolacja – grzanki z jajkiem,Oliwia,Jajko,2,szt
-1,Kolacja – grzanki z jajkiem,Oliwia,Awokado,40,g
-1,Kolacja – grzanki z jajkiem,Oliwia,Pomidor,100,g
-1,Kolacja – grzanki z jajkiem,Albert,Chleb żytni razowy,130,g
-1,Kolacja – grzanki z jajkiem,Albert,Jajko,3,szt
-1,Kolacja – grzanki z jajkiem,Albert,Awokado,50,g
-1,Kolacja – grzanki z jajkiem,Albert,Pomidor,100,g
+1,Kolacja – jajka + awokado,Oliwia,Chleb żytni razowy,80,g
+1,Kolacja – jajka + awokado,Oliwia,Jajko,2,szt
+1,Kolacja – jajka + awokado,Oliwia,Awokado,40,g
+1,Kolacja – jajka + awokado,Oliwia,Pomidor,100,g
+1,Kolacja – jajka + awokado,Albert,Chleb żytni razowy,130,g
+1,Kolacja – jajka + awokado,Albert,Jajko,3,szt
+1,Kolacja – jajka + awokado,Albert,Awokado,50,g
+1,Kolacja – jajka + awokado,Albert,Pomidor,100,g
 1,Shake,Oliwia,Odżywka białkowa whey,25,g
 1,Shake,Oliwia,Mleko 2%,200,ml
 1,Shake,Albert,Odżywka białkowa whey,40,g
@@ -352,14 +352,14 @@ Day,Meal,Person,Product,Amount,Unit
 7,Obiad – gnocchi z kurczakiem,Albert,Pesto,28,g
 7,Obiad – gnocchi z kurczakiem,Albert,Pomidor,129,g
 7,Obiad – gnocchi z kurczakiem,Albert,Parmezan,15,g
-7,Kolacja – kanapki z jajkiem,Oliwia,Chleb żytni razowy,79,g
-7,Kolacja – kanapki z jajkiem,Oliwia,Jajko,2,szt
-7,Kolacja – kanapki z jajkiem,Oliwia,Twaróg chudy,62,g
-7,Kolacja – kanapki z jajkiem,Oliwia,Warzywa mieszane,83,g
-7,Kolacja – kanapki z jajkiem,Albert,Chleb żytni razowy,150,g
-7,Kolacja – kanapki z jajkiem,Albert,Jajko,3,szt
-7,Kolacja – kanapki z jajkiem,Albert,Twaróg chudy,81,g
-7,Kolacja – kanapki z jajkiem,Albert,Warzywa mieszane,129,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Chleb żytni razowy,79,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Jajko,2,szt
+7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Twaróg chudy,62,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Warzywa mieszane,83,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Chleb żytni razowy,150,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Jajko,3,szt
+7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Twaróg chudy,81,g
+7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Warzywa mieszane,129,g
 7,Shake proteinowy z kakao,Oliwia,Odżywka białkowa whey,23,g
 7,Shake proteinowy z kakao,Oliwia,Mleko 2%,110,ml
 7,Shake proteinowy z kakao,Oliwia,Kakao,3,g
