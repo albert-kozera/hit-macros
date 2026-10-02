@@ -18,7 +18,7 @@ Strona działa też po prostu z dysku (`file://`) — to jest zamierzone i trzeb
 | Plik | Rola |
 |------|------|
 | `index.html` | Struktura strony (powłoka `.layout`: sidebar + treść, zakładki `.tabs`), kontenery wypełniane przez JS, handlery `onclick`/`oninput` do funkcji globalnych |
-| `style.css` | Cały CSS; breakpointy responsywne `@media (max-width: 900px)` (sidebar → nakładka) i `600px` |
+| `style.css` | Cały CSS (paleta motywu w zmiennych CSS + układ); breakpointy `@media (max-width: 900px)` (sidebar → nakładka) i `600px` |
 | `data.js` | **Źródło prawdy o danych** — trzy szablony stringów: `productsCSV`, `categoriesCSV`, `mealsCSV` |
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
@@ -48,7 +48,12 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
 6. **AI Toolkit** — `copyPrompt('audit'|'balance')` kopiuje do schowka długi prompt
    (`AUDIT_PROMPT` / `BALANCE_PROMPT`) z instrukcją dla zewnętrznego modelu AI.
    Ma fallback na `document.execCommand('copy')`, bo `navigator.clipboard` wymaga HTTPS.
-7. **Start** — `window.onload` → `switchDay(1)`.
+7. **Motyw** — `toggleTheme()`/`applyTheme(theme)` przełączają atrybut `data-theme` na `<html>`
+   (`light`/`dark`) i podmieniają ikonę przycisku. Wybór ląduje w `localStorage`
+   (`hit-macros-theme`, w `try/catch`, bo `file://` potrafi go blokować). Motyw startowy ustawia
+   mały skrypt inline w `<head>` `index.html` — **przed** `<link>` do CSS, żeby nie mignęło jasne tło;
+   gdy brak zapisu, idzie za `prefers-color-scheme`.
+8. **Start** — `window.onload` → `applyTheme(...)`, `switchDay(1)`, `switchTab('meals')`.
 
 ## Model danych (`data.js`)
 
@@ -84,6 +89,15 @@ Aktualnie 9 dni (323 wiersze), dni 1–9.
   zamiast przewijać się w `.table-container`.
 - Wariant mobilny (≤900 px) to nakładka: hamburger jest w `.topbar` **poza** sidebarem, bo sidebar
   zjeżdża poza ekran (`translateX(-100%)`) i przycisk w jego środku byłby nieosiągalny.
+- **Kolory wolno podawać tylko przez zmienne CSS** z bloku `:root` / `[data-theme="dark"]`.
+  Żadnych hexów w regułach ani — co gorsza — w stylach inline generowanych z JS
+  (`style="background-color: #fff"`) — takie kolory zostają jasne po przełączeniu na dark mode.
+  Do tego służą klasy (`.total-label`, `.meal-header`, `.search-empty`, `.tag-green`/`.tag-blue`).
+- `.topbar` jest sticky na każdej szerokości i ma stałe `height: var(--topbar-h)`; `.sidebar`
+  na desktopie jest sticky na `top: var(--topbar-h)`, więc **zmiana wysokości paska wymaga zmiany
+  tej zmiennej**, inaczej pasek zasłoni początek listy dni.
+- `:root` i `[data-theme="dark"]` mają **identyczną specyficzność** — motyw działa tylko dlatego,
+  że blok dark jest niżej w pliku. Nie przenoś go wyżej.
 - Ekstra pozycje na liście zakupów (nie liczące się do makro) dodaje się w stałej
   `SHOPPING_EXTRAS` w `script.js:121`, kluczowanej numerem dnia.
 - Styl kodu: wcięcie 4 spacje; `data.js` i `script.js` zaczynają się od 8-spacjowego wcięcia

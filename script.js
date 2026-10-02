@@ -47,7 +47,7 @@
             }
 
             const uniqueMeals = [...new Set(dayMeals.map(m => m.meal))];
-            let html = `<div id="day-${currentDay}" class="day-section active" data-dir="${direction}"><table><thead><tr><th style="background-color: #4CAF50;">Posiłek</th><th>Oliwia<span class="weight-info">Waga: ${weights.Oliwia} kg</span></th><th>Albert<span class="weight-info">Waga: ${weights.Albert} kg</span></th></tr></thead><tbody>`;
+            let html = `<div id="day-${currentDay}" class="day-section active" data-dir="${direction}"><table><thead><tr><th class="meal-header">Posiłek</th><th>Oliwia<span class="weight-info">Waga: ${weights.Oliwia} kg</span></th><th>Albert<span class="weight-info">Waga: ${weights.Albert} kg</span></th></tr></thead><tbody>`;
 
             let dailySumOliwia = { kcal: 0, b: 0, t: 0, w: 0 };
             let dailySumAlbert = { kcal: 0, b: 0, t: 0, w: 0 };
@@ -92,7 +92,7 @@
             const aTperc = Math.round((dailySumAlbert.t * 9 / dailySumAlbert.kcal) * 100);
             const aWperc = Math.round((dailySumAlbert.w * 4 / dailySumAlbert.kcal) * 100);
 
-            html += `</tbody><tfoot><tr class="total-row"><td style="background-color: #fff;">SUMA DZIENNA</td><td>${Math.round(dailySumOliwia.kcal)} kcal <span class="macros">B: ${Math.round(dailySumOliwia.b)}g (${oBperc}%), T: ${Math.round(dailySumOliwia.t)}g (${oTperc}%), W: ${Math.round(dailySumOliwia.w)}g (${oWperc}%)</span><span class="macros">Białko: ${pO} g/kg</span></td><td>${Math.round(dailySumAlbert.kcal)} kcal <span class="macros">B: ${Math.round(dailySumAlbert.b)}g (${aBperc}%), T: ${Math.round(dailySumAlbert.t)}g (${aTperc}%), W: ${Math.round(dailySumAlbert.w)}g (${aWperc}%)</span><span class="macros">Białko: ${pA} g/kg</span></td></tr></tfoot></table></div>`;
+            html += `</tbody><tfoot><tr class="total-row"><td class="total-label">SUMA DZIENNA</td><td>${Math.round(dailySumOliwia.kcal)} kcal <span class="macros">B: ${Math.round(dailySumOliwia.b)}g (${oBperc}%), T: ${Math.round(dailySumOliwia.t)}g (${oTperc}%), W: ${Math.round(dailySumOliwia.w)}g (${oWperc}%)</span><span class="macros">Białko: ${pO} g/kg</span></td><td>${Math.round(dailySumAlbert.kcal)} kcal <span class="macros">B: ${Math.round(dailySumAlbert.b)}g (${aBperc}%), T: ${Math.round(dailySumAlbert.t)}g (${aTperc}%), W: ${Math.round(dailySumAlbert.w)}g (${aWperc}%)</span><span class="macros">Białko: ${pA} g/kg</span></td></tr></tfoot></table></div>`;
             container.innerHTML = html;
         }
 
@@ -221,7 +221,7 @@
             );
 
             if (matches.length === 0) {
-                resultsDiv.innerHTML = '<div class="search-item" style="color: #999; cursor: default;">Brak wyników...</div>';
+                resultsDiv.innerHTML = '<div class="search-item search-empty">Brak wyników...</div>';
                 resultsDiv.style.display = 'block';
                 return;
             }
@@ -255,11 +255,29 @@
                 const rows = document.querySelectorAll('.meal-name');
                 rows.forEach(row => {
                     if (row.innerText === mealName) {
-                        row.style.backgroundColor = '#ffffd0';
-                        setTimeout(() => row.style.backgroundColor = '#fff', 2000);
+                        row.classList.add('flash');
+                        setTimeout(() => row.classList.remove('flash'), 2000);
                     }
                 });
             }, 100);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const btn = document.getElementById('theme-toggle');
+            if (btn) {
+                const toDark = theme !== 'dark';
+                btn.innerText = toDark ? '🌙' : '☀️';
+                btn.setAttribute('aria-label', toDark ? 'Włącz ciemny motyw' : 'Włącz jasny motyw');
+                btn.title = toDark ? 'Włącz ciemny motyw' : 'Włącz jasny motyw';
+            }
+        }
+
+        function toggleTheme() {
+            const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            // file:// potrafi blokować localStorage — brak zapisu nie może wywalić przełącznika.
+            try { localStorage.setItem('hit-macros-theme', next); } catch (e) {}
         }
 
         const AUDIT_PROMPT = `Działaj jako Główny Audytor i Analityk Danych Żywieniowych. Twoim zadaniem jest przeprowadzenie pełnego audytu matematycznego i spójności planu diety na podstawie załączonego pliku HTML oraz danych z serwisu: https://kalkulatorkalorii.net/tabela-kalorii.
@@ -388,6 +406,8 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         }
 
         window.onload = () => {
+            // Motyw ustawia już skrypt w <head>; tu tylko synchronizujemy ikonę przycisku.
+            applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
             switchDay(1);
             switchTab('meals');
         };

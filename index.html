@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Diety - Oliwia i Albert (v2.0)</title>
+    <script>
+        // Ustawia motyw przed pierwszym malowaniem, żeby uniknąć mignięcia jasnego tła.
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('hit-macros-theme'); } catch (e) {}
+            var dark = stored
+                ? stored === 'dark'
+                : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,12 +22,12 @@
     <header class="topbar">
         <button class="hamburger" id="sidebar-toggle" aria-expanded="false" aria-controls="day-list" onclick="toggleSidebar()">☰</button>
         <span class="topbar-title">🥗 Plan Diety</span>
+        <span class="topbar-spacer"></span>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Przełącz motyw" title="Przełącz motyw">🌙</button>
     </header>
 
     <div class="layout">
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-brand">🥗 Plan Diety</div>
-
             <div class="search-container">
                 <input type="text" id="meal-search" placeholder="Szukaj posiłku lub produktu..." oninput="searchMeals()">
                 <div id="search-results" class="search-results"></div>
@@ -94,9 +105,9 @@
                         <h4>Jak korzystać z AI Toolkit?</h4>
                         <p>Wybierz odpowiednie narzędzie w zależności od celu:</p>
                         <ul>
-                            <li><b style="color: #4CAF50;">Audyt i Weryfikacja:</b> Użyj, gdy chcesz sprawdzić, czy dane w pliku są poprawne matematycznie i zgodne z kalkulatorkalorii.net.</li>
-                            <li><b style="color: #2196F3;">Optymalizacja Kalorii:</b> Użyj, gdy chcesz dopasować posiłki do celu (Oliwia: 1800 kcal, Albert: 2800 kcal). AI zaproponuje zmiany gramatur.</li>
-                            <li><b style="color: #2e7d32;">Krok po kroku:</b> Kopiuj prompt → Załącz plik dieta.html → Napisz który dzień sprawdzić.</li>
+                            <li><b class="tag-green">Audyt i Weryfikacja:</b> Użyj, gdy chcesz sprawdzić, czy dane w pliku są poprawne matematycznie i zgodne z kalkulatorkalorii.net.</li>
+                            <li><b class="tag-blue">Optymalizacja Kalorii:</b> Użyj, gdy chcesz dopasować posiłki do celu (Oliwia: 1800 kcal, Albert: 2800 kcal). AI zaproponuje zmiany gramatur.</li>
+                            <li><b>Krok po kroku:</b> Kopiuj prompt → Załącz plik dieta.html → Napisz który dzień sprawdzić.</li>
                         </ul>
                     </div>
                 </div>
