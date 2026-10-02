@@ -1,4 +1,4 @@
-        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza pełnoziarnista (domowa)', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem', 9: 'Kurczak w sosie meksykańskim z ryżem [LIDL]' };
+        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza pełnoziarnista (domowa)', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem', 9: 'Kurczak w sosie meksykańskim z ryżem [LIDL]', 10: 'Sałatka z chrupiącym ryżem i krewetkami', 11: 'Kurczak w słodkiej glazurze' };
         let currentDay = 1;
         let currentMultiplier = 1;
         const weights = { Oliwia: 67, Albert: 108 };
@@ -164,9 +164,14 @@
             return categoriesDB[prod] || "Inne";
         }
 
+        // Dni biorą się z tytułów, nie z mealsDB — dzień bez wierszy w mealsCSV
+        // (np. dopiero projektowany) ma się pokazać na liście i mieć pustą treść.
+        function getDays() {
+            return Object.keys(titles).map(Number).sort((a, b) => a - b);
+        }
+
         function switchDay(dayNum, direction = 'none') {
-            const days = [...new Set(mealsDB.map(m => m.day))].sort((a, b) => a - b);
-            if (!days.includes(dayNum)) return;
+            if (!getDays().includes(dayNum)) return;
 
             const prevDay = currentDay;
             const dir = direction !== 'none'
@@ -398,7 +403,7 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         }
 
         function renderDayList() {
-            const days = [...new Set(mealsDB.map(m => m.day))].sort((a, b) => a - b);
+            const days = getDays();
             document.getElementById('day-list').innerHTML = days.map(day =>
                 `<button class="day-btn ${day === currentDay ? 'active' : ''}" onclick="switchDay(${day})">
                     <span class="day-status">${COMPLETE_DAYS.includes(day) ? '✅' : '⚠️'}</span>

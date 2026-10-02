@@ -72,14 +72,17 @@ na liście zakupów**. Nowy produkt zawsze dodawaj więc też do `categoriesCSV`
 ### `mealsCSV` — `Day,Meal,Person,Product,Amount,Unit`
 Jeden wiersz = jeden składnik jednego posiłku jednej osoby. `Person` to dokładnie `Oliwia` albo
 `Albert`. `Unit` to zwykle `g`/`ml`, dla jajek `szt`. Wiersze nie muszą być posortowane.
-Aktualnie 9 dni (323 wiersze), dni 1–9.
+Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste — widnieją w liście
+(są w `titles`), ale `mealsCSV` nie ma dla nich żadnego wiersza, więc pokazują placeholder.
 
 ## Konwencje i pułapki
 
 - **Edytuj dane w `data.js`**, nie w plikach `.csv`. Po zmianie danych zsynchronizuj odpowiadający
   plik `.csv`, żeby kopia nie zaczęła kłamać.
-- Nagłówki dni (nazwy dań) są zaszyte w `titles` w `script.js:1` — dodanie nowego dnia wymaga
-  wpisu także tam (inaczej tytuł to `Dzień N`).
+- `titles` w `script.js:1` jest **listą dni** — to z jej kluczy `getDays()` buduje sidebar
+  i sprawdza poprawność numeru w `switchDay()`. Dzień bez wierszy w `mealsCSV` (jeszcze nie
+  zaprojektowany) nadal pokazuje się na liście, a jego treść to placeholder
+  („Treść dnia N w przygotowaniu..."). Dodanie dnia = wpis w `titles`, nic więcej.
 - Znaczek statusu przy dniu w sidebarze (✅/⚠️) bierze się ze stałej `COMPLETE_DAYS` w `script.js:5` —
   dni spoza listy dostają ⚠️. Zmiana oznaczeń = edycja tylko tej tablicy.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
