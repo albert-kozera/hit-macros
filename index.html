@@ -8,75 +8,104 @@
 </head>
 <body>
 
-    <div class="search-container">
-        <input type="text" id="meal-search" placeholder="Szukaj posiłku lub produktu..." oninput="searchMeals()">
-        <div id="search-results" class="search-results"></div>
-    </div>
+    <header class="topbar">
+        <button class="hamburger" id="sidebar-toggle" aria-expanded="false" aria-controls="day-list" onclick="toggleSidebar()">☰</button>
+        <span class="topbar-title">🥗 Plan Diety</span>
+    </header>
 
-    <div class="nav-container" id="nav-container">
-    </div>
+    <div class="layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">🥗 Plan Diety</div>
 
-    <h1 id="page-title">Zapiekanka z batata</h1>
-
-    <div class="table-container" id="meals-container">
-        <!-- Generowane dynamicznie przez JS -->
-    </div>
-
-    <div class="shopping-list-container">
-        <div class="shopping-list-header">
-            <div class="shopping-list-title" id="shopping-title">Lista Zakupów (Dzień 1)</div>
-            <div class="multiplier-controls">
-                <span class="multiplier-label">Zakupy na:</span>
-                <button onclick="updateMultiplier(1)" class="multiplier-btn active" id="mul-1">1 dzień</button>
-                <button onclick="updateMultiplier(2)" class="multiplier-btn" id="mul-2">2 dni</button>
-                <button onclick="updateMultiplier(3)" class="multiplier-btn" id="mul-3">3 dni</button>
-                <button onclick="updateMultiplier(4)" class="multiplier-btn" id="mul-4">4 dni</button>
-                <button onclick="updateMultiplier(7)" class="multiplier-btn" id="mul-7">Tydzień</button>
+            <div class="search-container">
+                <input type="text" id="meal-search" placeholder="Szukaj posiłku lub produktu..." oninput="searchMeals()">
+                <div id="search-results" class="search-results"></div>
             </div>
-        </div>
-        <div id="shopping-grid" class="shopping-grid">
-            <!-- Generowane dynamicznie przez JS -->
-        </div>
+
+            <nav class="day-list" id="day-list">
+                <!-- Generowane dynamicznie przez JS -->
+            </nav>
+        </aside>
+
+        <main class="main">
+            <nav class="tabs">
+                <button class="tab-btn active" id="tab-btn-meals" onclick="switchTab('meals')">🍽️ Posiłki</button>
+                <button class="tab-btn" id="tab-btn-cele" onclick="switchTab('cele')">🎯 Cele</button>
+                <button class="tab-btn" id="tab-btn-ai" onclick="switchTab('ai')">🤖 AI</button>
+            </nav>
+
+            <section class="tab-panel active" id="tab-meals">
+                <h1 id="page-title">Zapiekanka z batata</h1>
+
+                <div class="table-container" id="meals-container">
+                    <!-- Generowane dynamicznie przez JS -->
+                </div>
+
+                <div class="shopping-list-container">
+                    <div class="shopping-list-header">
+                        <div class="shopping-list-title" id="shopping-title">Lista Zakupów (Dzień 1)</div>
+                        <div class="multiplier-controls">
+                            <span class="multiplier-label">Zakupy na:</span>
+                            <button onclick="updateMultiplier(1)" class="multiplier-btn active" id="mul-1">1 dzień</button>
+                            <button onclick="updateMultiplier(2)" class="multiplier-btn" id="mul-2">2 dni</button>
+                            <button onclick="updateMultiplier(3)" class="multiplier-btn" id="mul-3">3 dni</button>
+                            <button onclick="updateMultiplier(4)" class="multiplier-btn" id="mul-4">4 dni</button>
+                            <button onclick="updateMultiplier(7)" class="multiplier-btn" id="mul-7">Tydzień</button>
+                        </div>
+                    </div>
+                    <div id="shopping-grid" class="shopping-grid">
+                        <!-- Generowane dynamicznie przez JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-panel" id="tab-cele">
+                <div class="targets-container">
+                    <div class="target-card oliwia">
+                        <h3>🎯 Cel: Oliwia</h3>
+                        <div class="target-grid">
+                            <div class="target-item"><span class="target-label">Kalorie</span><span class="target-value">1800 kcal</span></div>
+                            <div class="target-item"><span class="target-label">Białko</span><span class="target-value">131g (29%)</span></div>
+                            <div class="target-item"><span class="target-label">Tłuszcze</span><span class="target-value">60g (30%)</span></div>
+                            <div class="target-item"><span class="target-label">Węglowodany</span><span class="target-value">185g (41%)</span></div>
+                        </div>
+                    </div>
+                    <div class="target-card albert">
+                        <h3>🎯 Cel: Albert</h3>
+                        <div class="target-grid">
+                            <div class="target-item"><span class="target-label">Kalorie</span><span class="target-value">2800 kcal</span></div>
+                            <div class="target-item"><span class="target-label">Białko</span><span class="target-value">182g (26%)</span></div>
+                            <div class="target-item"><span class="target-label">Tłuszcze</span><span class="target-value">81g (26%)</span></div>
+                            <div class="target-item"><span class="target-label">Węglowodany</span><span class="target-value">336g (48%)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-panel" id="tab-ai">
+                <div class="ai-toolkit">
+                    <span class="ai-toolkit-title">🤖 AI Diet Assistant Toolkit</span>
+                    <div class="ai-btn-group">
+                        <button onclick="copyPrompt('audit')" class="ai-btn" id="copy-audit-btn">📋 Audyt i Weryfikacja</button>
+                        <button onclick="copyPrompt('balance')" class="ai-btn secondary" id="copy-balance-btn">⚖️ Optymalizacja Kalorii</button>
+                    </div>
+
+                    <div class="ai-guide">
+                        <h4>Jak korzystać z AI Toolkit?</h4>
+                        <p>Wybierz odpowiednie narzędzie w zależności od celu:</p>
+                        <ul>
+                            <li><b style="color: #4CAF50;">Audyt i Weryfikacja:</b> Użyj, gdy chcesz sprawdzić, czy dane w pliku są poprawne matematycznie i zgodne z kalkulatorkalorii.net.</li>
+                            <li><b style="color: #2196F3;">Optymalizacja Kalorii:</b> Użyj, gdy chcesz dopasować posiłki do celu (Oliwia: 1800 kcal, Albert: 2800 kcal). AI zaproponuje zmiany gramatur.</li>
+                            <li><b style="color: #2e7d32;">Krok po kroku:</b> Kopiuj prompt → Załącz plik dieta.html → Napisz który dzień sprawdzić.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <div class="targets-container">
-        <div class="target-card oliwia">
-            <h3>🎯 Cel: Oliwia</h3>
-            <div class="target-grid">
-                <div class="target-item"><span class="target-label">Kalorie</span><span class="target-value">1800 kcal</span></div>
-                <div class="target-item"><span class="target-label">Białko</span><span class="target-value">131g (29%)</span></div>
-                <div class="target-item"><span class="target-label">Tłuszcze</span><span class="target-value">60g (30%)</span></div>
-                <div class="target-item"><span class="target-label">Węglowodany</span><span class="target-value">185g (41%)</span></div>
-            </div>
-        </div>
-        <div class="target-card albert">
-            <h3>🎯 Cel: Albert</h3>
-            <div class="target-grid">
-                <div class="target-item"><span class="target-label">Kalorie</span><span class="target-value">2800 kcal</span></div>
-                <div class="target-item"><span class="target-label">Białko</span><span class="target-value">182g (26%)</span></div>
-                <div class="target-item"><span class="target-label">Tłuszcze</span><span class="target-value">81g (26%)</span></div>
-                <div class="target-item"><span class="target-label">Węglowodany</span><span class="target-value">336g (48%)</span></div>
-            </div>
-        </div>
-    </div>
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 
-    <div class="ai-toolkit">
-        <span class="ai-toolkit-title">🤖 AI Diet Assistant Toolkit</span>
-        <div class="ai-btn-group">
-            <button onclick="copyPrompt('audit')" class="ai-btn" id="copy-audit-btn">📋 Audyt i Weryfikacja</button>
-            <button onclick="copyPrompt('balance')" class="ai-btn secondary" id="copy-balance-btn">⚖️ Optymalizacja Kalorii</button>
-        </div>
-
-        <div class="ai-guide">
-            <h4>Jak korzystać z AI Toolkit?</h4>
-            <p>Wybierz odpowiednie narzędzie w zależności od celu:</p>
-            <ul>
-                <li><b style="color: #4CAF50;">Audyt i Weryfikacja:</b> Użyj, gdy chcesz sprawdzić, czy dane w pliku są poprawne matematycznie i zgodne z kalkulatorkalorii.net.</li>
-                <li><b style="color: #2196F3;">Optymalizacja Kalorii:</b> Użyj, gdy chcesz dopasować posiłki do celu (Oliwia: 1800 kcal, Albert: 2800 kcal). AI zaproponuje zmiany gramatur.</li>
-                <li><b style="color: #2e7d32;">Krok po kroku:</b> Kopiuj prompt → Załącz plik dieta.html → Napisz który dzień sprawdzić.</li>
-            </ul>
-        </div>
-    </div>
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>

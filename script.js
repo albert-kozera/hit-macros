@@ -166,18 +166,37 @@
             const days = [...new Set(mealsDB.map(m => m.day))].sort((a, b) => a - b);
             if (!days.includes(dayNum)) return;
 
+            const prevDay = currentDay;
+            const dir = direction !== 'none'
+                ? direction
+                : (dayNum > prevDay ? 'next' : dayNum < prevDay ? 'prev' : 'none');
+
             currentDay = dayNum;
             document.querySelectorAll('.day-section').forEach(section => section.classList.remove('active'));
-            renderDiet(direction);
+            renderDiet(dir);
             document.getElementById('page-title').innerText = titles[dayNum] || 'Dzień ' + dayNum;
 
-            const dayIndex = days.indexOf(dayNum);
-            if (dayIndex < navOffset || dayIndex >= navOffset + PAGE_SIZE) {
-                navOffset = Math.floor(dayIndex / PAGE_SIZE) * PAGE_SIZE;
-            }
-
-            renderNav();
+            renderDayList();
             renderShoppingList();
+            closeSidebar();
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'tab-' + name));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.id === 'tab-btn-' + name));
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const open = sidebar.classList.toggle('open');
+            document.getElementById('sidebar-backdrop').classList.toggle('open', open);
+            document.getElementById('sidebar-toggle').setAttribute('aria-expanded', open);
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebar-backdrop').classList.remove('open');
+            document.getElementById('sidebar-toggle').setAttribute('aria-expanded', 'false');
         }
 
         function updateMultiplier(multiplier) {
@@ -228,6 +247,7 @@
 
         function selectSearchResult(day, mealName) {
             switchDay(day);
+            switchTab('meals');
             document.getElementById('meal-search').value = '';
             document.getElementById('search-results').style.display = 'none';
 
@@ -357,37 +377,17 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             });
         }
 
-        let navOffset = 0;
-        const PAGE_SIZE = 7;
-
-        function changeNavPage(delta) {
+        function renderDayList() {
             const days = [...new Set(mealsDB.map(m => m.day))].sort((a, b) => a - b);
-            navOffset += delta * PAGE_SIZE;
-            navOffset = Math.max(0, navOffset);
-            renderNav();
-        }
-
-        function renderNav() {
-            const nav = document.getElementById('nav-container');
-            const days = [...new Set(mealsDB.map(m => m.day))].sort((a, b) => a - b);
-            const visibleDays = days.slice(navOffset, navOffset + PAGE_SIZE);
-
-            let html = '';
-            if (navOffset > 0) {
-                html += `<button onclick="changeNavPage(-1)" class="nav-button">&lt;</button>`;
-            }
-
-            html += visibleDays.map(day =>
-                `<button onclick="switchDay(${day})" class="nav-button ${day === currentDay ? 'active' : ''}" id="btn-day-${day}">${day}</button>`
+            document.getElementById('day-list').innerHTML = days.map(day =>
+                `<button class="day-btn ${day === currentDay ? 'active' : ''}" onclick="switchDay(${day})">
+                    <span class="day-num">Dzień ${day}</span>
+                    <span class="day-name">${titles[day] || 'Dzień ' + day}</span>
+                </button>`
             ).join('');
-
-            if (navOffset + PAGE_SIZE < days.length) {
-                html += `<button onclick="changeNavPage(1)" class="nav-button">&gt;</button>`;
-            }
-
-            nav.innerHTML = html;
         }
 
         window.onload = () => {
             switchDay(1);
+            switchTab('meals');
         };

@@ -17,8 +17,8 @@ Strona działa też po prostu z dysku (`file://`) — to jest zamierzone i trzeb
 
 | Plik | Rola |
 |------|------|
-| `index.html` | Struktura strony, kontenery wypełniane przez JS, handlery `onclick`/`oninput` do funkcji globalnych |
-| `style.css` | Cały CSS; jeden breakpoint responsywny `@media (max-width: 600px)` |
+| `index.html` | Struktura strony (powłoka `.layout`: sidebar + treść, zakładki `.tabs`), kontenery wypełniane przez JS, handlery `onclick`/`oninput` do funkcji globalnych |
+| `style.css` | Cały CSS; breakpointy responsywne `@media (max-width: 900px)` (sidebar → nakładka) i `600px` |
 | `data.js` | **Źródło prawdy o danych** — trzy szablony stringów: `productsCSV`, `categoriesCSV`, `mealsCSV` |
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
@@ -36,8 +36,15 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    dzienną + rozkład procentowy (B×4, T×9, W×4) i białko na kg masy ciała.
 3. **Lista zakupów** — `renderShoppingList()` sumuje gramatury produktów danego dnia i grupuje
    je w 4 kategorie. Mnożnik (`updateMultiplier`) skaluje ilości ×1/×2/×3/×4/×7.
-4. **Nawigacja** — `renderNav()`/`switchDay()`/`changeNavPage()`; dni pokazywane po `PAGE_SIZE = 7`.
-5. **Wyszukiwarka** — `searchMeals()` filtruje `mealsDB` po nazwie posiłku lub produkcie.
+4. **Nawigacja** — `renderDayList()` wypełnia `#day-list` w sidebarze przyciskami z pełnymi nazwami
+   dań (`titles`), podświetlając `currentDay`. `switchDay(dayNum, direction)` ustawia dzień, tytuł,
+   woła `renderDiet`/`renderShoppingList` i zamyka mobilny sidebar. Gdy `direction` nie podano,
+   jest wyliczane z porównania z poprzednim dniem (`next`/`prev`), co napędza animacje
+   `.day-section[data-dir]`. Paginacji (`PAGE_SIZE`/`navOffset`) już nie ma.
+   `switchTab(name)` przełącza panele `#tab-meals` (domyślny) / `#tab-cele` / `#tab-ai`
+   i przyciski `#tab-btn-*`. `toggleSidebar()`/`closeSidebar()` obsługują nakładkę mobilną.
+5. **Wyszukiwarka** — `searchMeals()` filtruje `mealsDB` po nazwie posiłku lub produkcie;
+   `selectSearchResult()` przełącza dzień oraz zakładkę na `meals`, żeby podświetlenie było widoczne.
 6. **AI Toolkit** — `copyPrompt('audit'|'balance')` kopiuje do schowka długi prompt
    (`AUDIT_PROMPT` / `BALANCE_PROMPT`) z instrukcją dla zewnętrznego modelu AI.
    Ma fallback na `document.execCommand('copy')`, bo `navigator.clipboard` wymaga HTTPS.
@@ -60,7 +67,7 @@ na liście zakupów**. Nowy produkt zawsze dodawaj więc też do `categoriesCSV`
 ### `mealsCSV` — `Day,Meal,Person,Product,Amount,Unit`
 Jeden wiersz = jeden składnik jednego posiłku jednej osoby. `Person` to dokładnie `Oliwia` albo
 `Albert`. `Unit` to zwykle `g`/`ml`, dla jajek `szt`. Wiersze nie muszą być posortowane.
-Aktualnie 8 dni (298 wierszy), dni 1–8.
+Aktualnie 9 dni (323 wiersze), dni 1–9.
 
 ## Konwencje i pułapki
 
@@ -70,8 +77,13 @@ Aktualnie 8 dni (298 wierszy), dni 1–8.
   wpisu także tam (inaczej tytuł to `Dzień N`).
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach.
-- `switchDay()` wywołuje `renderNav()`, więc `navOffset` musi być zadeklarowany przed użyciem
-  (jest, na końcu pliku, ale `window.onload` odpala się później — nie przenosij `onload` wyżej).
+- Nie dodawaj `overflow` do `.sidebar` w widoku desktopowym — obcina to dropdown wyszukiwarki
+  (`.search-results` jest `position: absolute`). Scroll dla długiej listy dni ustawiaj na wewnętrznym
+  kontenerze, nigdy na `.sidebar`.
+- `.main` musi mieć `min-width: 0` — bez tego tabela z `min-width: 600px` rozsadza kolumnę grida
+  zamiast przewijać się w `.table-container`.
+- Wariant mobilny (≤900 px) to nakładka: hamburger jest w `.topbar` **poza** sidebarem, bo sidebar
+  zjeżdża poza ekran (`translateX(-100%)`) i przycisk w jego środku byłby nieosiągalny.
 - Ekstra pozycje na liście zakupów (nie liczące się do makro) dodaje się w stałej
   `SHOPPING_EXTRAS` w `script.js:121`, kluczowanej numerem dnia.
 - Styl kodu: wcięcie 4 spacje; `data.js` i `script.js` zaczynają się od 8-spacjowego wcięcia
