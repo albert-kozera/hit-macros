@@ -2,8 +2,15 @@
         let currentDay = 1;
         let currentMultiplier = 1;
         const weights = { Oliwia: 67, Albert: 108 };
-        // Dni oznaczone w sidebarze ✅; pozostałe dostają ⚠️.
+        // Znaczek przy dniu w sidebarze: ✅ gotowy, ❌ pusty (brak posiłków), ⚠️ pozostałe.
         const COMPLETE_DAYS = [1, 2, 6, 8, 9];
+        const EMPTY_DAYS = [10, 11];
+
+        function dayStatus(day) {
+            if (COMPLETE_DAYS.includes(day)) return '✅';
+            if (EMPTY_DAYS.includes(day)) return '❌';
+            return '⚠️';
+        }
 
         function parseProducts() {
             const lines = productsCSV.trim().split('\n').slice(1);
@@ -406,7 +413,7 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             const days = getDays();
             document.getElementById('day-list').innerHTML = days.map(day =>
                 `<button class="day-btn ${day === currentDay ? 'active' : ''}" onclick="switchDay(${day})">
-                    <span class="day-status">${COMPLETE_DAYS.includes(day) ? '✅' : '⚠️'}</span>
+                    <span class="day-status">${dayStatus(day)}</span>
                     <span class="day-num">Dzień ${day}</span>
                     <span class="day-name">${titles[day] || 'Dzień ' + day}</span>
                 </button>`

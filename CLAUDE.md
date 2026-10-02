@@ -83,8 +83,9 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   i sprawdza poprawność numeru w `switchDay()`. Dzień bez wierszy w `mealsCSV` (jeszcze nie
   zaprojektowany) nadal pokazuje się na liście, a jego treść to placeholder
   („Treść dnia N w przygotowaniu..."). Dodanie dnia = wpis w `titles`, nic więcej.
-- Znaczek statusu przy dniu w sidebarze (✅/⚠️) bierze się ze stałej `COMPLETE_DAYS` w `script.js:5` —
-  dni spoza listy dostają ⚠️. Zmiana oznaczeń = edycja tylko tej tablicy.
+- Znaczek statusu przy dniu w sidebarze liczy `dayStatus()` w `script.js` z dwóch stałych:
+  `COMPLETE_DAYS` → ✅, `EMPTY_DAYS` → ❌ (dzień bez posiłków), reszta → ⚠️.
+  Zmiana oznaczeń = edycja tylko tych dwóch tablic.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach.
 - Nie dodawaj `overflow` do `.sidebar` w widoku desktopowym — obcina to dropdown wyszukiwarki
