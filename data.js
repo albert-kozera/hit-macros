@@ -110,7 +110,8 @@ Pesto,🌾 Spiżarnia / Suche
 Syrop klonowy bez cukru,🌾 Spiżarnia / Suche
 Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 
-        const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
+        const mealsCSV = `
+Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
 4,Pancakes z serka wiejskiego,Oliwia,Jajko,2,szt
 4,Pancakes z serka wiejskiego,Oliwia,Mleko 2%,50,ml
@@ -135,7 +136,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 1,Śniadanie – omlet,Oliwia,Banan,100,g
 1,Śniadanie – omlet,Oliwia,Masło orzechowe,5,g
 1,Śniadanie – omlet,Albert,Jajko,3,szt
-1,Śniadanie – omlet,Albert,Płatki owsiane,70,g
+1,Śniadanie – omlet,Albert,Płatki owsiane,85,g
 1,Śniadanie – omlet,Albert,Skyr naturalny,150,g
 1,Śniadanie – omlet,Albert,Banan,150,g
 1,Śniadanie – omlet,Albert,Masło orzechowe,10,g
@@ -236,9 +237,9 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 4,Obiad – makaron azjatycki,Oliwia,Warzywa mieszane,110,g
 4,Obiad – makaron azjatycki,Oliwia,Sos sojowy,10,g
 4,Obiad – makaron azjatycki,Oliwia,Olej sezamowy,6,g
-4,Obiad – makaron azjatycki,Albert,Makaron pełnoziarnisty,106,g
-4,Obiad – makaron azjatycki,Albert,Kurczak pierś,153,g
-4,Obiad – makaron azjatycki,Albert,Warzywa mieszane,496,g
+4,Obiad – makaron azjatycki,Albert,Makaron pełnoziarnisty,165,g
+4,Obiad – makaron azjatycki,Albert,Kurczak pierś,200,g
+4,Obiad – makaron azjatycki,Albert,Warzywa mieszane,150,g
 4,Obiad – makaron azjatycki,Albert,Sos sojowy,10,g
 4,Obiad – makaron azjatycki,Albert,Olej sezamowy,13,g
 4,Kolacja – tortilla z wołowiną,Oliwia,Tortilla,81,g
@@ -249,13 +250,13 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 4,Kolacja – tortilla z wołowiną,Albert,Tortilla,121,g
 4,Kolacja – tortilla z wołowiną,Albert,Wołowina mielona chuda,108,g
 4,Kolacja – tortilla z wołowiną,Albert,Mozzarella light,62,g
-4,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,376,g
-4,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,125,g
+4,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,125,g
+4,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,45,g
 4,Shake proteinowy,Oliwia,Odżywka białkowa whey,21,g
 4,Shake proteinowy,Oliwia,Mleko 2%,110,ml
 4,Shake proteinowy,Oliwia,Banan,102,g
 4,Shake proteinowy,Albert,Odżywka białkowa whey,33,g
-4,Shake proteinowy,Albert,Mleko 2%,496,ml
+4,Shake proteinowy,Albert,Mleko 2%,200,ml
 4,Shake proteinowy,Albert,Banan,149,g
 5,Śniadanie – tosty francuskie,Oliwia,Chleb tostowy,72,g
 5,Śniadanie – tosty francuskie,Oliwia,Jajko,2,szt
@@ -272,7 +273,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 5,Obiad – spaghetti bolognese,Oliwia,Passata pomidorowa,320,g
 5,Obiad – spaghetti bolognese,Oliwia,Parmezan,12,g
 5,Obiad – spaghetti bolognese,Oliwia,Oliwa z oliwek,6,g
-5,Obiad – spaghetti bolognese,Albert,Makaron pełnoziarnisty,126,g
+5,Obiad – spaghetti bolognese,Albert,Makaron pełnoziarnisty,155,g
 5,Obiad – spaghetti bolognese,Albert,Wołowina mielona chuda,121,g
 5,Obiad – spaghetti bolognese,Albert,Passata pomidorowa,289,g
 5,Obiad – spaghetti bolognese,Albert,Parmezan,17,g
@@ -282,7 +283,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Rzodkiewka,160,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Szczypiorek,10,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Jogurt naturalny,48,g
-5,Kolacja – twaróg z rzodkiewką,Albert,Twaróg chudy,154,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Twaróg chudy,190,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Chleb żytni razowy,141,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,145,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
@@ -291,7 +292,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 5,Shake proteinowy,Oliwia,Mleko 2%,320,ml
 5,Shake proteinowy,Oliwia,Banan,57,g
 5,Shake proteinowy,Oliwia,Masło orzechowe,12,g
-5,Shake proteinowy,Albert,Odżywka białkowa whey,26,g
+5,Shake proteinowy,Albert,Odżywka białkowa whey,30,g
 5,Shake proteinowy,Albert,Mleko 2%,289,ml
 5,Shake proteinowy,Albert,Banan,126,g
 5,Shake proteinowy,Albert,Masło orzechowe,17,g
@@ -299,7 +300,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 6,Śniadanie – twaróg z pomidorem,Oliwia,Chleb żytni razowy,67,g
 6,Śniadanie – twaróg z pomidorem,Oliwia,Pomidor,110,g
 6,Śniadanie – twaróg z pomidorem,Oliwia,Oliwa z oliwek,6,g
-6,Śniadanie – twaróg z pomidorem,Albert,Twaróg chudy,190,g
+6,Śniadanie – twaróg z pomidorem,Albert,Twaróg chudy,220,g
 6,Śniadanie – twaróg z pomidorem,Albert,Chleb żytni razowy,147,g
 6,Śniadanie – twaróg z pomidorem,Albert,Pomidor,171,g
 6,Śniadanie – twaróg z pomidorem,Albert,Oliwa z oliwek,8,g
@@ -313,7 +314,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 6,Obiad – burger wołowy,Albert,Wołowina mielona chuda,160,g
 6,Obiad – burger wołowy,Albert,Mozzarella light,29,g
 6,Obiad – burger wołowy,Albert,Warzywa mieszane,85,g
-6,Obiad – burger wołowy,Albert,Ziemniaki,370,g
+6,Obiad – burger wołowy,Albert,Ziemniaki,440,g
 6,Obiad – burger wołowy,Albert,Oliwa z oliwek,8,g
 6,Kolacja – pinsa z mozzarellą,Oliwia,Pinsa pełnoziarnista,175,g
 6,Kolacja – pinsa z mozzarellą,Oliwia,Mozzarella light,70,g
@@ -328,16 +329,16 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 6,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
 6,Shake proteinowy,Oliwia,Mleko 2%,110,ml
 6,Shake proteinowy,Oliwia,Owoce jagodowe,67,g
-6,Shake proteinowy,Albert,Odżywka białkowa whey,32,g
+6,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
 6,Shake proteinowy,Albert,Mleko 2%,171,ml
 6,Shake proteinowy,Albert,Owoce jagodowe,147,g
 7,Śniadanie – jajka i twaróg,Oliwia,Jajko,2,szt
-7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,78,g
+7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,110,g
 7,Śniadanie – jajka i twaróg,Oliwia,Awokado,65,g
 7,Śniadanie – jajka i twaróg,Oliwia,Chleb żytni razowy,63,g
 7,Śniadanie – jajka i twaróg,Oliwia,Pomidor,83,g
 7,Śniadanie – jajka i twaróg,Albert,Jajko,3,szt
-7,Śniadanie – jajka i twaróg,Albert,Twaróg chudy,100,g
+7,Śniadanie – jajka i twaróg,Albert,Twaróg chudy,140,g
 7,Śniadanie – jajka i twaróg,Albert,Awokado,86,g
 7,Śniadanie – jajka i twaróg,Albert,Chleb żytni razowy,121,g
 7,Śniadanie – jajka i twaróg,Albert,Pomidor,129,g
@@ -347,7 +348,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 7,Obiad – gnocchi z kurczakiem,Oliwia,Pomidor,83,g
 7,Obiad – gnocchi z kurczakiem,Oliwia,Parmezan,11,g
 7,Obiad – gnocchi z kurczakiem,Albert,Gnocchi,377,g
-7,Obiad – gnocchi z kurczakiem,Albert,Kurczak pierś,121,g
+7,Obiad – gnocchi z kurczakiem,Albert,Kurczak pierś,150,g
 7,Obiad – gnocchi z kurczakiem,Albert,Pesto,28,g
 7,Obiad – gnocchi z kurczakiem,Albert,Pomidor,129,g
 7,Obiad – gnocchi z kurczakiem,Albert,Parmezan,15,g
@@ -363,7 +364,7 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 7,Shake proteinowy z kakao,Oliwia,Mleko 2%,110,ml
 7,Shake proteinowy z kakao,Oliwia,Kakao,3,g
 7,Shake proteinowy z kakao,Oliwia,Banan,63,g
-7,Shake proteinowy z kakao,Albert,Odżywka białkowa whey,30,g
+7,Shake proteinowy z kakao,Albert,Odżywka białkowa whey,36,g
 7,Shake proteinowy z kakao,Albert,Mleko 2%,171,ml
 7,Shake proteinowy z kakao,Albert,Kakao,4,g
 7,Shake proteinowy z kakao,Albert,Banan,121,g
@@ -433,4 +434,5 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 9,Shake proteinowy,Oliwia,Odżywka białkowa whey,30,g
 9,Shake proteinowy,Oliwia,Mleko 2%,150,ml
 9,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
-9,Shake proteinowy,Albert,Mleko 2%,150,ml`;
+9,Shake proteinowy,Albert,Mleko 2%,150,ml
+`;
