@@ -168,6 +168,7 @@
             gap: 6px;
         }
         .day-btn {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -197,6 +198,14 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             opacity: 0.75;
+            padding-right: 22px;
+        }
+        .day-status {
+            position: absolute;
+            top: 9px;
+            right: 10px;
+            font-size: 0.9em;
+            line-height: 1;
         }
         .day-name {
             font-weight: bold;

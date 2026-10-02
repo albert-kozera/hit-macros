@@ -80,6 +80,8 @@ Aktualnie 9 dni (323 wiersze), dni 1–9.
   plik `.csv`, żeby kopia nie zaczęła kłamać.
 - Nagłówki dni (nazwy dań) są zaszyte w `titles` w `script.js:1` — dodanie nowego dnia wymaga
   wpisu także tam (inaczej tytuł to `Dzień N`).
+- Znaczek statusu przy dniu w sidebarze (✅/⚠️) bierze się ze stałej `COMPLETE_DAYS` w `script.js:5` —
+  dni spoza listy dostają ⚠️. Zmiana oznaczeń = edycja tylko tej tablicy.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach.
 - Nie dodawaj `overflow` do `.sidebar` w widoku desktopowym — obcina to dropdown wyszukiwarki
