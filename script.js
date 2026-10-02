@@ -1,4 +1,4 @@
-        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza na pinsie', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem' };
+        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza na pinsie', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem', 9: 'Kurczak w sosie meksykańskim z ryżem [LIDL]' };
         let currentDay = 1;
         let currentMultiplier = 1;
         const weights = { Oliwia: 67, Albert: 108 };

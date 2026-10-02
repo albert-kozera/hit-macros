@@ -51,7 +51,8 @@ Pesto,450,5,40,5
 Papryka,30,1,0,6
 Kukurydza,90,3,1,18
 Salsa,40,1,0,8
-Syrop klonowy bez cukru,20,0,0,5`;
+Syrop klonowy bez cukru,20,0,0,5
+Kurczak w sosie meksykańskim z ryżem [LIDL],132.1,7,2.6,20.2`;
 
         const categoriesCSV = `Product,Category
 Bataty,🥦 Warzywa i Owoce
@@ -106,7 +107,8 @@ Tortilla,🌾 Spiżarnia / Suche
 Chleb tostowy,🌾 Spiżarnia / Suche
 Bułka burger,🌾 Spiżarnia / Suche
 Pesto,🌾 Spiżarnia / Suche
-Syrop klonowy bez cukru,🌾 Spiżarnia / Suche`;
+Syrop klonowy bez cukru,🌾 Spiżarnia / Suche
+Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
 
         const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
@@ -406,4 +408,29 @@ Syrop klonowy bez cukru,🌾 Spiżarnia / Suche`;
 8,Shake proteinowy,Oliwia,Banan,84,g
 8,Shake proteinowy,Albert,Odżywka białkowa whey,26,g
 8,Shake proteinowy,Albert,Mleko 2%,410,ml
-8,Shake proteinowy,Albert,Banan,162,g`;
+8,Shake proteinowy,Albert,Banan,162,g
+9,Śniadanie – jajka + awokado,Oliwia,Jajko,3,szt
+9,Śniadanie – jajka + awokado,Oliwia,Chleb pełnoziarnisty,60,g
+9,Śniadanie – jajka + awokado,Oliwia,Awokado,60,g
+9,Śniadanie – jajka + awokado,Oliwia,Pomidor,100,g
+9,Śniadanie – jajka + awokado,Albert,Jajko,3,szt
+9,Śniadanie – jajka + awokado,Albert,Chleb pełnoziarnisty,90,g
+9,Śniadanie – jajka + awokado,Albert,Awokado,70,g
+9,Śniadanie – jajka + awokado,Albert,Pomidor,100,g
+9,Śniadanie – jajka + awokado,Albert,Twaróg chudy,120,g
+9,Obiad – kurczak w sosie meksykańskim z ryżem [LIDL],Oliwia,Kurczak w sosie meksykańskim z ryżem [LIDL],420,g
+9,Obiad – kurczak w sosie meksykańskim z ryżem [LIDL],Albert,Kurczak w sosie meksykańskim z ryżem [LIDL],840,g
+9,Kolacja – tortilla z wołowiną,Oliwia,Tortilla,62,g
+9,Kolacja – tortilla z wołowiną,Oliwia,Wołowina mielona chuda,145,g
+9,Kolacja – tortilla z wołowiną,Oliwia,Mozzarella light,50,g
+9,Kolacja – tortilla z wołowiną,Oliwia,Warzywa mieszane,83,g
+9,Kolacja – tortilla z wołowiną,Oliwia,Jogurt naturalny,60,g
+9,Kolacja – tortilla z wołowiną,Albert,Tortilla,124,g
+9,Kolacja – tortilla z wołowiną,Albert,Wołowina mielona chuda,135,g
+9,Kolacja – tortilla z wołowiną,Albert,Mozzarella light,62,g
+9,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,376,g
+9,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,125,g
+9,Shake proteinowy,Oliwia,Odżywka białkowa whey,30,g
+9,Shake proteinowy,Oliwia,Mleko 2%,150,ml
+9,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
+9,Shake proteinowy,Albert,Mleko 2%,150,ml`;
