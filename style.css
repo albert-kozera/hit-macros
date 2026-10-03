@@ -506,14 +506,16 @@
             color: var(--text);
         }
 
-        /* Pomiary tygodniowe (zakładka Cele) - własna tabela, więc zeruje
-           globalne styles tabeli (min-width, cień) i kolory kolumn 2/3. */
-        .measurements-heading {
+        /* Nagłówek sekcji w zakładce Cele ("Pomiary tygodniowe", "Aktualne makro"). */
+        .section-heading {
             margin: 30px 0 14px;
             text-align: center;
             color: var(--heading);
             font-size: 1.2em;
         }
+        /* Tabela pomiarów jest własna, więc zeruje globalne style tabeli
+           (min-width, cień) i kolory kolumn nth-child(2)/(3), które pomalowałyby
+           wagę i talię jak szpalty makro Oliwii/Alberta. */
         .measurements-table {
             width: 100%;
             min-width: 0;

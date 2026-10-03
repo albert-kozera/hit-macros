@@ -92,7 +92,10 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   w `index.html` — zmiana celu wymaga edycji w obu miejscach. `weights` służy już tylko do
   przeliczania „białko na kg masy ciała" — w nagłówkach tabeli diety wagi **nie ma** (usunięta),
   bo trafiła do tabeli pomiarów.
-- Pomiary tygodniowe (zakładka Cele) to **statyczny HTML w `index.html`** — nie ma ich w `data.js`
+- Zakładka Cele ma stałą kolejność sekcji: najpierw **Pomiary tygodniowe**, pod nimi
+  **Aktualne makro** (cele Oliwii i Alberta). Każda sekcja to `<h3 class="section-heading">`
+  + `.targets-container` z dwiema kartami `.target-card`; nagłówek karty to samo imię.
+  Pomiary to **statyczny HTML w `index.html`** — nie ma ich w `data.js`
   ani w `script.js`. Kolejny tydzień dopisuje się ręcznie jako `<tr>` w obu tabelach
   (`.measurements-table`, po jednej dla Oliwii i Alberta); brak pomiaru to `<td class="no-data">—</td>`.
   Tabele mają własne reguły `.measurements-*`, które zerują globalne style `table`
