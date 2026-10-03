@@ -22,6 +22,7 @@ Strona działa też po prostu z dysku (`file://`) — to jest zamierzone i trzeb
 | `data.js` | **Źródło prawdy o danych** — trzy szablony stringów: `productsCSV`, `categoriesCSV`, `mealsCSV` |
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
+| `measurements.xlsx` | Pomiary tygodniowe (waga, obwody) obu osób — źródło dla tabeli w zakładce Cele; **aplikacja go nie czyta** |
 | `README.md` | Krótki opis i tabela struktury plików (po polsku) |
 
 ## Architektura `script.js`
@@ -88,7 +89,16 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   `COMPLETE_DAYS` → ✅, `EMPTY_DAYS` → ❌ (dzień bez posiłków), reszta → ⚠️.
   Zmiana oznaczeń = edycja tylko tych dwóch tablic.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
-  w `index.html` — zmiana celu wymaga edycji w obu miejscach.
+  w `index.html` — zmiana celu wymaga edycji w obu miejscach. `weights` służy już tylko do
+  przeliczania „białko na kg masy ciała" — w nagłówkach tabeli diety wagi **nie ma** (usunięta),
+  bo trafiła do tabeli pomiarów.
+- Pomiary tygodniowe (zakładka Cele) to **statyczny HTML w `index.html`** — nie ma ich w `data.js`
+  ani w `script.js`. Kolejny tydzień dopisuje się ręcznie jako `<tr>` w obu tabelach
+  (`.measurements-table`, po jednej dla Oliwii i Alberta); brak pomiaru to `<td class="no-data">—</td>`.
+  Tabele mają własne reguły `.measurements-*`, które zerują globalne style `table`
+  (`min-width`, `box-shadow`) i kolory kolumn `nth-child(2)/(3)`. Źródłem liczb jest
+  `measurements.xlsx`, ale jest to plik luźno leżący w repo — **nie jest nigdzie odczytywany**,
+  więc po edycji arkusza tabelę trzeba zaktualizować ręcznie.
 - `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
   (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
   `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,

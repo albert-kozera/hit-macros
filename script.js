@@ -56,7 +56,7 @@
             }
 
             const uniqueMeals = [...new Set(dayMeals.map(m => m.meal))];
-            let html = `<div id="day-${currentDay}" class="day-section active" data-dir="${direction}"><table><thead><tr><th class="meal-header">Posiłek</th><th>Oliwia<span class="weight-info">Waga: ${weights.Oliwia} kg</span></th><th>Albert<span class="weight-info">Waga: ${weights.Albert} kg</span></th></tr></thead><tbody>`;
+            let html = `<div id="day-${currentDay}" class="day-section active" data-dir="${direction}"><table><thead><tr><th class="meal-header">Posiłek</th><th>Oliwia</th><th>Albert</th></tr></thead><tbody>`;
 
             let dailySumOliwia = { kcal: 0, b: 0, t: 0, w: 0 };
             let dailySumAlbert = { kcal: 0, b: 0, t: 0, w: 0 };

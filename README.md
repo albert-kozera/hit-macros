@@ -15,5 +15,6 @@ https://albert-kozera.github.io/hit-macros/
 | `data.js` | Dane: `productsCSV`, `categoriesCSV`, `mealsCSV` (źródło danych dla aplikacji) |
 | `script.js` | Logika: parsowanie danych, renderowanie tabel, lista zakupów, AI prompty |
 | `products.csv` / `categories.csv` / `meals.csv` | Wierne kopie danych z `data.js` w czystym formacie CSV (do wglądu / dla AI) |
+| `measurements.xlsx` | Pomiary tygodniowe obu osób (źródło dla tabeli w zakładce Cele; aplikacja go nie czyta) |
 
 **Uwaga:** dane edytuje się w `data.js` (aplikacja działa po otwarciu pliku z dysku, bez serwera).

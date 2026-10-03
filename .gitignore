@@ -1,0 +1,7 @@
+# Blokada arkusza Excela - powstaje, gdy measurements.xlsx jest otwarty w Excelu.
+~$*
+
+# Artefakty testów w headless Chrome (zrzuty DOM i ekranu, profil przeglądarki).
+.p*.html
+.shot-*.png
+.chrome-p/
