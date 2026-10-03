@@ -23,6 +23,7 @@ Strona działa też po prostu z dysku (`file://`) — to jest zamierzone i trzeb
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
 | `measurements.xlsx` | Pomiary tygodniowe (waga, obwody) obu osób — źródło dla tabeli w zakładce Cele; **aplikacja go nie czyta** |
+| `5groszy.html` | Samodzielna gra (Flappy-Bird z monetą 5 gr) osadzona jako `iframe` w zakładce **Spalanie kalorii**; apka jej nie przetwarza, tylko wyświetla |
 | `README.md` | Krótki opis i tabela struktury plików (po polsku) |
 
 ## Architektura `script.js`
@@ -42,7 +43,7 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    woła `renderDiet`/`renderShoppingList` i zamyka mobilny sidebar. Gdy `direction` nie podano,
    jest wyliczane z porównania z poprzednim dniem (`next`/`prev`), co napędza animacje
    `.day-section[data-dir]`. Paginacji (`PAGE_SIZE`/`navOffset`) już nie ma.
-   `switchTab(name)` przełącza panele `#tab-meals` (domyślny) / `#tab-cele` / `#tab-ai`
+   `switchTab(name)` przełącza panele `#tab-meals` (domyślny) / `#tab-cele` / `#tab-ai` / `#tab-burn`
    i przyciski `#tab-btn-*`. `toggleSidebar()`/`closeSidebar()` obsługują nakładkę mobilną.
 5. **Wyszukiwarka** — `searchMeals()` filtruje `mealsDB` po nazwie posiłku lub produkcie;
    `selectSearchResult()` przełącza dzień oraz zakładkę na `meals`, żeby podświetlenie było widoczne.
@@ -107,6 +108,17 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   Tak musi zostać: `fetch()` pliku nie działa z `file://` (blokada CORS), a `xlsx` to spakowany
   zip, nie tekst. Dynamiczne wczytywanie arkusza dałoby się zrobić tylko przez `<input type="file">`
   + parsowanie zipu w JS (rozważane i odrzucone — zob. historia commitów).
+- Zakładka **Spalanie kalorii** (`#tab-burn`, ostatnia, po AI) to wstawka humorystyczna:
+  gra `5groszy.html` w `iframe` (`.game-frame`). W iframe, bo gra ma własne, pełnoekranowe
+  style (`html,body{position:fixed;overflow:hidden}` + tło z bitmapą) — wklejona wprost
+  rozwaliłaby układ apki. `switchTab()` nie wymagał zmian (działa po `id`-kach), wystarczyły
+  `#tab-btn-burn` i `#tab-burn`. `loading="lazy"` na iframe sprawia, że gra (i jej mp3)
+  nie wczytuje się, dopóki nie klikniesz zakładki.
+  Wysokość ramki (`min(62vh, 660px)`) jest dobrana tak, żeby na telefonie **cała** gra mieściła
+  się nad zgięciem: po grze nie da się przewinąć (blokuje `touchmove`), więc ucięte płótno byłoby
+  nieosiągalne. Z tego samego powodu `.game-wrapper` w `5groszy.html` ma `min-height: 250px`
+  zamiast 400px. Gra jest **jedynym miejscem w apce, które wymaga internetu** — tło ciągnie
+  z imgur, muzykę z foldr.space (audio ma `preload="none"`, żeby nie ściągało się przy starcie).
 - `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
   (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
   `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,

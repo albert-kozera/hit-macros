@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Olek 5 Groszy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #38bdf8, #7dd3fc);
+            background-image: url('https://i.imgur.com/rjawYaW.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.3), rgba(125, 211, 252, 0.3));
+            pointer-events: none;
+            z-index: 0;
+        }
+        .header {
+            margin-bottom: 10px;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: clamp(24px, 6vw, 48px);
+            color: white;
+            margin-bottom: 10px;
+        }
+        .scores {
+            display: flex;
+            gap: clamp(20px, 5vw, 50px);
+            font-size: clamp(16px, 4vw, 32px);
+            color: white;
+            font-weight: bold;
+        }
+        .game-wrapper {
+            position: relative;
+            width: 90vw;
+            max-width: 800px;
+            height: 60vh;
+            max-height: 600px;
+            /* 250px (zamiast 400) - w iframe apki na telefonie mieści się wtedy
+               cała gra razem z nagłówkiem i instrukcją. */
+            min-height: 250px;
+            z-index: 10;
+        }
+        .game-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #gameCanvas {
+            border: 4px solid #ca8a04;
+            background: rgba(125, 211, 252, 0.8);
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #touchArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            cursor: pointer;
+        }
+        .instructions {
+            margin-top: 10px;
+            color: white;
+            font-size: clamp(14px, 3vw, 24px);
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 100;
+            pointer-events: auto;
+        }
+        .overlay h2 {
+            font-size: clamp(28px, 6vw, 48px);
+            margin-bottom: 20px;
+        }
+        .overlay p {
+            font-size: clamp(18px, 4vw, 32px);
+            margin-bottom: 10px;
+        }
+        .overlay button {
+            padding: clamp(10px, 2vh, 15px) clamp(20px, 5vw, 40px);
+            background: #eab308;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(18px, 4vw, 28px);
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .overlay button:active {
+            background: #a16207;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Olek 5 Groszy</h1>
+    <div class="scores">
+        <div>Wynik: <span id="score">0</span></div>
+        <div>Rekord: <span id="highScore">0</span></div>
+    </div>
+</div>
+
+<div class="game-wrapper">
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="touchArea"></div>
+        <div id="overlay" class="overlay">
+            <h2>Dotknij ekranu</h2>
+            <p>aby zacząć!</p>
+        </div>
+    </div>
+</div>
+
+<div class="instructions">
+    <p>🖱️ Kliknij lub dotknij ekranu aby skakać</p>
+</div>
+
+<!-- 🎵 MUZYKA – JEDYNY DODATEK -->
+<!-- preload="none": plik nie ciągnie się przy starcie apki, dopiero play() przy pierwszym skoku. -->
+<audio id="bgMusic" loop preload="none">
+    <source src="https://foldr.space/f/PV9Ml3YJ58Daq8ZX/naruto-might-guy-theme-videoo.info.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const overlay = document.getElementById('overlay');
+        const touchArea = document.getElementById('touchArea');
+        const scoreEl = document.getElementById('score');
+        const highScoreEl = document.getElementById('highScore');
+        const gameWrapper = document.querySelector('.game-wrapper');
+
+        /* 🎵 MUZYKA */
+        const bgMusic = document.getElementById('bgMusic');
+        let musicStarted = false;
+
+        function resizeCanvas() {
+            const rect = gameWrapper.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            updateGameConstants();
+            if (!gameStarted) {
+                drawCoin();
+            }
+        }
+
+        let GRAVITY, JUMP_STRENGTH, PIPE_WIDTH, PIPE_GAP, PIPE_SPEED, COIN_SIZE;
+
+        function updateGameConstants() {
+            const scale = canvas.width / 800;
+            GRAVITY = 0.5 * scale;
+            JUMP_STRENGTH = -8 * scale;
+            PIPE_WIDTH = 60 * scale;
+            PIPE_GAP = 180 * scale;
+            PIPE_SPEED = 3 * scale;
+            COIN_SIZE = 55 * scale;
+        }
+
+        let gameStarted = false;
+        let gameOver = false;
+        let coinY = 0;
+        let coinVelocity = 0;
+        let pipes = [];
+        let score = 0;
+        let highScore = 0;
+        let animationId;
+
+        function initCoinPosition() {
+            coinY = canvas.height / 2 - COIN_SIZE / 2;
+        }
+
+        function drawCoin() {
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = 3;
+            ctx.shadowOffsetY = 3;
+
+            const centerX = 100 * (canvas.width / 800) + COIN_SIZE / 2;
+            const centerY = coinY + COIN_SIZE / 2;
+            const radius = COIN_SIZE / 2;
+
+            const gradient = ctx.createRadialGradient(
+                centerX - radius * 0.15, centerY - radius * 0.15, 0,
+                centerX, centerY, radius * 1.2
+            );
+            gradient.addColorStop(0, '#ffe680');
+            gradient.addColorStop(0.4, '#d4af37');
+            gradient.addColorStop(1, '#aa8c2d');
+
+            ctx.fillStyle = '#8b6914';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.98, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.92, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#8b6914';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.82, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = '#8b6914';
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - radius * 0.5);
+            ctx.lineTo(centerX - 2, centerY - radius * 0.4);
+            ctx.lineTo(centerX - 5, centerY - radius * 0.45);
+            ctx.lineTo(centerX - 3, centerY - radius * 0.34);
+            ctx.lineTo(centerX - 8, centerY - radius * 0.3);
+            ctx.lineTo(centerX - 3, centerY - radius * 0.26);
+            ctx.lineTo(centerX - 5, centerY - radius * 0.16);
+            ctx.lineTo(centerX, centerY - radius * 0.24);
+            ctx.lineTo(centerX + 5, centerY - radius * 0.16);
+            ctx.lineTo(centerX + 3, centerY - radius * 0.26);
+            ctx.lineTo(centerX + 8, centerY - radius * 0.3);
+            ctx.lineTo(centerX + 3, centerY - radius * 0.34);
+            ctx.lineTo(centerX + 5, centerY - radius * 0.45);
+            ctx.lineTo(centerX + 2, centerY - radius * 0.4);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#8b6914';
+            ctx.font = `bold ${38 * (COIN_SIZE / 55)}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('5', centerX, centerY);
+
+            ctx.font = `bold ${9 * (COIN_SIZE / 55)}px Arial`;
+            ctx.fillText('2024', centerX, centerY + radius * 0.6);
+
+            ctx.restore();
+        }
+
+        function drawPipes() {
+            pipes.forEach(pipe => {
+                ctx.fillStyle = '#16a34a';
+                ctx.strokeStyle = '#166534';
+                ctx.lineWidth = 4;
+                ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.gapY);
+                ctx.strokeRect(pipe.x, 0, PIPE_WIDTH, pipe.gapY);
+                ctx.fillRect(pipe.x, pipe.gapY + PIPE_GAP, PIPE_WIDTH, canvas.height - (pipe.gapY + PIPE_GAP));
+                ctx.strokeRect(pipe.x, pipe.gapY + PIPE_GAP, PIPE_WIDTH, canvas.height - (pipe.gapY + PIPE_GAP));
+            });
+        }
+
+        function jump() {
+            /* ▶️ START MUZYKI */
+            if (!musicStarted) {
+                bgMusic.volume = 0.4;
+                bgMusic.play().catch(() => {});
+                musicStarted = true;
+            }
+
+            if (!gameStarted) {
+                gameStarted = true;
+                overlay.style.display = 'none';
+                touchArea.style.pointerEvents = 'auto';
+                gameLoop();
+                return;
+            }
+            if (gameOver) return;
+            coinVelocity = JUMP_STRENGTH;
+        }
+
+        function endGame() {
+            gameOver = true;
+
+            /* ⏹️ STOP MUZYKI */
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+            musicStarted = false;
+
+            if (score > highScore) {
+                highScore = score;
+                highScoreEl.textContent = highScore;
+            }
+
+            touchArea.style.pointerEvents = 'none';
+            overlay.innerHTML = `
+                <h2>Koniec Gry!</h2>
+                <p>Wynik: ${score}</p>
+                <p>Rekord: ${highScore}</p>
+                <button id="restartBtn">Zagraj ponownie</button>
+            `;
+            overlay.style.display = 'flex';
+
+            setTimeout(() => {
+                const btn = document.getElementById('restartBtn');
+                btn.onclick = resetGame;
+                btn.ontouchend = resetGame;
+            }, 100);
+
+            cancelAnimationFrame(animationId);
+        }
+
+        function resetGame(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            initCoinPosition();
+            coinVelocity = 0;
+            pipes = [];
+            score = 0;
+            gameOver = false;
+            gameStarted = false;
+            scoreEl.textContent = '0';
+            overlay.innerHTML = `
+                <h2>Dotknij ekranu</h2>
+                <p>aby zacząć!</p>
+            `;
+            overlay.style.display = 'flex';
+            touchArea.style.pointerEvents = 'none';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCoin();
+        }
+
+        let lastPipeTime = 0;
+        function gameLoop(timestamp = 0) {
+            if (!gameStarted || gameOver) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            coinVelocity += GRAVITY;
+            coinY += coinVelocity;
+
+            if (coinY > canvas.height - COIN_SIZE - 10 || coinY < 0) {
+                endGame();
+                return;
+            }
+
+            if (timestamp - lastPipeTime > 2000) {
+                const maxGapY = canvas.height - PIPE_GAP - 80;
+                const minGapY = 50;
+                const gapY = Math.random() * (maxGapY - minGapY) + minGapY;
+                pipes.push({
+                    x: canvas.width,
+                    gapY: gapY,
+                    scored: false
+                });
+                lastPipeTime = timestamp;
+            }
+
+            pipes = pipes.filter(pipe => {
+                pipe.x -= PIPE_SPEED;
+                const coinLeft = 100 * (canvas.width / 800);
+                const coinRight = coinLeft + COIN_SIZE;
+                const coinTop = coinY;
+                const coinBottom = coinY + COIN_SIZE;
+                const pipeLeft = pipe.x;
+                const pipeRight = pipe.x + PIPE_WIDTH;
+
+                if (coinRight > pipeLeft && coinLeft < pipeRight) {
+                    if (coinTop < pipe.gapY || coinBottom > pipe.gapY + PIPE_GAP) {
+                        endGame();
+                        return false;
+                    }
+                }
+
+                if (!pipe.scored && pipe.x + PIPE_WIDTH < coinLeft) {
+                    pipe.scored = true;
+                    score++;
+                    scoreEl.textContent = score;
+                }
+
+                return pipe.x > -PIPE_WIDTH;
+            });
+
+            drawPipes();
+            drawCoin();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        touchArea.addEventListener('mousedown', jump);
+        touchArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            jump();
+        }, { passive: false });
+
+        overlay.addEventListener('mousedown', jump);
+        overlay.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            jump();
+        }, { passive: false });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                jump();
+            }
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(resizeCanvas, 100);
+        });
+
+        resizeCanvas();
+        initCoinPosition();
+        drawCoin();
+        touchArea.style.pointerEvents = 'none';
+</script>
+</body>
+</html>

@@ -551,6 +551,28 @@
         }
         .measurements-table .no-data { color: var(--muted-2); }
 
+        /* Gra "Olek 5 Groszy" (zakładka Spalanie kalorii). Cała gra siedzi
+           w iframe, bo jej własne style (html,body{position:fixed;overflow:hidden},
+           pełnoekranowe tło z bitmapą) rozsadziłyby układ aplikacji. */
+        /* Wysokość tak dobrana, żeby na telefonie cała gra mieściła się nad zgięciem:
+           przewijać po niej nie można (gra blokuje touchmove), więc ucięte płótno
+           byłoby nie do zobaczenia. */
+        .game-frame {
+            display: block;
+            width: 100%;
+            height: min(62vh, 660px);
+            min-height: 440px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface);
+        }
+        .burn-hint {
+            margin: -6px 0 14px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9em;
+        }
+
         .verification-stamp {
             display: block;
             text-align: center;

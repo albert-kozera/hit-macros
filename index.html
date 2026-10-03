@@ -43,6 +43,7 @@
                 <button class="tab-btn active" id="tab-btn-meals" onclick="switchTab('meals')">🍽️ Posiłki</button>
                 <button class="tab-btn" id="tab-btn-cele" onclick="switchTab('cele')">🎯 Cele</button>
                 <button class="tab-btn" id="tab-btn-ai" onclick="switchTab('ai')">🤖 AI</button>
+                <button class="tab-btn" id="tab-btn-burn" onclick="switchTab('burn')">🔥 Spalanie kalorii</button>
             </nav>
 
             <section class="tab-panel active" id="tab-meals">
@@ -156,6 +157,15 @@
                         </ul>
                     </div>
                 </div>
+            </section>
+
+            <section class="tab-panel" id="tab-burn">
+                <h3 class="section-heading">🔥 Spalanie kalorii</h3>
+                <p class="burn-hint">Kliknij lub dotknij ekranu, żeby skakać (na klawiaturze: spacja).</p>
+
+                <!-- Gra siedzi w iframe, bo ma własne, pełnoekranowe style
+                     (html,body{position:fixed;overflow:hidden}), które rozsadziłyby układ apki. -->
+                <iframe class="game-frame" src="5groszy.html" title="Olek 5 Groszy" loading="lazy"></iframe>
             </section>
         </main>
     </div>
