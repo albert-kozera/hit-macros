@@ -52,7 +52,14 @@ Papryka,30,1,0,6
 Kukurydza,90,3,1,18
 Salsa,40,1,0,8
 Syrop klonowy bez cukru,20,0,0,5
-Kurczak w sosie meksykańskim z ryżem [LIDL],132.1,7,2.6,20.2`;
+Kurczak w sosie meksykańskim z ryżem [LIDL],132.1,7,2.6,20.2
+Ryż basmati,349,8,0.9,78
+Skrobia,343,0.3,0.1,85
+Olej rzepakowy,884,0,100,0
+Keczup,100,1.3,0.2,22
+Ocet ryżowy,18,0,0,0.5
+Sezam,573,17,50,23
+Kolendra,23,2.1,0.5,3.7`;
 
         const categoriesCSV = `Product,Category
 Bataty,🥦 Warzywa i Owoce
@@ -108,7 +115,14 @@ Chleb tostowy,🌾 Spiżarnia / Suche
 Bułka burger,🌾 Spiżarnia / Suche
 Pesto,🌾 Spiżarnia / Suche
 Syrop klonowy bez cukru,🌾 Spiżarnia / Suche
-Kurczak w sosie meksykańskim z ryżem [LIDL],🍱 Gotowe posiłki`;
+Kurczak w sosie meksykańskim z ryżem [LIDL],🍱 Gotowe posiłki
+Ryż basmati,🌾 Spiżarnia / Suche
+Skrobia,🌾 Spiżarnia / Suche
+Olej rzepakowy,🌾 Spiżarnia / Suche
+Keczup,🌾 Spiżarnia / Suche
+Ocet ryżowy,🌾 Spiżarnia / Suche
+Sezam,🌾 Spiżarnia / Suche
+Kolendra,🥦 Warzywa i Owoce`;
 
         const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
@@ -434,4 +448,46 @@ Kurczak w sosie meksykańskim z ryżem [LIDL],🍱 Gotowe posiłki`;
 9,Shake proteinowy,Oliwia,Mleko 2%,150,ml
 9,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
 9,Shake proteinowy,Albert,Mleko 2%,150,ml
+11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Jajko,2,szt
+11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Płatki owsiane,40,g
+11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Skyr naturalny,100,g
+11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Banan,100,g
+11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Masło orzechowe,5,g
+11,Śniadanie – omlet ze skyrem i bananem,Albert,Jajko,3,szt
+11,Śniadanie – omlet ze skyrem i bananem,Albert,Płatki owsiane,85,g
+11,Śniadanie – omlet ze skyrem i bananem,Albert,Skyr naturalny,150,g
+11,Śniadanie – omlet ze skyrem i bananem,Albert,Banan,150,g
+11,Śniadanie – omlet ze skyrem i bananem,Albert,Masło orzechowe,10,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Ryż basmati,50,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Kurczak pierś,100,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Skrobia,10,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Olej rzepakowy,5,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Keczup,30,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Sos sojowy,20,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Ocet ryżowy,6,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Miód,24,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Sezam,10,g
+11,Obiad – kurczak w słodkiej glazurze,Oliwia,Kolendra,5,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Ryż basmati,88,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Kurczak pierś,175,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Skrobia,17,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Olej rzepakowy,9,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Keczup,53,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Sos sojowy,35,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Ocet ryżowy,11,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Miód,42,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Sezam,18,g
+11,Obiad – kurczak w słodkiej glazurze,Albert,Kolendra,9,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Chleb żytni razowy,79,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Jajko,2,szt
+11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Twaróg chudy,62,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Warzywa mieszane,83,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Chleb żytni razowy,150,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Jajko,3,szt
+11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Twaróg chudy,81,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Warzywa mieszane,129,g
+11,Shake proteinowy,Oliwia,Odżywka białkowa whey,30,g
+11,Shake proteinowy,Oliwia,Mleko 2%,250,ml
+11,Shake proteinowy,Albert,Odżywka białkowa whey,40,g
+11,Shake proteinowy,Albert,Mleko 2%,350,ml
 `;
