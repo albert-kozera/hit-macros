@@ -23,7 +23,7 @@ Strona działa też po prostu z dysku (`file://`) — to jest zamierzone i trzeb
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
 | `measurements.xlsx` | Pomiary tygodniowe (waga, obwody) obu osób — źródło dla tabeli w zakładce Cele; **aplikacja go nie czyta** |
-| `5groszy.html` | Samodzielna gra (Flappy-Bird z monetą 5 gr) osadzona jako `iframe` w zakładce **Spalanie kalorii**; apka jej nie przetwarza, tylko wyświetla |
+| `5groszy.html`, `mightguy.jpg` | Samodzielna gra (Flappy-Bird z monetą 5 gr) osadzona jako `iframe` w zakładce **Spalanie kalorii**, plus jej lokalne tło; apka ich nie przetwarza, tylko wyświetla |
 | `README.md` | Krótki opis i tabela struktury plików (po polsku) |
 
 ## Architektura `script.js`
@@ -125,8 +125,9 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   `.game-wrapper` w `5groszy.html` ma `min-height: 250px` zamiast 400px. Uwaga: skoro `.main`
   na mobile jest flexem, każdy nowy panel zakładki jest elementem flexa (nie rozciąga się
   automatycznie — trzeba `flex: 1 1 auto` + `min-height: 0`, jak w `#tab-burn`).
-  Gra jest **jedynym miejscem w apce, które wymaga internetu** — tło ciągnie z imgur,
-  muzykę z foldr.space (audio ma `preload="none"`, żeby nie ściągało się przy starcie).
+  Gra jest **jedynym miejscem w apce, które wymaga internetu** — muzyka leci z foldr.space
+  (audio ma `preload="none"`, żeby nie ściągało się przy starcie). Tło jest lokalne
+  (`mightguy.jpg`, wcześniej hotlink z imgur).
 - `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
   (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
   `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,

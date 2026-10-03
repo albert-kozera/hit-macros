@@ -17,5 +17,6 @@ https://albert-kozera.github.io/hit-macros/
 | `products.csv` / `categories.csv` / `meals.csv` | Wierne kopie danych z `data.js` w czystym formacie CSV (do wglądu / dla AI) |
 | `measurements.xlsx` | Pomiary tygodniowe obu osób (źródło dla tabeli w zakładce Cele; aplikacja go nie czyta) |
 | `5groszy.html` | Gra „Olek 5 Groszy" osadzona w zakładce „Spalanie kalorii" (iframe) |
+| `mightguy.jpg` | Tło tej gry |
 
 **Uwaga:** dane edytuje się w `data.js` (aplikacja działa po otwarciu pliku z dysku, bez serwera).
