@@ -150,22 +150,32 @@
             border-color: var(--accent);
         }
 
-        /* Panel boczny - sticky, bez overflow (inaczej obcina dropdown wyszukiwarki) */
+        /* Panel boczny - sticky, bez overflow (inaczej obcina dropdown wyszukiwarki).
+           Wysokość ograniczona do widoku, żeby wewnętrzna lista dni miała co przewijać. */
         .sidebar {
             position: sticky;
             top: var(--topbar-h);
             align-self: start;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - var(--topbar-h));
+            box-sizing: border-box;
             padding: 16px;
             background: var(--surface);
             border-right: 1px solid var(--border);
             z-index: 50;
         }
 
-        /* Lista dni */
+        /* Lista dni ma własny scroll - przewijanie jej nie rusza treści strony
+           (overscroll-behavior: contain blokuje przekazanie gestu dalej). */
         .day-list {
             display: flex;
             flex-direction: column;
             gap: 6px;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
         }
         .day-btn {
             position: relative;
@@ -246,6 +256,10 @@
 
         .sidebar-backdrop {
             display: none;
+        }
+        /* Nakładka mobilna otwarta - strona pod nią zostaje w miejscu. */
+        body.sidebar-open {
+            overflow: hidden;
         }
 
         .placeholder-text {
@@ -636,6 +650,7 @@
             z-index: 1000;
             max-height: 300px;
             overflow-y: auto;
+            overscroll-behavior: contain;
             display: none;
         }
         .search-item {
@@ -671,7 +686,12 @@
                 max-width: 85vw;
                 transform: translateX(-100%);
                 transition: transform 0.25s ease;
-                overflow-y: auto;
+                /* align-self: start z widoku desktopowego sprawia, że fixed panel
+                   nie rozciąga się na wysokość ekranu, tylko na wysokość treści
+                   (lista dni wychodziła poza ekran). auto = brak wyrównywania. */
+                align-self: auto;
+                /* inset ustala pełną wysokość ekranu; scrolluje tylko lista dni */
+                max-height: none;
                 z-index: 1200;
                 box-shadow: 4px 0 20px rgba(0,0,0,0.15);
             }

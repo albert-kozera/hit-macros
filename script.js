@@ -205,12 +205,15 @@
             const open = sidebar.classList.toggle('open');
             document.getElementById('sidebar-backdrop').classList.toggle('open', open);
             document.getElementById('sidebar-toggle').setAttribute('aria-expanded', open);
+            // Pod otwartą nakładką strona nie przewija się pod palcem.
+            document.body.classList.toggle('sidebar-open', open);
         }
 
         function closeSidebar() {
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebar-backdrop').classList.remove('open');
             document.getElementById('sidebar-toggle').setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('sidebar-open');
         }
 
         function updateMultiplier(multiplier) {

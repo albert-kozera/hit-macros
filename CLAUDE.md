@@ -88,9 +88,18 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   Zmiana oznaczeń = edycja tylko tych dwóch tablic.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach.
-- Nie dodawaj `overflow` do `.sidebar` w widoku desktopowym — obcina to dropdown wyszukiwarki
-  (`.search-results` jest `position: absolute`). Scroll dla długiej listy dni ustawiaj na wewnętrznym
-  kontenerze, nigdy na `.sidebar`.
+- `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
+  (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
+  `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,
+  a `#day-list` dostaje `flex: 1 1 auto; min-height: 0; overflow-y: auto`. Dzięki temu
+  przewijanie listy dni nie ciągnie za sobą treści strony (a `overscroll-behavior: contain`
+  blokuje przekazanie gestu, gdy lista dojedzie do końca). Nowy przewijalny element w sidebarze
+  dodawaj **jako kolejne dziecko tego flexa, nie przez `overflow` na `.sidebar`**.
+- Na mobile szuflada ma `position: fixed` + `inset: 0 auto 0 0`, więc **musi mieć
+  `align-self: auto`** — inaczej `align-self: start` z widoku desktopowego wygrywa i panel
+  rozciąga się na wysokość treści (nie ekranu), przez co dolne dni lądują poza ekranem
+  i nie da się do nich doscrollować. Pod otwartą nakładką `body` dostaje klasę `.sidebar-open`
+  (`overflow: hidden`), więc strona pod spodem stoi w miejscu.
 - `.main` musi mieć `min-width: 0` — bez tego tabela z `min-width: 600px` rozsadza kolumnę grida
   zamiast przewijać się w `.table-container`.
 - Wariant mobilny (≤900 px) to nakładka: hamburger jest w `.topbar` **poza** sidebarem, bo sidebar
