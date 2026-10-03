@@ -63,9 +63,10 @@ po przecinku). Wyjątek w przeliczaniu: `Jajko` w jednostce `szt` liczony jako `
 (czyli 1 jajko ≈ 50 g), każda inna jednostka to `amount / 100`.
 
 ### `categoriesCSV` — `Product,Category`
-Mapowanie produkt → kategoria. Cztery dozwolone kategorie (muszą się zgadzać z kluczami
-obiektu `categories` w `renderShoppingList()` w `script.js:141`):
-`🥦 Warzywa i Owoce`, `🥚 Nabiał i Jajka`, `🥩 Mięso`, `🌾 Spiżarnia / Suche`.
+Mapowanie produkt → kategoria. Pięć dozwolonych kategorii (muszą się zgadzać z kluczami
+obiektu `categories` w `renderShoppingList()` w `script.js:150`, razem z emoji):
+`🥦 Warzywa i Owoce`, `🥚 Nabiał i Jajka`, `🥩 Mięso`, `🌾 Spiżarnia / Suche`, `🍱 Gotowe posiłki`
+(gotowe dania, np. `Kurczak w sosie meksykańskim z ryżem [LIDL]`).
 Produkt spoza mapy trafia do `"Inne"`, którego nie ma w obiekcie kategorii → **zostanie pominięty
 na liście zakupów**. Nowy produkt zawsze dodawaj więc też do `categoriesCSV`.
 

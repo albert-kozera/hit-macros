@@ -108,7 +108,7 @@ Chleb tostowy,🌾 Spiżarnia / Suche
 Bułka burger,🌾 Spiżarnia / Suche
 Pesto,🌾 Spiżarnia / Suche
 Syrop klonowy bez cukru,🌾 Spiżarnia / Suche
-Kurczak w sosie meksykańskim z ryżem [LIDL],🌾 Spiżarnia / Suche`;
+Kurczak w sosie meksykańskim z ryżem [LIDL],🍱 Gotowe posiłki`;
 
         const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g

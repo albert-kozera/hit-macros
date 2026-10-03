@@ -147,7 +147,7 @@
                 });
             }
 
-            const categories = { "🥦 Warzywa i Owoce": [], "🥚 Nabiał i Jajka": [], "🥩 Mięso": [], "🌾 Spiżarnia / Suche": [] };
+            const categories = { "🥦 Warzywa i Owoce": [], "🥚 Nabiał i Jajka": [], "🥩 Mięso": [], "🌾 Spiżarnia / Suche": [], "🍱 Gotowe posiłki": [] };
             for (const [prod, data] of Object.entries(totals)) {
                 categories[data.category].push({ name: prod, base: data.amount, unit: data.unit });
             }
