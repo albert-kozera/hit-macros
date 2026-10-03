@@ -478,11 +478,11 @@ Kolendra,🥦 Warzywa i Owoce`;
 11,Obiad – kurczak w słodkiej glazurze,Albert,Miód,42,g
 11,Obiad – kurczak w słodkiej glazurze,Albert,Sezam,18,g
 11,Obiad – kurczak w słodkiej glazurze,Albert,Kolendra,9,g
-11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Chleb żytni razowy,79,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Chleb pełnoziarnisty,83,g
 11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Jajko,2,szt
 11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Twaróg chudy,62,g
 11,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Warzywa mieszane,83,g
-11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Chleb żytni razowy,150,g
+11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Chleb pełnoziarnisty,158,g
 11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Jajko,3,szt
 11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Twaróg chudy,81,g
 11,Kolacja – kanapki z jajkiem i twarogiem,Albert,Warzywa mieszane,129,g
