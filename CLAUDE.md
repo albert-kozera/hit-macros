@@ -95,13 +95,18 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
 - Zakładka Cele ma stałą kolejność sekcji: najpierw **Pomiary tygodniowe**, pod nimi
   **Aktualne makro** (cele Oliwii i Alberta). Każda sekcja to `<h3 class="section-heading">`
   + `.targets-container` z dwiema kartami `.target-card`; nagłówek karty to samo imię.
-  Pomiary to **statyczny HTML w `index.html`** — nie ma ich w `data.js`
+  Pomiary to **statyczny HTML w `index.html`** (zakładka `#tab-cele`) — nie ma ich w `data.js`
   ani w `script.js`. Kolejny tydzień dopisuje się ręcznie jako `<tr>` w obu tabelach
-  (`.measurements-table`, po jednej dla Oliwii i Alberta); brak pomiaru to `<td class="no-data">—</td>`.
+  (`.measurements-table`, po jednej dla Oliwii i Alberta), w tym samym formacie co reszta wierszy:
+  `<tr><td>7</td><td>65,0</td><td>66</td><td>90</td><td>58</td><td>92</td><td>32 L, 31 P</td></tr>`;
+  brak pomiaru to `<td class="no-data">—</td>`.
   Tabele mają własne reguły `.measurements-*`, które zerują globalne style `table`
   (`min-width`, `box-shadow`) i kolory kolumn `nth-child(2)/(3)`. Źródłem liczb jest
   `measurements.xlsx`, ale jest to plik luźno leżący w repo — **nie jest nigdzie odczytywany**,
   więc po edycji arkusza tabelę trzeba zaktualizować ręcznie.
+  Tak musi zostać: `fetch()` pliku nie działa z `file://` (blokada CORS), a `xlsx` to spakowany
+  zip, nie tekst. Dynamiczne wczytywanie arkusza dałoby się zrobić tylko przez `<input type="file">`
+  + parsowanie zipu w JS (rozważane i odrzucone — zob. historia commitów).
 - `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
   (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
   `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,
