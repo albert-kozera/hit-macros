@@ -1,4 +1,3 @@
-
 Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
 4,Pancakes z serka wiejskiego,Oliwia,Jajko,2,szt
@@ -46,10 +45,10 @@ Day,Meal,Person,Product,Amount,Unit
 1,Kolacja – jajka + awokado,Albert,Jajko,3,szt
 1,Kolacja – jajka + awokado,Albert,Awokado,50,g
 1,Kolacja – jajka + awokado,Albert,Pomidor,100,g
-1,Shake,Oliwia,Odżywka białkowa whey,25,g
-1,Shake,Oliwia,Mleko 2%,200,ml
-1,Shake,Albert,Odżywka białkowa whey,40,g
-1,Shake,Albert,Mleko 2%,350,ml
+1,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
+1,Shake proteinowy,Oliwia,Mleko 2%,200,ml
+1,Shake proteinowy,Albert,Odżywka białkowa whey,40,g
+1,Shake proteinowy,Albert,Mleko 2%,350,ml
 2,Śniadanie – owsianka,Oliwia,Płatki owsiane,50,g
 2,Śniadanie – owsianka,Oliwia,Mleko 2%,200,ml
 2,Śniadanie – owsianka,Oliwia,Odżywka białkowa whey,20,g
@@ -80,10 +79,10 @@ Day,Meal,Person,Product,Amount,Unit
 2,Kolacja – jajka + awokado,Albert,Chleb pełnoziarnisty,130,g
 2,Kolacja – jajka + awokado,Albert,Awokado,70,g
 2,Kolacja – jajka + awokado,Albert,Pomidor,100,g
-2,Shake,Oliwia,Odżywka białkowa whey,25,g
-2,Shake,Oliwia,Mleko 2%,200,ml
-2,Shake,Albert,Odżywka białkowa whey,40,g
-2,Shake,Albert,Mleko 2%,350,ml
+2,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
+2,Shake proteinowy,Oliwia,Mleko 2%,200,ml
+2,Shake proteinowy,Albert,Odżywka białkowa whey,40,g
+2,Shake proteinowy,Albert,Mleko 2%,350,ml
 3,Śniadanie – owsianka czekoladowa,Oliwia,Płatki owsiane,40,g
 3,Śniadanie – owsianka czekoladowa,Oliwia,Mleko 2%,106,ml
 3,Śniadanie – owsianka czekoladowa,Oliwia,Odżywka białkowa whey,17,g
@@ -114,12 +113,12 @@ Day,Meal,Person,Product,Amount,Unit
 3,Kolacja – jajka i awokado,Albert,Chleb żytni razowy,144,g
 3,Kolacja – jajka i awokado,Albert,Pomidor,129,g
 3,Kolacja – jajka i awokado,Albert,Twaróg chudy,71,g
-3,Shake truskawkowy,Oliwia,Odżywka białkowa whey,21,g
-3,Shake truskawkowy,Oliwia,Mleko 2%,142,ml
-3,Shake truskawkowy,Oliwia,Truskawki,120,g
-3,Shake truskawkowy,Albert,Odżywka białkowa whey,27,g
-3,Shake truskawkowy,Albert,Mleko 2%,171,ml
-3,Shake truskawkowy,Albert,Truskawki,242,g
+3,Shake proteinowy z truskawkami,Oliwia,Odżywka białkowa whey,21,g
+3,Shake proteinowy z truskawkami,Oliwia,Mleko 2%,142,ml
+3,Shake proteinowy z truskawkami,Oliwia,Truskawki,120,g
+3,Shake proteinowy z truskawkami,Albert,Odżywka białkowa whey,27,g
+3,Shake proteinowy z truskawkami,Albert,Mleko 2%,171,ml
+3,Shake proteinowy z truskawkami,Albert,Truskawki,242,g
 4,Obiad – makaron azjatycki,Oliwia,Makaron pełnoziarnisty,71,g
 4,Obiad – makaron azjatycki,Oliwia,Kurczak pierś,97,g
 4,Obiad – makaron azjatycki,Oliwia,Warzywa mieszane,110,g
@@ -140,12 +139,12 @@ Day,Meal,Person,Product,Amount,Unit
 4,Kolacja – tortilla z wołowiną,Albert,Mozzarella light,62,g
 4,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,125,g
 4,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,45,g
-4,Shake proteinowy,Oliwia,Odżywka białkowa whey,21,g
-4,Shake proteinowy,Oliwia,Mleko 2%,110,ml
-4,Shake proteinowy,Oliwia,Banan,102,g
-4,Shake proteinowy,Albert,Odżywka białkowa whey,33,g
-4,Shake proteinowy,Albert,Mleko 2%,200,ml
-4,Shake proteinowy,Albert,Banan,149,g
+4,Shake proteinowy z bananem,Oliwia,Odżywka białkowa whey,21,g
+4,Shake proteinowy z bananem,Oliwia,Mleko 2%,110,ml
+4,Shake proteinowy z bananem,Oliwia,Banan,102,g
+4,Shake proteinowy z bananem,Albert,Odżywka białkowa whey,33,g
+4,Shake proteinowy z bananem,Albert,Mleko 2%,200,ml
+4,Shake proteinowy z bananem,Albert,Banan,149,g
 5,Śniadanie – tosty francuskie,Oliwia,Chleb tostowy,72,g
 5,Śniadanie – tosty francuskie,Oliwia,Jajko,2,szt
 5,Śniadanie – tosty francuskie,Oliwia,Mleko 2%,128,ml
@@ -176,14 +175,14 @@ Day,Meal,Person,Product,Amount,Unit
 5,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,145,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Jogurt naturalny,44,g
-5,Shake proteinowy,Oliwia,Odżywka białkowa whey,19,g
-5,Shake proteinowy,Oliwia,Mleko 2%,320,ml
-5,Shake proteinowy,Oliwia,Banan,57,g
-5,Shake proteinowy,Oliwia,Masło orzechowe,12,g
-5,Shake proteinowy,Albert,Odżywka białkowa whey,30,g
-5,Shake proteinowy,Albert,Mleko 2%,289,ml
-5,Shake proteinowy,Albert,Banan,126,g
-5,Shake proteinowy,Albert,Masło orzechowe,17,g
+5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Odżywka białkowa whey,19,g
+5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Mleko 2%,320,ml
+5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Banan,57,g
+5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Masło orzechowe,12,g
+5,Shake proteinowy z bananem i masłem orzechowym,Albert,Odżywka białkowa whey,30,g
+5,Shake proteinowy z bananem i masłem orzechowym,Albert,Mleko 2%,289,ml
+5,Shake proteinowy z bananem i masłem orzechowym,Albert,Banan,126,g
+5,Shake proteinowy z bananem i masłem orzechowym,Albert,Masło orzechowe,17,g
 6,Śniadanie – twaróg z pomidorem,Oliwia,Twaróg chudy,150,g
 6,Śniadanie – twaróg z pomidorem,Oliwia,Chleb żytni razowy,67,g
 6,Śniadanie – twaróg z pomidorem,Oliwia,Pomidor,110,g
@@ -214,12 +213,12 @@ Day,Meal,Person,Product,Amount,Unit
 6,Kolacja – pinsa z mozzarellą,Albert,Szynka chuda,64,g
 6,Kolacja – pinsa z mozzarellą,Albert,Passata pomidorowa,52,g
 6,Kolacja – pinsa z mozzarellą,Albert,Rukola,20,g
-6,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
-6,Shake proteinowy,Oliwia,Mleko 2%,110,ml
-6,Shake proteinowy,Oliwia,Owoce jagodowe,67,g
-6,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
-6,Shake proteinowy,Albert,Mleko 2%,171,ml
-6,Shake proteinowy,Albert,Owoce jagodowe,147,g
+6,Shake proteinowy z owocami jagodowymi,Oliwia,Odżywka białkowa whey,25,g
+6,Shake proteinowy z owocami jagodowymi,Oliwia,Mleko 2%,110,ml
+6,Shake proteinowy z owocami jagodowymi,Oliwia,Owoce jagodowe,67,g
+6,Shake proteinowy z owocami jagodowymi,Albert,Odżywka białkowa whey,38,g
+6,Shake proteinowy z owocami jagodowymi,Albert,Mleko 2%,171,ml
+6,Shake proteinowy z owocami jagodowymi,Albert,Owoce jagodowe,147,g
 7,Śniadanie – jajka i twaróg,Oliwia,Jajko,2,szt
 7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,110,g
 7,Śniadanie – jajka i twaróg,Oliwia,Awokado,65,g
@@ -248,14 +247,14 @@ Day,Meal,Person,Product,Amount,Unit
 7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Jajko,3,szt
 7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Twaróg chudy,81,g
 7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Warzywa mieszane,129,g
-7,Shake proteinowy z kakao,Oliwia,Odżywka białkowa whey,23,g
-7,Shake proteinowy z kakao,Oliwia,Mleko 2%,110,ml
-7,Shake proteinowy z kakao,Oliwia,Kakao,3,g
-7,Shake proteinowy z kakao,Oliwia,Banan,63,g
-7,Shake proteinowy z kakao,Albert,Odżywka białkowa whey,36,g
-7,Shake proteinowy z kakao,Albert,Mleko 2%,171,ml
-7,Shake proteinowy z kakao,Albert,Kakao,4,g
-7,Shake proteinowy z kakao,Albert,Banan,121,g
+7,Shake proteinowy z kakao i bananem,Oliwia,Odżywka białkowa whey,23,g
+7,Shake proteinowy z kakao i bananem,Oliwia,Mleko 2%,110,ml
+7,Shake proteinowy z kakao i bananem,Oliwia,Kakao,3,g
+7,Shake proteinowy z kakao i bananem,Oliwia,Banan,63,g
+7,Shake proteinowy z kakao i bananem,Albert,Odżywka białkowa whey,36,g
+7,Shake proteinowy z kakao i bananem,Albert,Mleko 2%,171,ml
+7,Shake proteinowy z kakao i bananem,Albert,Kakao,4,g
+7,Shake proteinowy z kakao i bananem,Albert,Banan,121,g
 8,Placki proteinowe,Oliwia,Płatki owsiane,30,g
 8,Placki proteinowe,Oliwia,Odżywka białkowa whey,30,g
 8,Placki proteinowe,Oliwia,Jajko,1,szt
@@ -292,12 +291,12 @@ Day,Meal,Person,Product,Amount,Unit
 8,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,205,g
 8,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
 8,Kolacja – twaróg z rzodkiewką,Albert,Jogurt naturalny,62,g
-8,Shake proteinowy,Oliwia,Odżywka białkowa whey,22,g
-8,Shake proteinowy,Oliwia,Mleko 2%,320,ml
-8,Shake proteinowy,Oliwia,Banan,84,g
-8,Shake proteinowy,Albert,Odżywka białkowa whey,26,g
-8,Shake proteinowy,Albert,Mleko 2%,410,ml
-8,Shake proteinowy,Albert,Banan,162,g
+8,Shake proteinowy z bananem,Oliwia,Odżywka białkowa whey,22,g
+8,Shake proteinowy z bananem,Oliwia,Mleko 2%,320,ml
+8,Shake proteinowy z bananem,Oliwia,Banan,84,g
+8,Shake proteinowy z bananem,Albert,Odżywka białkowa whey,26,g
+8,Shake proteinowy z bananem,Albert,Mleko 2%,410,ml
+8,Shake proteinowy z bananem,Albert,Banan,162,g
 9,Śniadanie – jajka + awokado,Oliwia,Jajko,3,szt
 9,Śniadanie – jajka + awokado,Oliwia,Chleb pełnoziarnisty,60,g
 9,Śniadanie – jajka + awokado,Oliwia,Awokado,60,g
