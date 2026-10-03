@@ -114,11 +114,19 @@ Dni 1–9 mają pełną treść (323 wiersze); dni 10–11 są na razie puste �
   rozwaliłaby układ apki. `switchTab()` nie wymagał zmian (działa po `id`-kach), wystarczyły
   `#tab-btn-burn` i `#tab-burn`. `loading="lazy"` na iframe sprawia, że gra (i jej mp3)
   nie wczytuje się, dopóki nie klikniesz zakładki.
-  Wysokość ramki (`min(62vh, 660px)`) jest dobrana tak, żeby na telefonie **cała** gra mieściła
-  się nad zgięciem: po grze nie da się przewinąć (blokuje `touchmove`), więc ucięte płótno byłoby
-  nieosiągalne. Z tego samego powodu `.game-wrapper` w `5groszy.html` ma `min-height: 250px`
-  zamiast 400px. Gra jest **jedynym miejscem w apce, które wymaga internetu** — tło ciągnie
-  z imgur, muzykę z foldr.space (audio ma `preload="none"`, żeby nie ściągało się przy starcie).
+  Na desktopie ramka ma `min(62vh, 660px)`; na telefonie (≤900px) gra zajmuje **prawie cały
+  ekran** — `.main` staje się flex-kolumną o wysokości `calc(100vh - var(--topbar-h))`
+  (z `box-sizing: border-box`, inaczej padding dodawał 24px i strona się przewijała),
+  `#tab-burn.active` rozciąga się przez `flex: 1 1 auto; min-height: 0`, a ramka dostaje
+  `height: auto; min-height: 0`. Nagłówek i podpis są na mobile ukryte, a `.tab-btn` zmniejszony
+  (≤600px), żeby cztery zakładki zmieściły się w **jednym** rzędzie — każdy zawinięty rząd
+  to ~44px zabrane grze. Wysokość ma znaczenie, bo po grze **nie da się przewinąć**
+  (gra blokuje `touchmove`) — ucięte płótno byłoby nieosiągalne. Z tego samego powodu
+  `.game-wrapper` w `5groszy.html` ma `min-height: 250px` zamiast 400px. Uwaga: skoro `.main`
+  na mobile jest flexem, każdy nowy panel zakładki jest elementem flexa (nie rozciąga się
+  automatycznie — trzeba `flex: 1 1 auto` + `min-height: 0`, jak w `#tab-burn`).
+  Gra jest **jedynym miejscem w apce, które wymaga internetu** — tło ciągnie z imgur,
+  muzykę z foldr.space (audio ma `preload="none"`, żeby nie ściągało się przy starcie).
 - `.sidebar` **nie ma i nie może mieć `overflow`** — obcina to dropdown wyszukiwarki
   (`.search-results` jest `position: absolute`). Własny scroll ma wewnętrzna lista dni:
   `.sidebar` to `flex-direction: column` z `max-height: calc(100vh - var(--topbar-h))`,

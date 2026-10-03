@@ -764,7 +764,34 @@
                 background: var(--backdrop);
                 z-index: 1100;
             }
-            .main { padding: 12px; }
+            /* Cała kolumna treści ma dokładnie wysokość ekranu pod paskiem, więc
+               zakładka z grą może się rozciągnąć na to, co zostanie pod zakładkami. */
+            .main {
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                /* border-box, żeby padding nie dochodził do min-height - bez tego
+                   dokument był 24px wyższy od ekranu i strona się przewijała. */
+                box-sizing: border-box;
+                min-height: calc(100vh - var(--topbar-h));
+            }
+            /* Gra na telefonie = prawie pełny ekran; nagłówek i podpis znikają,
+               bo przy grze liczy się każde 40px wysokości. */
+            #tab-burn.active {
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 auto;
+                min-height: 0;
+            }
+            #tab-burn .section-heading,
+            #tab-burn .burn-hint { display: none; }
+            #tab-burn .game-frame {
+                flex: 1 1 auto;
+                height: auto;
+                min-height: 0;
+                border: none;
+                border-radius: 0;
+            }
         }
 
         @media (max-width: 600px) {
@@ -772,4 +799,8 @@
             th, td { padding: 12px 10px; }
             .shopping-grid { grid-template-columns: 1fr; }
             .search-results { max-height: 220px; }
+            /* Cztery zakładki muszą się zmieścić w jednym rzędzie: każdy zawinięty
+               rząd to ~44px zabrane grze poniżej (zakładka "Spalanie kalorii"). */
+            .tabs { gap: 6px; margin-bottom: 10px; }
+            .tab-btn { padding: 6px 12px; font-size: 0.9em; }
         }
