@@ -124,16 +124,20 @@
             });
 
             // Ekstra na listę zakupów wg dnia (nie wpływają na makro diety).
-            // Dzień 2: składniki na domowe ciasto pełnoziarniste (przepis: 100g mąki pełnoziarnistej,
-            // 3g suchych drożdży, 75ml wody, 1 łyżeczka oliwy) - "pizza na pinsie".
+            // Dzień 2: składniki na domowe ciasto do pizzy. Przepis wyjściowy (woda 380 g,
+            // drożdże świeże 40 g, cukier 2 łyżeczki, mąka typ 450 700 g, olej rzepakowy 40 g,
+            // sól 1 łyżeczka) daje 1160 g ciasta. Plan zjada 498 g (177 g Oliwia + 321 g Albert),
+            // więc każdy składnik jest przeskalowany x0,43. Sufiks [pizza] odróżnia je na liście.
+            // Wody (163 ml) nie ma na liście - ma ją każdy w domu.
             // Ukrywamy gotowe ciasto - user piecze własne (składniki są wyżej).
             const SHOPPING_EXTRAS = {
                 2: {
                     add: [
-                        { name: 'Mąka pełnoziarnista',  amount: 100, unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Drożdże suche',        amount: 3,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Woda',                 amount: 75,  unit: 'ml', category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Oliwa z oliwek',       amount: 5,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: 'Mąka pszenna [pizza]',   amount: 300, unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: 'Drożdże świeże [pizza]', amount: 17,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: 'Olej rzepakowy [pizza]', amount: 17,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: 'Cukier [pizza]',         amount: 4,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: 'Sól [pizza]',            amount: 2.5, unit: 'g',  category: '🌾 Spiżarnia / Suche' },
                     ],
                     hide: ['Ciasto pełnoziarniste (domowe)'],
                 }
