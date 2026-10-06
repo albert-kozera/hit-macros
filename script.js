@@ -128,7 +128,7 @@
             // drożdże świeże 40 g, cukier 2 łyżeczki, mąka typ 450 700 g, olej rzepakowy 40 g,
             // sól 1 łyżeczka) daje 1160 g ciasta. Plan zjada 498 g (177 g Oliwia + 321 g Albert),
             // więc każdy składnik jest przeskalowany x0,43. Sufiks [pizza] odróżnia je na liście.
-            // Wody (163 ml) nie ma na liście - ma ją każdy w domu.
+            // Wody (163 ml), cukru (4 g) i soli (2,5 g) nie ma na liście - to ma każdy w domu.
             // Ukrywamy gotowe ciasto - user piecze własne (składniki są wyżej).
             const SHOPPING_EXTRAS = {
                 2: {
@@ -136,8 +136,6 @@
                         { name: 'Mąka pszenna [pizza]',   amount: 300, unit: 'g',  category: '🌾 Spiżarnia / Suche' },
                         { name: 'Drożdże świeże [pizza]', amount: 17,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
                         { name: 'Olej rzepakowy [pizza]', amount: 17,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Cukier [pizza]',         amount: 4,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Sól [pizza]',            amount: 2.5, unit: 'g',  category: '🌾 Spiżarnia / Suche' },
                     ],
                     hide: ['Ciasto pełnoziarniste (domowe)'],
                 }
