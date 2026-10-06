@@ -127,19 +127,20 @@
             // Dzień 2: składniki na domowe ciasto do pizzy. Przepis wyjściowy (woda 380 g,
             // drożdże świeże 40 g, cukier 2 łyżeczki, mąka typ 450 700 g, olej rzepakowy 40 g,
             // sól 1 łyżeczka) daje 1160 g ciasta. Plan zjada 498 g (177 g Oliwia + 321 g Albert),
-            // więc każdy składnik jest przeskalowany x0,43. Sufiks [pizza] odróżnia je na liście.
+            // więc każdy składnik jest przeskalowany x0,43. Prefiks [ciasto na pizzę] odróżnia
+            // je na liście (prefiks, nie sufiks - dzięki temu wszystkie stoją równo w kolumnie).
             // Woda, cukier i sól też tu są (w domu zwykle są, ale user chce mieć pełny wykaz
             // składników ciasta na liście). Kolejność jak w przepisie.
             // Ukrywamy gotowe ciasto - user piecze własne (składniki są wyżej).
             const SHOPPING_EXTRAS = {
                 2: {
                     add: [
-                        { name: 'Mąka pszenna [pizza]',   amount: 300,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Woda [pizza]',           amount: 163,  unit: 'ml', category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Drożdże świeże [pizza]', amount: 17,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Olej rzepakowy [pizza]', amount: 17,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Cukier [pizza]',         amount: 4,    unit: 'g',  category: '🌾 Spiżarnia / Suche' },
-                        { name: 'Sól [pizza]',            amount: 2.5,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Mąka pszenna',   amount: 300,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Woda',           amount: 163,  unit: 'ml', category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Drożdże świeże', amount: 17,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Olej rzepakowy', amount: 17,   unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Cukier',         amount: 4,    unit: 'g',  category: '🌾 Spiżarnia / Suche' },
+                        { name: '[ciasto na pizzę] Sól',            amount: 2.5,  unit: 'g',  category: '🌾 Spiżarnia / Suche' },
                     ],
                     hide: ['Ciasto pełnoziarniste (domowe)'],
                 }
