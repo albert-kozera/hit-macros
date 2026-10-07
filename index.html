@@ -74,14 +74,30 @@
             <section class="tab-panel" id="tab-cele">
                 <h3 class="section-heading">📏 Pomiary tygodniowe</h3>
 
-                <!-- Wiersze żyją w bazie H2 za backendem (backend/), a nie w tym pliku.
+                <!-- Wiersze żyją w measurements.json na gałęzi main, nie w tym pliku:
+                     odczyt idzie z GitHuba (bez tokenu — z Pages), zapis przez Contents API
+                     z tokenem wklejonym w przeglądarce. Bez tokenu zakładka jest podglądem.
                      Domyślnie widok wykresów; przycisk przełącza na tabelę, gdzie klik
                      w komórkę = edycja, a ✕ = usunięcie wiersza. -->
                 <div class="meas-toolbar">
                     <button class="meas-btn" onclick="loadMeasurements()">↻ Odśwież</button>
                     <button class="meas-btn" id="meas-view-btn" onclick="toggleMeasView()">📋 Tabelka</button>
+                    <button class="meas-btn" id="meas-connect-btn" onclick="onMeasConnectClick()">🔑 Podaj token</button>
                 </div>
+
+                <!-- Pole tokenu jest w markupie od razu, tylko schowane — dzięki temu
+                     nie budujemy go z JS i nie gubimy wpisanej wartości przy przerysowaniu. -->
+                <div class="meas-token-row" id="meas-token-row" hidden>
+                    <input type="password" id="meas-token-input" class="meas-token-input"
+                           placeholder="fine-grained PAT — tylko to repo, Contents: Read and write"
+                           autocomplete="off" onkeydown="onMeasTokenKey(event)">
+                    <button class="meas-btn" onclick="saveMeasToken()">Połącz</button>
+                </div>
+
                 <div class="meas-status" id="measurements-status"></div>
+                <p class="meas-hint" id="meas-hint" hidden>
+                    Podgląd — pomiary są publiczne, ale żeby je edytować, podaj token GitHuba.
+                </p>
 
                 <!-- Widok trzyma się w data-view na wspólnym rodzicu — CSS chowa jeden
                      z dwóch bloków, więc markupu nie trzeba duplikować ani generować. -->

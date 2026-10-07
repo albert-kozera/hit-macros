@@ -440,13 +440,26 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         /* ============================================================
            Pomiary tygodniowe (zakładka Cele)
 
-           Jedyne miejsce w apce, które gada z serwerem. Reszta — łącznie
-           z otwieraniem pliku z dysku (file://) — działa bez backendu.
-           Gdy serwera nie ma, zakładka Cele pokazuje komunikat zamiast
-           się wysypać.
+           Jedyne miejsce w apce, które gada z siecią. Reszta — łącznie
+           z otwieraniem pliku z dysku (file://) — działa bez niej.
+
+           Dane leżą w measurements.json w repo na GitHubie, a nie na Twoim
+           dysku: Pages serwuje ten plik, więc strona pokazuje ostatni zapis
+           nawet przy wyłączonym komputerze. Zapis idzie przez GitHub
+           Contents API i wymaga tokenu, który siedzi wyłącznie w localStorage
+           przeglądarki — nigdy w repo, kodzie ani adresie URL. Bez tokenu
+           zakładka Cele jest tylko do odczytu.
            ============================================================ */
 
-        const API_BASE = 'http://localhost:8080';
+        const MEAS_REPO = 'albert-kozera/hit-macros';
+        const MEAS_BRANCH = 'main';
+        const MEAS_FILE = 'measurements.json';
+        const MEAS_API_URL = 'https://api.github.com/repos/' + MEAS_REPO + '/contents/' + MEAS_FILE;
+        // Odczyt dla kogoś bez tokenu: CDN Pages, bez limitu API i bez cudzych poświadczeń.
+        // Pages cache'uje przez Fastly (max-age=600), więc plik bywa do ~10 min stary —
+        // dlatego z tokenem czytamy z API, a nie stąd.
+        const MEAS_READ_URL = 'https://albert-kozera.github.io/hit-macros/' + MEAS_FILE;
+        const MEAS_TOKEN_KEY = 'hit-macros-gh-token';
 
         // Kolejność kolumn tabeli. Biceps trzymamy w bazie jako dwa pola (lewa/prawa),
         // ale pokazujemy w jednej komórce jako "32 L, 31 P" — tak jak było dotąd.
@@ -472,23 +485,100 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         let measurementsRequested = false;
         let measurementsStatusTimer = null;
 
-        async function apiRequest(method, path, body) {
-            const options = { method: method };
+        /* --- Token GitHuba (trzymany wyłącznie w tej przeglądarce) --- */
+
+        function readMeasToken() {
+            try {
+                return localStorage.getItem(MEAS_TOKEN_KEY) || '';
+            } catch (e) {
+                return '';   // file:// potrafi zablokować localStorage
+            }
+        }
+
+        function storeMeasToken(token) {
+            try {
+                if (token) {
+                    localStorage.setItem(MEAS_TOKEN_KEY, token);
+                } else {
+                    localStorage.removeItem(MEAS_TOKEN_KEY);
+                }
+            } catch (e) {}
+        }
+
+        function measCanEdit() {
+            return readMeasToken() !== '';
+        }
+
+        /* GitHub oddaje treść pliku w base64. Kodujemy przez TextEncoder/TextDecoder,
+           bo samo btoa/atob rozsypuje się na znakach spoza ASCII. */
+        function b64encode(text) {
+            let binary = '';
+            new TextEncoder().encode(text).forEach(byte => { binary += String.fromCharCode(byte); });
+            return btoa(binary);
+        }
+
+        function b64decode(base64) {
+            const binary = atob(base64.replace(/\s/g, ''));
+            return new TextDecoder().decode(Uint8Array.from(binary, char => char.charCodeAt(0)));
+        }
+
+        /** Jedno żądanie do Contents API. Tłumaczy kody GitHuba na komunikaty dla człowieka. */
+        async function ghRequest(method, body) {
+            const options = {
+                method: method,
+                headers: {
+                    'Authorization': 'Bearer ' + readMeasToken(),
+                    'Accept': 'application/vnd.github+json'
+                },
+                cache: 'no-store'
+            };
             if (body !== undefined) {
-                options.headers = { 'Content-Type': 'application/json' };
+                options.headers['Content-Type'] = 'application/json';
                 options.body = JSON.stringify(body);
             }
-            const response = await fetch(API_BASE + path, options);
+
+            const response = await fetch(MEAS_API_URL, options);
+            if (response.status === 401 || response.status === 403) {
+                throw new Error('GitHub odrzucił token — potrzebne uprawnienie Contents: Read and write');
+            }
+            if (response.status === 409) {
+                throw new Error('ktoś zapisał pomiary wcześniej — kliknij ↻ Odśwież i spróbuj ponownie');
+            }
             let payload = null;
             try {
                 payload = await response.json();
-            } catch (e) {
-                // 204 z preflightu i tak tu nie trafia — odpowiedzi zawsze mają ciało JSON.
-            }
+            } catch (e) {}
             if (!response.ok) {
-                throw new Error(payload && payload.error ? payload.error : 'HTTP ' + response.status);
+                throw new Error(payload && payload.message ? payload.message : 'HTTP ' + response.status);
             }
             return payload;
+        }
+
+        /** Czyta cały plik. Zwraca { sha, rows } — sha jest potrzebne do zapisu. */
+        async function readMeasFile() {
+            const payload = await ghRequest('GET');
+            let parsed;
+            try {
+                parsed = JSON.parse(b64decode(payload.content));
+            } catch (e) {
+                throw new Error(MEAS_FILE + ' nie jest poprawnym JSON-em');
+            }
+            return { sha: payload.sha, rows: Array.isArray(parsed.rows) ? parsed.rows : [] };
+        }
+
+        /**
+         * Zapisuje całą tablicę jednym commitem. Plik ma kilka kilobajtów, więc nie ma
+         * po co bawić się w częściowe zapisy, a każda zmiana zostaje w historii repo.
+         * Przekazane sha działa jak blokada: jeśli ktoś zapisał w międzyczasie, GitHub
+         * odmówi i niczego nie nadpiszemy.
+         */
+        async function writeMeasFile(sha, rows, message) {
+            await ghRequest('PUT', {
+                message: message,
+                content: b64encode(JSON.stringify({ rows: rows }, null, 2) + '\n'),
+                sha: sha,
+                branch: MEAS_BRANCH
+            });
         }
 
         /* --- Przełącznik wykresy / tabela (zakładka Cele) --- */
@@ -639,20 +729,31 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         async function loadMeasurements() {
             showMeasurementsStatus('Wczytywanie…', 'info');
             try {
-                measurementsDB = await apiRequest('GET', '/api/measurements');
+                if (measCanEdit()) {
+                    // Z tokenem czytamy z API: dane są zawsze świeże i tak potrzebujemy sha.
+                    measurementsDB = (await readMeasFile()).rows;
+                } else {
+                    const response = await fetch(MEAS_READ_URL, { cache: 'no-cache' });
+                    if (!response.ok) {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                    const parsed = await response.json();
+                    measurementsDB = Array.isArray(parsed.rows) ? parsed.rows : [];
+                }
                 renderMeasurements();
                 showMeasurementsStatus('Załadowano ' + measurementsDB.length + ' wierszy.', 'ok');
             } catch (e) {
                 measurementsDB = [];
-                renderMeasurementsOffline();
-                showMeasurementsStatus(
-                    'Brak połączenia z backendem (' + e.message + '). ' +
-                    'Uruchom backend\\gradlew.bat run i kliknij ↻ Odśwież.',
-                    'error');
+                renderMeasurementsError();
+                showMeasurementsStatus('Nie udało się wczytać pomiarów (' + e.message + ').', 'error');
             }
         }
 
         function renderMeasurements() {
+            // Bez tokenu nie ma czym pisać, więc komórki nie dostają ani onclick,
+            // ani kursora, a ✕ znika. Reszta tabeli wygląda tak samo.
+            const editable = measCanEdit();
+
             ['Oliwia', 'Albert'].forEach(person => {
                 const tbody = document.getElementById('measurements-' + person.toLowerCase());
                 const rows = measurementsDB
@@ -668,32 +769,37 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
                         const empty = fields.every(field => isEmptyValue(row[field]));
                         // Komórka z dwoma polami (biceps) nie może się łamać w środku "32 L, 31 P".
                         const wide = fields.length > 1 ? ' meas-cell-wide' : '';
-                        return `<td class="meas-cell${wide}${empty ? ' no-data' : ''}"` +
-                            ` title="Kliknij, żeby edytować"` +
-                            ` onclick="startEditCell(this, ${row.id}, ${fieldsLiteral(fields)})">` +
+                        const edit = editable
+                            ? ` title="Kliknij, żeby edytować"` +
+                              ` onclick="startEditCell(this, ${row.id}, ${fieldsLiteral(fields)})"`
+                            : '';
+                        return `<td class="meas-cell${wide}${empty ? ' no-data' : ''}"${edit}>` +
                             cellText(row, fields) + '</td>';
                     }).join('');
-                    return `<tr><td class="meas-week">${row.week}</td>${cells}` +
-                        `<td class="meas-actions">` +
-                        `<button class="meas-del" title="Usuń tydzień ${row.week}"` +
-                        ` onclick="deleteMeasurementRow(${row.id}, '${person}', ${row.week})">✕</button>` +
-                        `</td></tr>`;
+                    const remove = editable
+                        ? `<td class="meas-actions">` +
+                          `<button class="meas-del" title="Usuń tydzień ${row.week}"` +
+                          ` onclick="deleteMeasurementRow(${row.id}, '${person}', ${row.week})">✕</button>` +
+                          `</td>`
+                        : '<td class="meas-actions"></td>';
+                    return `<tr><td class="meas-week">${row.week}</td>${cells}${remove}</tr>`;
                 }).join('');
             });
-            renderCharts();   // tabele i wykresy zawsze pokazują ten sam stan bazy
+            renderCharts();   // tabele i wykresy zawsze pokazują ten sam stan
         }
 
-        function renderMeasurementsOffline() {
+        function renderMeasurementsError() {
             ['oliwia', 'albert'].forEach(person => {
                 document.getElementById('measurements-' + person).innerHTML =
-                    '<tr><td colspan="8" class="meas-empty">Brak połączenia z backendem.</td></tr>';
+                    '<tr><td colspan="8" class="meas-empty">Nie udało się wczytać pomiarów.</td></tr>';
                 document.getElementById('meas-charts-' + person).innerHTML =
-                    '<div class="meas-chart-empty">Brak połączenia z backendem.</div>';
+                    '<div class="meas-chart-empty">Nie udało się wczytać pomiarów.</div>';
             });
         }
 
         /** Podmienia komórkę na pola edycji. fields to np. ['weight'] albo ['bicepsL','bicepsP']. */
         function startEditCell(td, id, fields) {
+            if (!measCanEdit()) return;   // bez tokenu komórka nie ma nawet onclick
             if (td.querySelector('input')) return;
             const row = measurementsDB.find(m => m.id === id);
             if (!row) return;
@@ -769,18 +875,26 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
 
         async function saveMeasurement(updated, td, fields) {
             try {
-                const saved = await apiRequest('PUT', '/api/measurements/' + updated.id, updated);
-                const index = measurementsDB.findIndex(m => m.id === saved.id);
-                if (index !== -1) measurementsDB[index] = saved;
-                renderMeasCell(td, saved, fields);
+                const file = await readMeasFile();
+                const index = file.rows.findIndex(m => m.id === updated.id);
+                if (index === -1) {
+                    throw new Error('ten wiersz zniknął z pliku — kliknij ↻ Odśwież');
+                }
+                file.rows[index] = updated;
+                await writeMeasFile(file.sha, file.rows,
+                    'Update measurements: ' + updated.person + ' week ' + updated.week);
+
+                const local = measurementsDB.findIndex(m => m.id === updated.id);
+                if (local !== -1) measurementsDB[local] = updated;
+                renderMeasCell(td, updated, fields);
                 // Wykresy są w osobnym poddrzewie DOM, więc ich przerysowanie nie zjada
                 // kliknięcia, w które właśnie celuje focusout — w przeciwieństwie do tabeli.
                 renderCharts();
-                showMeasurementsStatus('Zapisano tydzień ' + saved.week + '.', 'ok');
+                showMeasurementsStatus('Zapisano tydzień ' + updated.week + '.', 'ok');
             } catch (e) {
                 showMeasurementsStatus('Nie udało się zapisać: ' + e.message, 'error');
                 const row = measurementsDB.find(m => m.id === updated.id);
-                if (row) renderMeasCell(td, row, fields);   // cofnij do stanu z bazy
+                if (row) renderMeasCell(td, row, fields);   // cofnij do stanu z pliku
             }
         }
 
@@ -800,22 +914,39 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
         }
 
         async function addMeasurementRow(person) {
-            const weeks = measurementsDB.filter(m => m.person === person).map(m => m.week);
-            const nextWeek = weeks.length ? Math.max.apply(null, weeks) + 1 : 1;
+            if (!measCanEdit()) return;
             try {
-                const created = await apiRequest('POST', '/api/measurements', { person: person, week: nextWeek });
-                measurementsDB.push(created);
+                const file = await readMeasFile();
+                const weeks = file.rows.filter(m => m.person === person).map(m => m.week);
+                const week = weeks.length ? Math.max.apply(null, weeks) + 1 : 1;
+                const ids = file.rows.map(m => m.id || 0);
+                const row = { id: (ids.length ? Math.max.apply(null, ids) : 0) + 1, person: person, week: week };
+                // Wszystkie metryki jawnie jako null, żeby wiersz w pliku miał komplet pól.
+                MEAS_FIELDS.forEach(group => group.forEach(field => { row[field] = null; }));
+
+                file.rows.push(row);
+                await writeMeasFile(file.sha, file.rows,
+                    'Add measurements: ' + person + ' week ' + week);
+
+                measurementsDB.push(row);
                 renderMeasurements();
-                showMeasurementsStatus('Dodano tydzień ' + nextWeek + ' (' + person + ').', 'ok');
+                showMeasurementsStatus('Dodano tydzień ' + week + ' (' + person + ').', 'ok');
             } catch (e) {
                 showMeasurementsStatus('Nie udało się dodać tygodnia: ' + e.message, 'error');
             }
         }
 
         async function deleteMeasurementRow(id, person, week) {
+            if (!measCanEdit()) return;
             if (!confirm('Usunąć tydzień ' + week + ' u osoby ' + person + '?')) return;
             try {
-                await apiRequest('DELETE', '/api/measurements/' + id);
+                const file = await readMeasFile();
+                const rows = file.rows.filter(m => m.id !== id);
+                if (rows.length === file.rows.length) {
+                    throw new Error('ten wiersz już nie istnieje — kliknij ↻ Odśwież');
+                }
+                await writeMeasFile(file.sha, rows, 'Delete measurements: ' + person + ' week ' + week);
+
                 measurementsDB = measurementsDB.filter(m => m.id !== id);
                 renderMeasurements();
                 showMeasurementsStatus('Usunięto tydzień ' + week + ' (' + person + ').', 'ok');
@@ -857,6 +988,62 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             return '[' + fields.map(field => "'" + field + "'").join(', ') + ']';
         }
 
+        /* --- Token: łączenie, rozłączanie i stan tylko-do-odczytu --- */
+
+        /**
+         * Bez tokenu zakładka Cele jest podglądem: chowamy wszystko, co pisze,
+         * i pokazujemy zdanie, jak odblokować edycję.
+         */
+        function applyMeasReadOnly() {
+            const editable = measCanEdit();
+            const container = document.getElementById('meas-views');
+            if (container) container.classList.toggle('readonly', !editable);
+            const hint = document.getElementById('meas-hint');
+            if (hint) hint.hidden = editable;
+            const button = document.getElementById('meas-connect-btn');
+            if (button) button.textContent = editable ? '🔓 Rozłącz' : '🔑 Podaj token';
+        }
+
+        function onMeasConnectClick() {
+            if (measCanEdit()) {
+                if (!confirm('Rozłączyć? Token zniknie z tej przeglądarki, a pomiary staną się tylko do odczytu.')) return;
+                storeMeasToken('');
+                applyMeasReadOnly();
+                loadMeasurements();
+                return;
+            }
+            const row = document.getElementById('meas-token-row');
+            if (!row) return;
+            row.hidden = !row.hidden;
+            if (!row.hidden) {
+                const input = document.getElementById('meas-token-input');
+                if (input) { input.value = ''; input.focus(); }
+            }
+        }
+
+        function saveMeasToken() {
+            const input = document.getElementById('meas-token-input');
+            const token = input ? input.value.trim() : '';
+            if (!token) return;
+            storeMeasToken(token);
+            if (input) input.value = '';
+            const row = document.getElementById('meas-token-row');
+            if (row) row.hidden = true;
+            applyMeasReadOnly();
+            loadMeasurements();   // z tokenem czytamy już z API, nie z CDN
+        }
+
+        function onMeasTokenKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                saveMeasToken();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                const row = document.getElementById('meas-token-row');
+                if (row) row.hidden = true;
+            }
+        }
+
         function showMeasurementsStatus(text, kind) {
             const element = document.getElementById('measurements-status');
             if (!element) return;
@@ -875,6 +1062,7 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             // Motyw ustawia już skrypt w <head>; tu tylko synchronizujemy ikonę przycisku.
             applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
             applyMeasView(readMeasView());
+            applyMeasReadOnly();   // z tokenem czy bez — decyduje o kontrolkach edycji
             switchDay(1);
             switchTab('meals');
         };

@@ -11,10 +11,13 @@ Otwarta online: https://albert-kozera.github.io/hit-macros/ — GitHub Pages ser
 bezpośrednio z gałęzi `main` (brak katalogu `.github/`, brak workflow deploy).
 
 Frontend jest statyczny (bez builda, bez zależności) i działa po prostu z dysku (`file://`) —
-to jest zamierzone i **trzeba tego pilnować**: żadnego `fetch()`, importów ES module ani
-zależności od serwera. Jedyny wyjątek to zakładka **Cele**, która ciągnie pomiary z backendu
-w Javie (zob. „Backend pomiarów" na końcu). Poza nią apka nie dotyka sieci i musi działać
-bez serwera — także wtedy, gdy backend jest wyłączony.
+to jest zamierzone i **trzeba tego pilnować**: żadnego importu ES module, żadnego wymagania
+serwera. Jedyny wyjątek to zakładka **Cele**, która czyta i zapisuje pomiary przez GitHub
+(zob. „Pomiary w repo" na końcu) — i która przy braku internetu też ma się nie wysypać.
+Poza nią apka nie dotyka sieci.
+
+W repo **nie ma już żadnego kodu z buildem ani zależnościami** — usunięty backend w Javie
+zastąpił plik `measurements.json`.
 
 ## Pliki
 
@@ -25,8 +28,8 @@ bez serwera — także wtedy, gdy backend jest wyłączony.
 | `data.js` | **Źródło prawdy o danych** — trzy szablony stringów: `productsCSV`, `categoriesCSV`, `mealsCSV` |
 | `script.js` | Cała logika — parsowanie CSV, renderowanie, lista zakupów, nawigacja, prompty AI |
 | `products.csv`, `categories.csv`, `meals.csv` | Wierne kopie danych z `data.js`, tylko do wglądu / dla AI; **aplikacja ich nie czyta** |
-| `measurements.xlsx` | Historyczne pomiary tygodniowe (waga, obwody) obu osób. **Aplikacja go nie czyta**, a od czasu wprowadzenia backendu nie jest już źródłem prawdy — tylko archiwum tego, co trafiło do seedu bazy |
-| `backend/` | Backend w Javie 17 (Gradle) + baza H2 z pomiarami tygodniowymi. Jedyne miejsce w repo z buildem i zależnościami |
+| `measurements.json` | **Źródło prawdy o pomiarach tygodniowych** — `{"rows": [...]}`, wiersze jak w tabeli zakładki Cele. Leży w repo, więc Pages go serwuje, a zapis idzie przez GitHub Contents API |
+| `measurements.xlsx` | Historyczne pomiary tygodniowe (waga, obwody) obu osób. **Aplikacja go nie czyta** — tylko archiwum tego, co trafiło do `measurements.json` |
 | `5groszy.html`, `mightguy.jpg` | Samodzielna gra (Flappy-Bird z monetą 5 gr) osadzona jako `iframe` w zakładce **Spalanie kalorii**, plus jej lokalne tło; apka ich nie przetwarza, tylko wyświetla |
 | `README.md` | Krótki opis i tabela struktury plików (po polsku) |
 
@@ -59,13 +62,15 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    (`hit-macros-theme`, w `try/catch`, bo `file://` potrafi go blokować). Motyw startowy ustawia
    mały skrypt inline w `<head>` `index.html` — **przed** `<link>` do CSS, żeby nie mignęło jasne tło;
    gdy brak zapisu, idzie za `prefers-color-scheme`.
-8. **Start** — `window.onload` → `applyTheme(...)`, `switchDay(1)`, `switchTab('meals')`.
+8. **Start** — `window.onload` → `applyTheme(...)`, `applyMeasView(...)`,
+   `applyMeasReadOnly()`, `switchDay(1)`, `switchTab('meals')`.
 9. **Pomiary** — blok „Pomiary tygodniowe (zakładka Cele)" na końcu `script.js`, jedyny kod
-   w apce, który gada z siecią. `loadMeasurements()` robi `GET` na `API_BASE`, wypełnia
-   `measurementsDB` i woła `renderMeasurements()`; ładowanie jest **leniwe** — odpala się
-   z `switchTab('cele')` przy pierwszym wejściu, więc kto nigdy nie otworzy tej zakładki,
-   nie płaci za nieudany request przy starcie. Edycja jest inline: `startEditCell()` podmienia
-   komórkę na pola, `commitEditCell()` wysyła `PUT`. Biceps to **dwa pola w jednej komórce**
+   w apce, który gada z siecią. `loadMeasurements()` albo czyta `measurements.json` z GitHuba
+   (szczegóły niżej), wypełnia `measurementsDB` i woła `renderMeasurements()`; ładowanie jest
+   **leniwe** — odpala się z `switchTab('cele')` przy pierwszym wejściu, więc kto nigdy nie
+   otworzy tej zakładki, nie płaci za nieudany request przy starcie. Edycja jest inline:
+   `startEditCell()` podmienia komórkę na pola, a `commitEditCell()` woła `saveMeasurement()`.
+   Biceps to **dwa pola w jednej komórce**
    (`['bicepsL','bicepsP']`), wyświetlane jako `32 L, 31 P` — dlatego `startEditCell` przyjmuje
    tablicę nazw pól, a nie jedno pole. Commit wisi na `focusout` (a nie na `blur`), bo `blur`
    nie bąbelkuje i przejście L → P zapisywałoby w połowie edycji. Po zapisie odrysowujemy
@@ -76,6 +81,27 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    `data-view` na `#meas-views` — CSS chowa wtedy jeden z dwóch bloków, więc markup nie jest
    duplikowany. Wybór ląduje w `localStorage` pod `hit-macros-meas-view` (odczyt w
    `readMeasView()`, w `try/catch`, jak motyw).
+
+   **Zapis przez GitHub, nie przez serwer.** Bez tokenu `loadMeasurements()` czyta zwykłym
+   `fetch` z Pages (`MEAS_READ_URL`, `cache: 'no-cache'` — CDN i tak trzyma plik do ~10 min).
+   Z tokenem czyta z API, bo tak potrzebuje `sha`. Zapisy (`saveMeasurement`,
+   `addMeasurementRow`, `deleteMeasurementRow`) robią **read-modify-write całego pliku**:
+   `readMeasFile()` → podmiana/dopisanie/usunięcie wiersza w `rows` → `writeMeasFile(sha, …)`,
+   jeden `PUT` = jeden commit. `sha` z odczytu jedzie w `PUT` jako optymistyczna blokada —
+   `409` oznacza, że ktoś zapisał wcześniej, i wtedy **nic nie nadpisujemy**, tylko pokazujemy
+   komunikat (bez tego drugi zapis cicho zjadłby pierwszy).
+
+   **Token to jedyne, co odróżnia edycję od podglądu.** `measCanEdit()` = „w `localStorage`
+   jest niepuste `hit-macros-gh-token`". `renderMeasurements()` sprawdza je i **bez tokenu nie
+   emituje** ani `onclick`/`title` na komórkach, ani przycisku ✕; `startEditCell`,
+   `addMeasurementRow` i `deleteMeasurementRow` mają dodatkowy `if (!measCanEdit()) return;`
+   (siatka bezpieczeństwa — klik bez `onclick` i tak nie dojdzie). `applyMeasReadOnly()`
+   zakłada klasę `.readonly` na `#meas-views` i pokazuje `#meas-hint`; woła je `window.onload`
+   **oraz** `onMeasConnectClick()`/`saveMeasToken()`, bo stan zmienia się bez przeładowania
+   strony. Token żyje wyłącznie w `localStorage` — **nigdy** w repo, w kodzie ani w URL-u.
+
+   Treść pliku z API jest w base64, więc `b64encode`/`b64decode` idą przez
+   `TextEncoder`/`TextDecoder` — samo `btoa`/`atob` rozsypuje się na znakach spoza ASCII.
 
 ## Model danych (`data.js`)
 
@@ -120,17 +146,25 @@ więc pokazuje placeholder.
   Pomiary **nie są już statycznym HTML-em** — w `index.html` zostały tylko nagłówki `<th>`,
   puste `<tbody id="measurements-oliwia">` / `-albert`, kontenery wykresów i przyciski,
   a wiersze renderuje `renderMeasurements()` z `measurementsDB`. Kolejny tydzień dodaje się
-  przyciskiem `＋ Dodaj tydzień`, nie dopisywaniem `<tr>`. Brak pomiaru to `null` w bazie i `—`
+  przyciskiem `＋ Dodaj tydzień`, nie dopisywaniem `<tr>`. Brak pomiaru to `null` w pliku i `—`
   z klasą `.no-data` w UI. Domyślnie sekcja pokazuje **wykresy** (`renderCharts()`), a tabelę
   z edycją odsłania przycisk w `.meas-toolbar`; oba widoki siedzą w `#meas-views`, którym
   steruje atrybut `data-view`.
+  `.meas-toolbar` ma trzy przyciski: `↻ Odśwież`, `📋 Tabelka` i `🔑 Podaj token` /
+  `🔓 Rozłącz` (etykietę przestawia `applyMeasReadOnly()`). Pole tokenu
+  (`#meas-token-row`, `input type="password"`) jest **w markupie od razu**, tylko z atrybutem
+  `hidden` — budowanie go z JS gubiłoby wpisaną wartość przy przerysowaniu.
+  **Stan tylko-do-odczytu** to klasa `.readonly` na `#meas-views` plus widoczny `#meas-hint`.
+  Pułapka ze specyficznością: `.readonly` nie może użyć zwykłego `.meas-cell:hover`
+  (0,3,0, tyle samo co reguła edytowalna) — dlatego gaszenie podświetlenia to
+  `#meas-views.readonly .meas-cell:hover` z `id`-em w selektorze.
   Tabele mają własne reguły `.measurements-*`, które zerują globalne style `table`
   (`min-width`, `box-shadow`) i kolory kolumn `nth-child(2)/(3)`. **Pułapka przy dokładaniu
   stylów komórek:** `.measurements-table tr:hover td` ma specyficzność (0,2,2) i zeruje tło,
   przebijając `.meas-cell:hover` (0,2,0) — dlatego podświetlenie edytowalnej komórki jest
   zapisane jako `.measurements-table .meas-cell:hover` (0,3,0).
-  Historycznym źródłem liczb dla seedu był `measurements.xlsx`, ale to plik luźno leżący
-  w repo — **nie jest nigdzie odczytywany** i nie jest już źródłem prawdy.
+  Historycznym źródłem liczb w `measurements.json` był `measurements.xlsx`, ale to plik luźno
+  leżący w repo — **nie jest nigdzie odczytywany** i nie jest źródłem prawdy.
 - **Wykresy pomiarów to inline SVG sklejane stringiem** w `buildChart()` — żadnej biblioteki,
   bo apka musi działać z `file://` bez zależności. Kafelki definiuje stała `MEAS_METRICS`
   (metryka → lista serii); biceps ma dwie serie, reszta po jednej. Trzy pułapki:
@@ -194,34 +228,36 @@ więc pokazuje placeholder.
   (spadek po wklejeniu z bloku `<script>` w HTML) — zachowaj to, żeby diffy zostały czytelne.
 - Język projektu: polski (UI, komentarze, dane). Nazwy potraw i produktów po polsku.
 
-## Backend pomiarów (`backend/`)
+## Pomiary w repo (`measurements.json`)
 
-Jedyny kawałek repo z buildem i zależnościami — i **jedyny kod, który wymaga sieci**.
-Obsługuje wyłącznie zakładkę Cele; reszta apki ma działać bez niego.
+Pomiary tygodniowe (zakładka Cele) **nie mają już żadnego backendu**. Wcześniej stał tu serwer
+w Javie 17 + H2 na `localhost:8080`, ale na opublikowanej stronie był bezużyteczny: GitHub Pages
+to hosting statyczny — serwuje pliki i **nie uruchamia żadnych procesów**, więc JVM, H2 ani
+serwer HTTP nie wstaną tam niezależnie od pakowania.
 
-- **Java 17 + Gradle (wrapper) + H2.** Bez frameworka: HTTP serwuje wbudowany
-  `com.sun.net.httpserver.HttpServer`, JSON-a obsługuje Gson, dane siedzą w H2.
-- **Uruchamianie:** `cd backend && gradlew.bat run` (Windows) albo `./gradlew run`.
-  Na tej maszynie **tylko `gradlew.bat`** — Windowsowy JDK (`C:\jdk\jdk17.0.13_11`) ma
-  w `bin/` wyłącznie pliki `.exe`, bez bezrozszerzeniowego `java`, więc shellowy `gradlew`
-  nie wstanie. Z WSL-a wołaj przez `cmd.exe /c "cd /d C:\...\backend && gradlew.bat run"`.
-- **Port** `8080`, zmienny przez `HITMACROS_PORT`. Serwer słucha **tylko na loopbacku** —
-  z WSL-a jest nieosiągalny (trzeba testować z Windowsa), dzięki czemu dane nie wyciekają do sieci.
-- **Baza:** `backend/data/hitmacros.mv.db`, w `.gitignore`. Tryb **plikowy**, więc dane
-  przeżywają restart. `Database.seedIfEmpty()` wypełnia tabelę tylko gdy jest pusta —
-  ręcznie usunięte wiersze nie wrócą przy kolejnym starcie. H2 wpuszcza **jeden proces
-  naraz**; drugie `gradlew.bat run` padnie na blokadzie.
-- **Ścieżka bazy musi zaczynać się od `./`** — H2 2.x odrzuca `jdbc:h2:data/...`
-  („implicitly relative"), potrzebuje `jdbc:h2:./data/...`.
-- **CORS jest warunkiem działania, nie ozdobnikiem.** Apka chodzi z `file://`, więc
-  przeglądarka wysyła `Origin: null`, a zapisy z `Content-Type: application/json` wywołują
-  preflight `OPTIONS`. Bez odpowiedzi na `OPTIONS` odczyty przejdą, a zapisy nie — co daje
-  mylące „prawie działa”. Nagłówki siedzą w `MeasurementsApi.applyCors()` i muszą być
-  nałożone **przed** jakąkolwiek logiką.
-- **`gradle-wrapper.jar` jest w repo** (43 KB) — to standard Gradle i jedyny sposób, żeby
-  `gradlew.bat` ruszył bez zainstalowanego Gradle'a. Plik leży w `backend/gradle/wrapper/`,
-  **nie** w `.gradle/wrapper/` (tam jest cache, ignorowany).
-- Po zmianie w Javie trzeba **zrestartować serwer** — Gradle nie przeładowuje klas w locie.
+Zamiast tego dane leżą w `measurements.json` w gałęzi `main`:
+
+- **Odczyt** — bez tokenu ze zwykłego `fetch` na Pages (`MEAS_READ_URL`); z tokenem
+  z `api.github.com` (świeżo i tak potrzebne jest `sha`).
+- **Zapis** — `PUT` na Contents API z całym plikiem i `sha` z odczytu. `sha` to optymistyczna
+  blokada: `409` = ktoś zapisał wcześniej i **nic nie nadpisujemy**.
+- **Token** — fine-grained PAT ograniczony do tego repo, uprawnienie `Contents: Read and write`,
+  krótki termin. Trzymany **tylko** w `localStorage` (`hit-macros-gh-token`), nigdy w repo,
+  w kodzie ani w URL-u. Bez tokenu zakładka jest podglądem (brak `onclick`, ✕ i „＋ Dodaj tydzień").
+
+Struktura pliku: `{"rows": [{"id","person","week","weight","waist","belly","thigh","chest",
+"bicepsL","bicepsP"}]}`, brakujący pomiar to `null`. Pole `id` zostaje, choć kluczem naturalnym
+jest para `(person, week)` — dzięki temu `onclick` w komórkach i funkcje edycji nie wymagają
+przeróbki. Nowy wiersz dostaje `max(id) + 1`, tydzień `max(week) + 1` u danej osoby.
+
+Uwaga na **formatowanie przy zapisie**: `writeMeasFile` serializuje przez
+`JSON.stringify(..., null, 2) + '\n'`, więc ręczna edycja pliku innym wcięciem robi z każdego
+zapisu ogromny diff. Trzymaj się dwóch spacji i końcowego newline'a.
+
+Kolizja w wymaganiach, która została rozstrzygnięta świadomie: „GitHub jako baza” + „ktokolwiek
+z linkiem może edytować” **nie mogą zachodzić razem** — bez serwera nie ma gdzie trzymać
+uprawnień za kogoś. Wyszło: publiczny odczyt dla wszystkich, zapis dla tego, kto wklei token.
+Uboczną korzyścią jest to, że przypadkowa osoba z linku nie skasuje pomiarów.
 
 ## Jak testować
 
@@ -229,17 +265,25 @@ Nie ma testów ani lintera. Zmiany sprawdzasz otwierając `index.html` w przegl�
 dane zmieniaj w `data.js`, odśwież stronę, sprawdź tabelę dnia, listę zakupów i sumę dzienną.
 Do szybkiej weryfikacji matematyki można policzyć `(Kcal * gramatura) / 100` ręcznie/skryptem.
 
-Pomiary w zakładce Cele wymagają uruchomionego backendu. Szybki test API (z Windowsa —
-z WSL-a `localhost:8080` nie odpowiada):
+Pomiary w zakładce Cele **nie wymagają żadnego serwera**. Szybki test tego, co widzi przeglądarka
+(z WSL-a `localhost` nie odpowiada — testuj z Windowsa albo na opublikowanym adresie):
 
 ```
-curl -s http://localhost:8080/api/measurements
-curl -s -i -X OPTIONS http://localhost:8080/api/measurements -H "Origin: null" -H "Access-Control-Request-Method: PUT"
+curl -s https://albert-kozera.github.io/hit-macros/measurements.json
+curl -s -i -X OPTIONS https://api.github.com/repos/albert-kozera/hit-macros/contents/measurements.json \
+     -H "Origin: null" -H "Access-Control-Request-Method: PUT" \
+     -H "Access-Control-Request-Headers: authorization, content-type"
 ```
 
-Do testów w headless Chrome jest `.gitignore` na `.p*.html`, `.chrome-p*/` i `.shot-*.png` —
-dorzuć do kopii `index.html` skrypt wołający `switchTab('cele')`, bo zakładka ładuje się
-leniwie i samo `--dump-dom` jej nie otworzy.
+Do testów w headless Chrome jest `.gitignore` na `.p*.html`, `.chrome-p*/`, `.shot-*.png`
+i `.chart-*.png` — dorzuć do kopii `index.html` skrypt wołający `switchTab('cele')`, bo zakładka
+ładuje się leniwie i samo `--dump-dom` jej nie otworzy. Ścieżkę zapisu sprawdzisz **bez
+prawdziwego tokenu**, podstawiając `window.fetch` i oglądając kształt wysyłanego `PUT`
+(metoda, `Authorization: Bearer`, `branch`, `sha`, tablica w base64). Tak samo symulujesz `409`.
+
+**Czego nie da się sprawdzić w headless:** że zapis naprawdę dojdzie do GitHuba. Tokenu nie
+powinien widzieć nikt poza Tobą, więc ostatni krok — wklejenie tokenu w przeglądarce, edycja
+komórki, odświeżenie i sprawdzenie commita w historii repo — należy do Ciebie.
 
 **Dwie pułapki headless Chrome przy zrzutach:** `--virtual-time-budget` **zamraża animację
 `fadeIn`** z `.tab-panel.active` w połowie, przez co cała zakładka wychodzi wyprana na zrzucie

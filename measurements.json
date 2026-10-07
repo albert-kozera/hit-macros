@@ -1,0 +1,148 @@
+{
+  "rows": [
+    {
+      "id": 2,
+      "person": "Albert",
+      "week": 1,
+      "weight": 108.5,
+      "waist": 91.0,
+      "belly": 103.0,
+      "thigh": 71.0,
+      "chest": 106.0,
+      "bicepsL": 40.0,
+      "bicepsP": 39.0
+    },
+    {
+      "id": 8,
+      "person": "Albert",
+      "week": 2,
+      "weight": 107.5,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 9,
+      "person": "Albert",
+      "week": 3,
+      "weight": 107.3,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 10,
+      "person": "Albert",
+      "week": 4,
+      "weight": 106.2,
+      "waist": 87.0,
+      "belly": 99.0,
+      "thigh": 69.0,
+      "chest": 100.0,
+      "bicepsL": 40.0,
+      "bicepsP": 39.0
+    },
+    {
+      "id": 11,
+      "person": "Albert",
+      "week": 5,
+      "weight": 104.5,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 12,
+      "person": "Albert",
+      "week": 6,
+      "weight": 105.3,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 1,
+      "person": "Oliwia",
+      "week": 1,
+      "weight": 69.5,
+      "waist": 78.0,
+      "belly": 93.0,
+      "thigh": 61.0,
+      "chest": 97.0,
+      "bicepsL": 32.0,
+      "bicepsP": 31.0
+    },
+    {
+      "id": 3,
+      "person": "Oliwia",
+      "week": 2,
+      "weight": 66.5,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 4,
+      "person": "Oliwia",
+      "week": 3,
+      "weight": 67.2,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 5,
+      "person": "Oliwia",
+      "week": 4,
+      "weight": 66.9,
+      "waist": 67.0,
+      "belly": 91.0,
+      "thigh": 59.0,
+      "chest": 93.0,
+      "bicepsL": 32.0,
+      "bicepsP": 31.0
+    },
+    {
+      "id": 6,
+      "person": "Oliwia",
+      "week": 5,
+      "weight": 66.4,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 7,
+      "person": "Oliwia",
+      "week": 6,
+      "weight": 65.5,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    }
+  ]
+}

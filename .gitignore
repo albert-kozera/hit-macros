@@ -1,6 +1,10 @@
 # Blokada arkusza Excela - powstaje, gdy measurements.xlsx jest otwarty w Excelu.
 ~$*
 
+# Resztki po usuniętym backendzie w Javie. Katalog zniknął z repo, ale baza H2
+# (backend/data/hitmacros.mv.db) została na dysku jako kopia zapasowa pomiarów.
+backend/
+
 # Artefakty testów w headless Chrome (zrzuty DOM i ekranu, profil przeglądarki).
 # Profile nazywamy .chrome-p<coś>, bo Chrome blokuje dwa procesy na tym samym katalogu.
 .p*.html

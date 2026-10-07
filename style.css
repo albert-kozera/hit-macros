@@ -555,7 +555,7 @@
         }
         .measurements-table .no-data { color: var(--muted-2); }
 
-        /* --- Edytowalne pomiary tygodniowe (zakładka Cele). Dane trzyma backend w H2. --- */
+        /* --- Pomiary tygodniowe (zakładka Cele). Dane leżą w measurements.json w repo. --- */
         .meas-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -593,6 +593,41 @@
         }
         .meas-status.ok { color: var(--accent-strong); }
         .meas-status.error { color: var(--danger); }
+
+        /* Pole tokenu: pokazuje je dopiero przycisk „🔑 Podaj token" (atrybut hidden). */
+        .meas-token-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 0 10px;
+        }
+        .meas-token-input {
+            flex: 1 1 260px;
+            max-width: 420px;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.85em;
+        }
+        .meas-token-input::placeholder { color: var(--muted-2); }
+        .meas-token-input:focus { outline: 2px solid var(--accent-soft); }
+
+        .meas-hint {
+            margin: 0 0 14px;
+            text-align: center;
+            font-size: 0.85em;
+            color: var(--muted);
+        }
+
+        /* Bez tokenu zakładka jest podglądem: komórki nie udają edytowalnych
+           (klasy .readonly nie zakłada sam CSS — ustawia ją applyMeasReadOnly()). */
+        #meas-views.readonly .meas-cell { cursor: default; }
+        #meas-views.readonly .meas-cell:hover { background-color: transparent; }
+        #meas-views.readonly .meas-btn.add { display: none; }
 
         /* --- Wykresy pomiarów (domyślny widok zakładki Cele) --- */
 

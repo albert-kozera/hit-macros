@@ -1,6 +1,0 @@
-# Cache Gradle'a i wynik buildu — nie commitujemy.
-.gradle/
-build/
-
-# Baza H2. To dane lokalne, nie artefakt repo — patrz CLAUDE.md.
-data/
