@@ -205,6 +205,13 @@
         function switchTab(name) {
             document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'tab-' + name));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.id === 'tab-btn-' + name));
+            // Pomiary ciągniemy z backendu dopiero przy pierwszym wejściu w zakładkę.
+            // Kto nigdy jej nie otworzy, nie płaci za nieudany request przy starcie —
+            // a apka poza zakładką Cele działa przecież bez serwera.
+            if (name === 'cele' && !measurementsRequested) {
+                measurementsRequested = true;
+                loadMeasurements();
+            }
         }
 
         function toggleSidebar() {
@@ -430,9 +437,444 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             ).join('');
         }
 
+        /* ============================================================
+           Pomiary tygodniowe (zakładka Cele)
+
+           Jedyne miejsce w apce, które gada z serwerem. Reszta — łącznie
+           z otwieraniem pliku z dysku (file://) — działa bez backendu.
+           Gdy serwera nie ma, zakładka Cele pokazuje komunikat zamiast
+           się wysypać.
+           ============================================================ */
+
+        const API_BASE = 'http://localhost:8080';
+
+        // Kolejność kolumn tabeli. Biceps trzymamy w bazie jako dwa pola (lewa/prawa),
+        // ale pokazujemy w jednej komórce jako "32 L, 31 P" — tak jak było dotąd.
+        const MEAS_FIELDS = [
+            ['weight'], ['waist'], ['belly'], ['thigh'], ['chest'],
+            ['bicepsL', 'bicepsP']
+        ];
+
+        // Co trafia na wykresy — jeden kafel na metrykę. Biceps ma dwie serie (L/P),
+        // reszta po jednej. Ta kolejność wyznacza kolejność kafli.
+        const MEAS_METRICS = [
+            { title: 'Waga', unit: 'kg', series: [['weight', 'Waga']] },
+            { title: 'Talia', unit: 'cm', series: [['waist', 'Talia']] },
+            { title: 'Brzuch', unit: 'cm', series: [['belly', 'Brzuch']] },
+            { title: 'Udo', unit: 'cm', series: [['thigh', 'Udo']] },
+            { title: 'Klatka', unit: 'cm', series: [['chest', 'Klatka']] },
+            { title: 'Biceps', unit: 'cm', series: [['bicepsL', 'Lewy'], ['bicepsP', 'Prawy']] }
+        ];
+
+        const MEAS_VIEW_KEY = 'hit-macros-meas-view';
+
+        let measurementsDB = [];
+        let measurementsRequested = false;
+        let measurementsStatusTimer = null;
+
+        async function apiRequest(method, path, body) {
+            const options = { method: method };
+            if (body !== undefined) {
+                options.headers = { 'Content-Type': 'application/json' };
+                options.body = JSON.stringify(body);
+            }
+            const response = await fetch(API_BASE + path, options);
+            let payload = null;
+            try {
+                payload = await response.json();
+            } catch (e) {
+                // 204 z preflightu i tak tu nie trafia — odpowiedzi zawsze mają ciało JSON.
+            }
+            if (!response.ok) {
+                throw new Error(payload && payload.error ? payload.error : 'HTTP ' + response.status);
+            }
+            return payload;
+        }
+
+        /* --- Przełącznik wykresy / tabela (zakładka Cele) --- */
+
+        /** Domyślnie wykresy; zapisany wybór wygrywa nad domyślnym. */
+        function readMeasView() {
+            try {
+                return localStorage.getItem(MEAS_VIEW_KEY) === 'table' ? 'table' : 'charts';
+            } catch (e) {
+                return 'charts';   // file:// potrafi zablokować localStorage
+            }
+        }
+
+        function applyMeasView(view) {
+            const container = document.getElementById('meas-views');
+            if (!container) return;
+            const charts = view !== 'table';
+            container.dataset.view = charts ? 'charts' : 'table';
+            const button = document.getElementById('meas-view-btn');
+            // Etykieta mówi, co się stanie po kliknięciu — nie w jakim widoku jesteśmy.
+            if (button) button.textContent = charts ? '📋 Tabelka' : '📈 Wykresy';
+            try { localStorage.setItem(MEAS_VIEW_KEY, charts ? 'charts' : 'table'); } catch (e) {}
+        }
+
+        function toggleMeasView() {
+            const container = document.getElementById('meas-views');
+            const current = container && container.dataset.view;
+            applyMeasView(current === 'table' ? 'charts' : 'table');
+        }
+
+        /* --- Wykresy: inline SVG sklejane stringiem, bez żadnej biblioteki --- */
+
+        // Współrzędne w viewBox; SVG skaluje się przez CSS, więc te liczby są umowne.
+        const MEAS_CHART = { w: 220, h: 96, padL: 36, padR: 12, padT: 10, padB: 20 };
+
+        /**
+         * Zbiera zmierzone punkty serii w kolejności tygodni. Brak pomiaru po prostu
+         * wypada — nigdy nie liczy się jako zero. Linia idzie przez wszystkie punkty,
+         * także gdy między nimi są przeskoczone tygodnie: talia mierzona tylko w 1.
+         * i 4. tygodniu dałaby bez tego dwie samotne kropki i zero trendu.
+         */
+        function measPoints(rows, field) {
+            return rows
+                .filter(row => !isEmptyValue(row[field]))
+                .map(row => ({ week: row.week, value: row[field] }));
+        }
+
+        function buildChart(rows, metric, person) {
+            const { w, h, padL, padR, padT, padB } = MEAS_CHART;
+            const plotW = w - padL - padR;
+            const plotH = h - padT - padB;
+
+            const values = [];
+            metric.series.forEach(([field]) => {
+                rows.forEach(row => { if (!isEmptyValue(row[field])) values.push(row[field]); });
+            });
+            if (!values.length) return '<div class="meas-chart-empty">brak danych</div>';
+
+            const weeks = rows.map(row => row.week);
+            const minWeek = Math.min.apply(null, weeks);
+            const maxWeek = Math.max.apply(null, weeks);
+
+            // Skala: lo/hi to zakres z marginesem (żeby linia nie kleiła się do krawędzi),
+            // a siatkę i podpisy rysujemy na prawdziwych skrajnych wartościach — inaczej
+            // osie pokazywałyby zaokrąglone liczby, których w danych nie ma.
+            const dataMin = Math.min.apply(null, values);
+            const dataMax = Math.max.apply(null, values);
+            let lo = dataMin;
+            let hi = dataMax;
+            if (hi - lo < 0.5) {
+                lo = dataMin - 1;                 // jeden pomiar albo płaska linia
+                hi = dataMax + 1;
+            } else {
+                const margin = (hi - lo) * 0.15;
+                lo -= margin;
+                hi += margin;
+            }
+
+            const x = week => maxWeek === minWeek
+                ? padL + plotW / 2
+                : padL + ((week - minWeek) / (maxWeek - minWeek)) * plotW;
+            const y = value => padT + ((hi - value) / (hi - lo)) * plotH;
+            const round = number => number.toFixed(1);
+
+            const parts = [];
+            [dataMax, dataMin].forEach(value => {
+                parts.push(`<line class="meas-grid" x1="${padL}" y1="${round(y(value))}"` +
+                    ` x2="${padL + plotW}" y2="${round(y(value))}"/>`);
+                parts.push(`<text class="meas-axis" x="${padL - 5}" y="${round(y(value) + 3.5)}"` +
+                    ` text-anchor="end">${formatMeasNumber(value)}</text>`);
+            });
+
+            const labelY = padT + plotH + 14;
+            if (maxWeek === minWeek) {
+                parts.push(`<text class="meas-axis" x="${round(padL + plotW / 2)}" y="${labelY}"` +
+                    ` text-anchor="middle">tydz. ${minWeek}</text>`);
+            } else {
+                parts.push(`<text class="meas-axis" x="${padL}" y="${labelY}"` +
+                    ` text-anchor="start">tydz. ${minWeek}</text>`);
+                parts.push(`<text class="meas-axis" x="${padL + plotW}" y="${labelY}"` +
+                    ` text-anchor="end">tydz. ${maxWeek}</text>`);
+            }
+
+            metric.series.forEach(([field, seriesLabel], index) => {
+                const alt = index > 0 ? ' alt' : '';
+                const points = measPoints(rows, field);
+                if (points.length > 1) {
+                    const coords = points
+                        .map(p => round(x(p.week)) + ',' + round(y(p.value)))
+                        .join(' ');
+                    parts.push(`<polyline class="meas-line${alt}" points="${coords}"/>`);
+                }
+                points.forEach(p => {
+                    parts.push(`<circle class="meas-dot${alt}" cx="${round(x(p.week))}"` +
+                        ` cy="${round(y(p.value))}" r="3"><title>Tydzień ${p.week}: ` +
+                        `${formatMeasNumber(p.value)} ${metric.unit} — ${seriesLabel}</title></circle>`);
+                });
+            });
+
+            return `<svg class="meas-chart-svg" viewBox="0 0 ${w} ${h}" role="img"` +
+                ` aria-label="Wykres: ${metric.title}, ${person}">${parts.join('')}</svg>`;
+        }
+
+        function buildChartCard(rows, metric, person) {
+            const legend = metric.series.length > 1
+                ? '<div class="meas-legend">' + metric.series.map(([, label], index) =>
+                    `<span><i class="meas-swatch${index > 0 ? ' alt' : ''}"></i>${label}</span>`
+                ).join('') + '</div>'
+                : '';
+            return '<div class="meas-chart">' +
+                `<div class="meas-chart-title">${metric.title} (${metric.unit})</div>` +
+                buildChart(rows, metric, person) + legend + '</div>';
+        }
+
+        function renderCharts() {
+            ['Oliwia', 'Albert'].forEach(person => {
+                const box = document.getElementById('meas-charts-' + person.toLowerCase());
+                if (!box) return;
+                const rows = measurementsDB
+                    .filter(m => m.person === person)
+                    .sort((a, b) => a.week - b.week);
+                box.innerHTML = rows.length === 0
+                    ? '<div class="meas-chart-empty">Brak pomiarów — dodaj pierwszy tydzień.</div>'
+                    : MEAS_METRICS.map(metric => buildChartCard(rows, metric, person)).join('');
+            });
+        }
+
+        async function loadMeasurements() {
+            showMeasurementsStatus('Wczytywanie…', 'info');
+            try {
+                measurementsDB = await apiRequest('GET', '/api/measurements');
+                renderMeasurements();
+                showMeasurementsStatus('Załadowano ' + measurementsDB.length + ' wierszy.', 'ok');
+            } catch (e) {
+                measurementsDB = [];
+                renderMeasurementsOffline();
+                showMeasurementsStatus(
+                    'Brak połączenia z backendem (' + e.message + '). ' +
+                    'Uruchom backend\\gradlew.bat run i kliknij ↻ Odśwież.',
+                    'error');
+            }
+        }
+
+        function renderMeasurements() {
+            ['Oliwia', 'Albert'].forEach(person => {
+                const tbody = document.getElementById('measurements-' + person.toLowerCase());
+                const rows = measurementsDB
+                    .filter(m => m.person === person)
+                    .sort((a, b) => a.week - b.week);
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="meas-empty">Brak pomiarów — dodaj pierwszy tydzień.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = rows.map(row => {
+                    const cells = MEAS_FIELDS.map(fields => {
+                        const empty = fields.every(field => isEmptyValue(row[field]));
+                        // Komórka z dwoma polami (biceps) nie może się łamać w środku "32 L, 31 P".
+                        const wide = fields.length > 1 ? ' meas-cell-wide' : '';
+                        return `<td class="meas-cell${wide}${empty ? ' no-data' : ''}"` +
+                            ` title="Kliknij, żeby edytować"` +
+                            ` onclick="startEditCell(this, ${row.id}, ${fieldsLiteral(fields)})">` +
+                            cellText(row, fields) + '</td>';
+                    }).join('');
+                    return `<tr><td class="meas-week">${row.week}</td>${cells}` +
+                        `<td class="meas-actions">` +
+                        `<button class="meas-del" title="Usuń tydzień ${row.week}"` +
+                        ` onclick="deleteMeasurementRow(${row.id}, '${person}', ${row.week})">✕</button>` +
+                        `</td></tr>`;
+                }).join('');
+            });
+            renderCharts();   // tabele i wykresy zawsze pokazują ten sam stan bazy
+        }
+
+        function renderMeasurementsOffline() {
+            ['oliwia', 'albert'].forEach(person => {
+                document.getElementById('measurements-' + person).innerHTML =
+                    '<tr><td colspan="8" class="meas-empty">Brak połączenia z backendem.</td></tr>';
+                document.getElementById('meas-charts-' + person).innerHTML =
+                    '<div class="meas-chart-empty">Brak połączenia z backendem.</div>';
+            });
+        }
+
+        /** Podmienia komórkę na pola edycji. fields to np. ['weight'] albo ['bicepsL','bicepsP']. */
+        function startEditCell(td, id, fields) {
+            if (td.querySelector('input')) return;
+            const row = measurementsDB.find(m => m.id === id);
+            if (!row) return;
+
+            td.dataset.fields = JSON.stringify(fields);
+            // focusout zamiast blur: blur nie bąbelkuje, a my chcemy złapać wyjście fokusu
+            // z całej komórki — inaczej przejście L → P zapisywałoby w połowie edycji.
+            td.setAttribute('onfocusout', `handleMeasFocusOut(event, this, ${id})`);
+            td.classList.remove('no-data');
+            // Przy dwóch polach (biceps) oznaczamy je placeholderem, nie osobnym <span>:
+            // placeholder siedzi w polu i nie rozpycha komórki, a komórka jest wąska.
+            const multi = fields.length > 1;
+            td.innerHTML = fields.map((field, index) => {
+                const placeholder = multi ? ` placeholder="${index === 0 ? 'L' : 'P'}"` : '';
+                return `<input class="meas-input${multi ? ' tight' : ''}" type="text" inputmode="decimal"` +
+                    placeholder +
+                    ` value="${isEmptyValue(row[field]) ? '' : formatMeasNumber(row[field])}"` +
+                    ` onkeydown="handleMeasKey(event)">`;
+            }).join('');
+
+            const first = td.querySelector('input');
+            first.focus();
+            first.select();
+        }
+
+        function handleMeasKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                event.target.blur();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                event.target.closest('td').dataset.cancel = '1';
+                event.target.blur();
+            }
+        }
+
+        function handleMeasFocusOut(event, td, id) {
+            if (td.contains(event.relatedTarget)) return;   // fokus został w tej samej komórce
+            commitEditCell(td, id);
+        }
+
+        function commitEditCell(td, id) {
+            if (td.dataset.committed) return;   // dwa pola = dwa focusouty, zapisujemy raz
+            td.dataset.committed = '1';
+
+            const row = measurementsDB.find(m => m.id === id);
+            const fields = JSON.parse(td.dataset.fields);
+            if (!row) return;
+
+            if (td.dataset.cancel) {
+                renderMeasCell(td, row, fields);
+                return;
+            }
+
+            const inputs = td.querySelectorAll('input');
+            const updated = Object.assign({}, row);
+            for (let i = 0; i < fields.length; i++) {
+                const parsed = parseMeasValue(inputs[i].value);
+                if (parsed === undefined) {
+                    showMeasurementsStatus('„' + inputs[i].value + '” to nie liczba — wpisz np. 69,5.', 'error');
+                    renderMeasCell(td, row, fields);
+                    return;
+                }
+                updated[fields[i]] = parsed;
+            }
+
+            if (!fields.some(field => updated[field] !== row[field])) {
+                renderMeasCell(td, row, fields);   // nic się nie zmieniło, nie ma po co pytać serwera
+                return;
+            }
+            saveMeasurement(updated, td, fields);
+        }
+
+        async function saveMeasurement(updated, td, fields) {
+            try {
+                const saved = await apiRequest('PUT', '/api/measurements/' + updated.id, updated);
+                const index = measurementsDB.findIndex(m => m.id === saved.id);
+                if (index !== -1) measurementsDB[index] = saved;
+                renderMeasCell(td, saved, fields);
+                // Wykresy są w osobnym poddrzewie DOM, więc ich przerysowanie nie zjada
+                // kliknięcia, w które właśnie celuje focusout — w przeciwieństwie do tabeli.
+                renderCharts();
+                showMeasurementsStatus('Zapisano tydzień ' + saved.week + '.', 'ok');
+            } catch (e) {
+                showMeasurementsStatus('Nie udało się zapisać: ' + e.message, 'error');
+                const row = measurementsDB.find(m => m.id === updated.id);
+                if (row) renderMeasCell(td, row, fields);   // cofnij do stanu z bazy
+            }
+        }
+
+        /**
+         * Odrysowuje pojedynczą komórkę po edycji. Celowo nie renderujemy całej tabeli:
+         * focusout leci w trakcie kliknięcia, a podmiana DOM w tym momencie zjadłaby
+         * klik w przycisk, w który właśnie celował użytkownik.
+         */
+        function renderMeasCell(td, row, fields) {
+            delete td.dataset.fields;
+            delete td.dataset.committed;
+            delete td.dataset.cancel;
+            td.removeAttribute('onfocusout');
+            td.classList.toggle('no-data', fields.every(field => isEmptyValue(row[field])));
+            td.classList.toggle('meas-cell-wide', fields.length > 1);
+            td.innerHTML = cellText(row, fields);
+        }
+
+        async function addMeasurementRow(person) {
+            const weeks = measurementsDB.filter(m => m.person === person).map(m => m.week);
+            const nextWeek = weeks.length ? Math.max.apply(null, weeks) + 1 : 1;
+            try {
+                const created = await apiRequest('POST', '/api/measurements', { person: person, week: nextWeek });
+                measurementsDB.push(created);
+                renderMeasurements();
+                showMeasurementsStatus('Dodano tydzień ' + nextWeek + ' (' + person + ').', 'ok');
+            } catch (e) {
+                showMeasurementsStatus('Nie udało się dodać tygodnia: ' + e.message, 'error');
+            }
+        }
+
+        async function deleteMeasurementRow(id, person, week) {
+            if (!confirm('Usunąć tydzień ' + week + ' u osoby ' + person + '?')) return;
+            try {
+                await apiRequest('DELETE', '/api/measurements/' + id);
+                measurementsDB = measurementsDB.filter(m => m.id !== id);
+                renderMeasurements();
+                showMeasurementsStatus('Usunięto tydzień ' + week + ' (' + person + ').', 'ok');
+            } catch (e) {
+                showMeasurementsStatus('Nie udało się usunąć: ' + e.message, 'error');
+            }
+        }
+
+        /** Puste pole = brak pomiaru (null). undefined = wpisana bzdura, nie zapisujemy. */
+        function parseMeasValue(text) {
+            const trimmed = (text || '').trim();
+            if (trimmed === '') return null;
+            const normalized = trimmed.replace(',', '.');
+            if (!/^\d+(\.\d+)?$/.test(normalized)) return undefined;
+            const value = parseFloat(normalized);
+            return isNaN(value) ? undefined : value;
+        }
+
+        function isEmptyValue(value) {
+            return value === null || value === undefined;
+        }
+
+        /** 69.5 → "69,5"; 78 → "78". */
+        function formatMeasNumber(value) {
+            return value.toLocaleString('pl-PL', { maximumFractionDigits: 1 });
+        }
+
+        /** Biceps sklejamy z dwóch pól w jedną komórkę, żeby zachować stary zapis. */
+        function cellText(row, fields) {
+            const values = fields.map(field => row[field]);
+            if (values.every(isEmptyValue)) return '—';
+            return values
+                .map((value, index) => (isEmptyValue(value) ? '—' : formatMeasNumber(value)) +
+                    (fields.length > 1 ? (index === 0 ? ' L' : ' P') : ''))
+                .join(', ');
+        }
+
+        function fieldsLiteral(fields) {
+            return '[' + fields.map(field => "'" + field + "'").join(', ') + ']';
+        }
+
+        function showMeasurementsStatus(text, kind) {
+            const element = document.getElementById('measurements-status');
+            if (!element) return;
+            element.textContent = text || '';
+            element.className = 'meas-status' + (kind ? ' ' + kind : '');
+            if (measurementsStatusTimer) clearTimeout(measurementsStatusTimer);
+            if (kind === 'ok') {
+                measurementsStatusTimer = setTimeout(() => {
+                    element.textContent = '';
+                    element.className = 'meas-status';
+                }, 3500);
+            }
+        }
+
         window.onload = () => {
             // Motyw ustawia już skrypt w <head>; tu tylko synchronizujemy ikonę przycisku.
             applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+            applyMeasView(readMeasView());
             switchDay(1);
             switchTab('meals');
         };

@@ -31,6 +31,8 @@
             --shadow: 0 2px 15px rgba(0,0,0,0.1);
             --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
             --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+            --danger: #c62828;
+            --danger-soft: #fdecec;
             --topbar-h: 48px;
         }
 
@@ -67,6 +69,8 @@
             --shadow: 0 2px 15px rgba(0,0,0,0.5);
             --shadow-md: 0 4px 15px rgba(0,0,0,0.5);
             --shadow-lg: 0 4px 20px rgba(0,0,0,0.55);
+            --danger: #ef5350;
+            --danger-soft: #3a1f22;
         }
 
         body {
@@ -551,6 +555,173 @@
         }
         .measurements-table .no-data { color: var(--muted-2); }
 
+        /* --- Edytowalne pomiary tygodniowe (zakładka Cele). Dane trzyma backend w H2. --- */
+        .meas-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 0 8px;
+        }
+        .meas-btn {
+            padding: 8px 18px;
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            background-color: transparent;
+            color: var(--accent);
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .meas-btn:hover {
+            background-color: var(--accent);
+            color: var(--on-accent);
+        }
+        .meas-btn.add {
+            display: block;
+            width: 100%;
+            margin-top: 14px;
+        }
+        .meas-status {
+            min-height: 20px;
+            margin: 0 0 14px;
+            text-align: center;
+            font-size: 0.85em;
+            color: var(--muted);
+        }
+        .meas-status.ok { color: var(--accent-strong); }
+        .meas-status.error { color: var(--danger); }
+
+        /* --- Wykresy pomiarów (domyślny widok zakładki Cele) --- */
+
+        /* Widok przełącza się atrybutem na wspólnym rodzicu — oba bloki są w DOM
+           przez cały czas, CSS tylko chowa ten nieaktywny. */
+        #meas-views[data-view="charts"] .meas-table-view { display: none; }
+        #meas-views[data-view="table"] .meas-charts { display: none; }
+
+        .meas-charts {
+            display: grid;
+            /* minmax(0,1fr), nie 1fr — bez tego SVG z własną szerokością rozpycha kolumnę. */
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .meas-chart {
+            padding: 6px 8px 4px;
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            background-color: var(--surface-2);
+        }
+        .meas-chart-title {
+            margin-bottom: 2px;
+            text-align: center;
+            font-size: 0.75em;
+            color: var(--muted);
+        }
+        .meas-chart-svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        /* Kolory wyłącznie przez zmienne — <text>/<line>/<polyline> nie przyjmują
+           var() w atrybutach prezentacji, więc maluje je CSS. */
+        .meas-chart-svg .meas-grid {
+            stroke: var(--border);
+            stroke-width: 1;
+            stroke-dasharray: 3 3;
+        }
+        .meas-chart-svg .meas-axis {
+            fill: var(--muted-2);
+            font-size: 10px;
+        }
+        .meas-chart-svg .meas-line {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .meas-chart-svg .meas-line.alt { stroke: var(--blue); }
+        .meas-chart-svg .meas-dot { fill: var(--accent); }
+        .meas-chart-svg .meas-dot.alt { fill: var(--blue); }
+
+        .meas-legend {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 2px;
+            font-size: 0.75em;
+            color: var(--muted);
+        }
+        .meas-swatch {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 4px;
+            border-radius: 50%;
+            background-color: var(--accent);
+        }
+        .meas-swatch.alt { background-color: var(--blue); }
+
+        .meas-chart-empty {
+            grid-column: 1 / -1;   /* komunikat ma zająć cały rząd, nie jedną kratkę */
+            padding: 24px 8px;
+            text-align: center;
+            font-size: 0.85em;
+            font-style: italic;
+            color: var(--muted-2);
+        }
+
+        /* Podbijamy specyficzność ponad `.measurements-table tr:hover td`,
+           które zeruje tło — inaczej podświetlenie edytowalnej komórki nie działa. */
+        .measurements-table .meas-cell { cursor: pointer; }
+        .measurements-table .meas-cell:hover { background-color: var(--accent-soft); }
+        .measurements-table .meas-cell-wide { white-space: nowrap; }
+        .meas-week { font-weight: bold; }
+
+        .meas-input {
+            /* border-box jest konieczny: bez niego padding i obramowanie doliczają się
+               do 3.4em i pole rozpycha tabelę tak, że w .table-container wyskakuje suwak. */
+            box-sizing: border-box;
+            width: 3.2em;
+            padding: 2px 3px;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1em;
+            text-align: center;
+        }
+        .meas-input:focus { outline: 2px solid var(--accent-soft); }
+        /* Biceps to dwa pola w jednej komórce — muszą być węższe, żeby zmieściły się
+           bez rozepchnięcia tabeli. */
+        .meas-input.tight { width: 2.6em; margin: 0 1px; }
+        .meas-input::placeholder { color: var(--muted-2); }
+
+        .meas-actions { width: 1%; white-space: nowrap; }
+        .meas-del {
+            padding: 2px 7px;
+            border: none;
+            border-radius: 4px;
+            background-color: transparent;
+            color: var(--muted-2);
+            font-family: inherit;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .meas-del:hover {
+            background-color: var(--danger-soft);
+            color: var(--danger);
+        }
+        .meas-empty {
+            padding: 14px 8px;
+            color: var(--muted);
+            font-style: italic;
+        }
+
         /* Gra "Olek 5 Groszy" (zakładka Spalanie kalorii). Cała gra siedzi
            w iframe, bo jej własne style (html,body{position:fixed;overflow:hidden},
            pełnoekranowe tło z bitmapą) rozsadziłyby układ aplikacji. */
@@ -803,4 +974,6 @@
                rząd to ~44px zabrane grze poniżej (zakładka "Spalanie kalorii"). */
             .tabs { gap: 6px; margin-bottom: 10px; }
             .tab-btn { padding: 6px 12px; font-size: 0.9em; }
+            /* Na telefonie karta jest wąska — dwa wykresy obok siebie byłyby nieczytelne. */
+            .meas-charts { grid-template-columns: minmax(0, 1fr); }
         }

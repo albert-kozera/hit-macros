@@ -74,44 +74,53 @@
             <section class="tab-panel" id="tab-cele">
                 <h3 class="section-heading">📏 Pomiary tygodniowe</h3>
 
-                <div class="targets-container">
+                <!-- Wiersze żyją w bazie H2 za backendem (backend/), a nie w tym pliku.
+                     Domyślnie widok wykresów; przycisk przełącza na tabelę, gdzie klik
+                     w komórkę = edycja, a ✕ = usunięcie wiersza. -->
+                <div class="meas-toolbar">
+                    <button class="meas-btn" onclick="loadMeasurements()">↻ Odśwież</button>
+                    <button class="meas-btn" id="meas-view-btn" onclick="toggleMeasView()">📋 Tabelka</button>
+                </div>
+                <div class="meas-status" id="measurements-status"></div>
+
+                <!-- Widok trzyma się w data-view na wspólnym rodzicu — CSS chowa jeden
+                     z dwóch bloków, więc markupu nie trzeba duplikować ani generować. -->
+                <div class="targets-container" id="meas-views" data-view="charts">
                     <div class="target-card oliwia">
                         <h3>Oliwia</h3>
-                        <table class="measurements-table">
-                            <thead>
-                                <tr>
-                                    <th>Tydzień</th><th>Waga (kg)</th><th>Talia (cm)</th><th>Brzuch (cm)</th>
-                                    <th>Udo (cm)</th><th>Klatka (cm)</th><th>Biceps (cm)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>1</td><td>69,5</td><td>78</td><td>93</td><td>61</td><td>97</td><td>32 L, 31 P</td></tr>
-                                <tr><td>2</td><td>66,5</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>3</td><td>67,2</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>4</td><td>66,9</td><td>67</td><td>91</td><td>59</td><td>93</td><td>32 L, 31 P</td></tr>
-                                <tr><td>5</td><td>66,4</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>6</td><td>65,5</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                            </tbody>
-                        </table>
+                        <div class="meas-charts" id="meas-charts-oliwia"></div>
+                        <div class="meas-table-view">
+                            <div class="table-container">
+                                <table class="measurements-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tydzień</th><th>Waga (kg)</th><th>Talia (cm)</th><th>Brzuch (cm)</th>
+                                            <th>Udo (cm)</th><th>Klatka (cm)</th><th>Biceps (cm)</th><th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="measurements-oliwia"></tbody>
+                                </table>
+                            </div>
+                            <button class="meas-btn add" onclick="addMeasurementRow('Oliwia')">＋ Dodaj tydzień</button>
+                        </div>
                     </div>
                     <div class="target-card albert">
                         <h3>Albert</h3>
-                        <table class="measurements-table">
-                            <thead>
-                                <tr>
-                                    <th>Tydzień</th><th>Waga (kg)</th><th>Talia (cm)</th><th>Brzuch (cm)</th>
-                                    <th>Udo (cm)</th><th>Klatka (cm)</th><th>Biceps (cm)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>1</td><td>108,5</td><td>91</td><td>103</td><td>71</td><td>106</td><td>40 L, 39 P</td></tr>
-                                <tr><td>2</td><td>107,5</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>3</td><td>107,3</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>4</td><td>106,2</td><td>87</td><td>99</td><td>69</td><td>100</td><td>40 L, 39 P</td></tr>
-                                <tr><td>5</td><td>104,5</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                                <tr><td>6</td><td>105,3</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td><td class="no-data">—</td></tr>
-                            </tbody>
-                        </table>
+                        <div class="meas-charts" id="meas-charts-albert"></div>
+                        <div class="meas-table-view">
+                            <div class="table-container">
+                                <table class="measurements-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tydzień</th><th>Waga (kg)</th><th>Talia (cm)</th><th>Brzuch (cm)</th>
+                                            <th>Udo (cm)</th><th>Klatka (cm)</th><th>Biceps (cm)</th><th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="measurements-albert"></tbody>
+                                </table>
+                            </div>
+                            <button class="meas-btn add" onclick="addMeasurementRow('Albert')">＋ Dodaj tydzień</button>
+                        </div>
                     </div>
                 </div>
 

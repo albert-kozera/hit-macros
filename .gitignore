@@ -2,6 +2,9 @@
 ~$*
 
 # Artefakty testów w headless Chrome (zrzuty DOM i ekranu, profil przeglądarki).
+# Profile nazywamy .chrome-p<coś>, bo Chrome blokuje dwa procesy na tym samym katalogu.
 .p*.html
 .shot-*.png
-.chrome-p/
+.shot-*.html
+.chart-*.png
+.chrome-p*/
