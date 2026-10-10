@@ -295,3 +295,34 @@ ustawiaj w harnessie przez `applyTheme()`.
 ## Git
 
 Gałąź główna: `main`. Push na `main` = deploy na GitHub Pages.
+
+**Commit rób zwykłym gitem, push — windowsowym.** Z WSL-a `git push origin main` **nie
+przejdzie** i to nie jest problem z uprawnieniami do repo, tylko z brakiem poświadczeń
+w samym WSL-u:
+
+```
+fatal: could not read Username for 'https://github.com': No such device or address
+```
+
+Sprawdzenie, że to nadal ten przypadek (a nie np. brak dostępu do repo): w WSL-u nie ma
+`gh`, nie ma `~/.git-credentials`, a `git config --get credential.helper` jest pusty.
+Remote idzie po HTTPS, więc git próbuje zapytać o login i nie ma jak — nie ma TTY,
+więc nawet nie wyskoczy prompt. **Nie wklejaj tu tokenu PAT** z zakładki Cele: wylądowałby
+w historii powłoki i w `ps`. Poświadczenia zostają tam, gdzie są — w Menedżerze
+poświadczeń Windows.
+
+Działa za to **`git.exe` z Git Credential Managerem**, który ma tam zapisane logowanie:
+
+```
+timeout 90 "/mnt/c/Program Files/Git/cmd/git.exe" -C "C:/Users/albert/Desktop/hit-macros" push origin main
+```
+
+Trzy szczegóły, bez których to się rozsypuje:
+
+- **ścieżka musi być windowsowa** (`C:/Users/albert/...`) — to `git.exe`, nie WSL-owy git,
+  więc nie zrozumie `/mnt/c/...`; dlatego `-C` po tej ścieżce zamiast `cd` do repo;
+- `timeout`, bo gdy GCM nie ma zapisanych poświadczeń, zamiast błędu otworzy okno logowania
+  i komenda będzie wisieć w nieskończoność;
+- po pushu **Pages ma ~10 min opóźnienia** (CDN, `cache-control: max-age=600`) — świeżość
+  commita sprawdzaj na `raw.githubusercontent.com/.../main/<plik>`, nie na
+  `albert-kozera.github.io`, bo tam jeszcze poleci stara wersja.
