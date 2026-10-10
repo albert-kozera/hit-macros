@@ -148,38 +148,36 @@ Day,Meal,Person,Product,Amount,Unit
 5,Śniadanie – tosty francuskie,Oliwia,Chleb tostowy,72,g
 5,Śniadanie – tosty francuskie,Oliwia,Jajko,2,szt
 5,Śniadanie – tosty francuskie,Oliwia,Mleko 2%,128,ml
-5,Śniadanie – tosty francuskie,Oliwia,Odżywka białkowa whey,13,g
 5,Śniadanie – tosty francuskie,Oliwia,Owoce mieszane,72,g
-5,Śniadanie – tosty francuskie,Albert,Chleb tostowy,156,g
+5,Śniadanie – tosty francuskie,Albert,Chleb tostowy,130,g
 5,Śniadanie – tosty francuskie,Albert,Jajko,3,szt
 5,Śniadanie – tosty francuskie,Albert,Mleko 2%,117,ml
-5,Śniadanie – tosty francuskie,Albert,Odżywka białkowa whey,17,g
-5,Śniadanie – tosty francuskie,Albert,Owoce mieszane,156,g
+5,Śniadanie – tosty francuskie,Albert,Owoce mieszane,120,g
 5,Obiad – spaghetti bolognese,Oliwia,Makaron pełnoziarnisty,57,g
 5,Obiad – spaghetti bolognese,Oliwia,Wołowina mielona chuda,89,g
 5,Obiad – spaghetti bolognese,Oliwia,Passata pomidorowa,320,g
 5,Obiad – spaghetti bolognese,Oliwia,Parmezan,12,g
 5,Obiad – spaghetti bolognese,Oliwia,Oliwa z oliwek,6,g
-5,Obiad – spaghetti bolognese,Albert,Makaron pełnoziarnisty,155,g
-5,Obiad – spaghetti bolognese,Albert,Wołowina mielona chuda,121,g
-5,Obiad – spaghetti bolognese,Albert,Passata pomidorowa,289,g
+5,Obiad – spaghetti bolognese,Albert,Makaron pełnoziarnisty,100,g
+5,Obiad – spaghetti bolognese,Albert,Wołowina mielona chuda,180,g
+5,Obiad – spaghetti bolognese,Albert,Passata pomidorowa,400,g
 5,Obiad – spaghetti bolognese,Albert,Parmezan,17,g
 5,Obiad – spaghetti bolognese,Albert,Oliwa z oliwek,9,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Twaróg chudy,114,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Chleb żytni razowy,64,g
-5,Kolacja – twaróg z rzodkiewką,Oliwia,Rzodkiewka,160,g
+5,Kolacja – twaróg z rzodkiewką,Oliwia,Rzodkiewka,80,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Szczypiorek,10,g
 5,Kolacja – twaróg z rzodkiewką,Oliwia,Jogurt naturalny,48,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Twaróg chudy,190,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Chleb żytni razowy,141,g
-5,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,145,g
+5,Kolacja – twaróg z rzodkiewką,Albert,Rzodkiewka,80,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Szczypiorek,10,g
 5,Kolacja – twaróg z rzodkiewką,Albert,Jogurt naturalny,44,g
-5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Odżywka białkowa whey,19,g
+5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Odżywka białkowa whey,32,g
 5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Mleko 2%,320,ml
 5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Banan,57,g
 5,Shake proteinowy z bananem i masłem orzechowym,Oliwia,Masło orzechowe,12,g
-5,Shake proteinowy z bananem i masłem orzechowym,Albert,Odżywka białkowa whey,30,g
+5,Shake proteinowy z bananem i masłem orzechowym,Albert,Odżywka białkowa whey,47,g
 5,Shake proteinowy z bananem i masłem orzechowym,Albert,Mleko 2%,289,ml
 5,Shake proteinowy z bananem i masłem orzechowym,Albert,Banan,126,g
 5,Shake proteinowy z bananem i masłem orzechowym,Albert,Masło orzechowe,17,g

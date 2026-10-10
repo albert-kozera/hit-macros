@@ -3,7 +3,7 @@
         let currentMultiplier = 1;
         const weights = { Oliwia: 67, Albert: 108 };
         // Znaczek przy dniu w sidebarze: ✅ gotowy, ❌ pusty (brak posiłków), ⚠️ pozostałe.
-        const COMPLETE_DAYS = [1, 2, 6, 9, 11];
+        const COMPLETE_DAYS = [1, 2, 5, 6, 9, 11];
         const EMPTY_DAYS = [10];
 
         function dayStatus(day) {
