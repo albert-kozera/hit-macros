@@ -121,9 +121,9 @@ na liście zakupów**. Nowy produkt zawsze dodawaj więc też do `categoriesCSV`
 ### `mealsCSV` — `Day,Meal,Person,Product,Amount,Unit`
 Jeden wiersz = jeden składnik jednego posiłku jednej osoby. `Person` to dokładnie `Oliwia` albo
 `Albert`. `Unit` to zwykle `g`/`ml`, dla jajek `szt`. Wiersze nie muszą być posortowane.
-Dni 1–9 i 11 mają pełną treść (365 wierszy, po 4 posiłki na osobę); dzień 10 jest na razie pusty —
-widnieje w liście (jest w `titles`), ale `mealsCSV` nie ma dla niego żadnego wiersza,
-więc pokazuje placeholder.
+Dni 1–12 mają pełną treść (po 4 posiłki na osobę); żaden dzień z `titles` nie jest już pusty,
+więc `EMPTY_DAYS` jest puste. Gdyby taki dzień doszedł, wystarczy wpis w `titles` — `mealsCSV`
+bez wierszy dla tego numeru pokaże placeholder („Treść dnia N w przygotowaniu...").
 
 ## Konwencje i pułapki
 

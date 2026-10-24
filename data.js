@@ -64,7 +64,20 @@ Kasza jaglana,346,10.5,2.8,71.5
 Jabłko,52,0.3,0.2,13.8
 Cynamon,247,4,1.2,81
 Schab,122,21.5,3.5,0
-Bułka tarta,350,10,2,72`;
+Bułka tarta,350,10,2,72
+Ryż biały,349,7,0.6,78
+Ogórek,15,0.7,0.1,3.6
+Edamame,121,11,5,9
+Olej lniany,884,0,100,0
+Czosnek,149,6.4,0.5,33
+Dynia,26,1,0.1,6.5
+Cebula,40,1.1,0.1,9.3
+Kurkuma,312,9.7,3.2,67
+Imbir,80,1.8,0.8,18
+Pomidory krojone z puszki,30,1.2,0.2,5.5
+Kostka bulionu warzywnego,200,8,8,25
+Vegeta,200,6,2,35
+Pieprz czarny,251,10,3.3,64`;
 
         const categoriesCSV = `Product,Category
 Bataty,🥦 Warzywa i Owoce
@@ -132,7 +145,20 @@ Kasza jaglana,🌾 Spiżarnia / Suche
 Jabłko,🥦 Warzywa i Owoce
 Cynamon,🌾 Spiżarnia / Suche
 Schab,🥩 Mięso
-Bułka tarta,🌾 Spiżarnia / Suche`;
+Bułka tarta,🌾 Spiżarnia / Suche
+Ryż biały,🌾 Spiżarnia / Suche
+Ogórek,🥦 Warzywa i Owoce
+Edamame,🥦 Warzywa i Owoce
+Olej lniany,🌾 Spiżarnia / Suche
+Czosnek,🥦 Warzywa i Owoce
+Dynia,🥦 Warzywa i Owoce
+Cebula,🥦 Warzywa i Owoce
+Kurkuma,🌾 Spiżarnia / Suche
+Imbir,🥦 Warzywa i Owoce
+Pomidory krojone z puszki,🌾 Spiżarnia / Suche
+Kostka bulionu warzywnego,🌾 Spiżarnia / Suche
+Vegeta,🌾 Spiżarnia / Suche
+Pieprz czarny,🌾 Spiżarnia / Suche`;
 
         const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
@@ -456,6 +482,76 @@ Bułka tarta,🌾 Spiżarnia / Suche`;
 9,Shake proteinowy,Oliwia,Mleko 2%,150,ml
 9,Shake proteinowy,Albert,Odżywka białkowa whey,38,g
 9,Shake proteinowy,Albert,Mleko 2%,150,ml
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Jajko,2,szt
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Skyr naturalny,150,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Płatki owsiane,30,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Owoce jagodowe,100,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Proszek do pieczenia,2,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Cynamon,1,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Oliwia,Olej rzepakowy,2,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Ryż biały,50,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Kurczak pierś,120,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Ogórek,100,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Awokado,40,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Edamame,50,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Szczypiorek,15,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Olej rzepakowy,3,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Sos sojowy,7.5,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Masło orzechowe,15,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Ocet ryżowy,5,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Miód,4,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Olej lniany,2,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Czosnek,3,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Dynia,216.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Ziemniaki,133.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Masło,10,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Cebula,36.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Czosnek,3.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Imbir,3.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Pomidory krojone z puszki,133.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Kostka bulionu warzywnego,3.35,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Vegeta,3,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Kurkuma,0.8,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Pieprz czarny,0.7,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Chleb pełnoziarnisty,60,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Olej rzepakowy,5,g
+10,Shake proteinowy,Oliwia,Odżywka białkowa whey,35,g
+10,Shake proteinowy,Oliwia,Mleko 2%,300,ml
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Jajko,3,szt
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Skyr naturalny,200,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Płatki owsiane,50,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Owoce jagodowe,150,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Proszek do pieczenia,3,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Cynamon,1.5,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Olej rzepakowy,3,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ryż biały,75,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Kurczak pierś,180,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ogórek,150,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Awokado,60,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Edamame,75,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Szczypiorek,20,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej rzepakowy,5,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Sos sojowy,9.5,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Masło orzechowe,25,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ocet ryżowy,5,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Miód,7,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej lniany,4,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Czosnek,3,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Dynia,216.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Ziemniaki,133.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Masło,10,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Cebula,36.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Czosnek,3.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Imbir,3.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Pomidory krojone z puszki,133.5,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Kostka bulionu warzywnego,3.35,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Vegeta,3,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Kurkuma,0.8,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Pieprz czarny,0.7,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Chleb pełnoziarnisty,90,g
+10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Olej rzepakowy,7,g
+10,Shake proteinowy,Albert,Odżywka białkowa whey,60,g
+10,Shake proteinowy,Albert,Mleko 2%,600,ml
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Jajko,2,szt
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Płatki owsiane,40,g
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Skyr naturalny,100,g
