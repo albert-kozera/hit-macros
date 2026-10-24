@@ -518,21 +518,21 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 10,Shake proteinowy,Oliwia,Odżywka białkowa whey,35,g
 10,Shake proteinowy,Oliwia,Mleko 2%,300,ml
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Jajko,3,szt
-10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Skyr naturalny,200,g
-10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Płatki owsiane,50,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Skyr naturalny,300,g
+10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Płatki owsiane,60,g
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Owoce jagodowe,150,g
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Proszek do pieczenia,3,g
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Cynamon,1.5,g
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Olej rzepakowy,3,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ryż biały,75,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Kurczak pierś,180,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ogórek,150,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Awokado,60,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Edamame,75,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ryż biały,100,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Kurczak pierś,210,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ogórek,180,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Awokado,85,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Edamame,90,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Szczypiorek,20,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej rzepakowy,5,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Sos sojowy,9.5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Masło orzechowe,25,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Masło orzechowe,28,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ocet ryżowy,5,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Miód,7,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej lniany,4,g
@@ -550,8 +550,8 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Pieprz czarny,0.7,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Chleb pełnoziarnisty,90,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Olej rzepakowy,7,g
-10,Shake proteinowy,Albert,Odżywka białkowa whey,60,g
-10,Shake proteinowy,Albert,Mleko 2%,600,ml
+10,Shake proteinowy,Albert,Odżywka białkowa whey,50,g
+10,Shake proteinowy,Albert,Mleko 2%,300,ml
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Jajko,2,szt
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Płatki owsiane,40,g
 11,Śniadanie – omlet ze skyrem i bananem,Oliwia,Skyr naturalny,100,g
