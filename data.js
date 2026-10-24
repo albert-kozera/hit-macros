@@ -495,13 +495,12 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Awokado,40,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Edamame,50,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Szczypiorek,15,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Olej rzepakowy,3,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Sos sojowy,7.5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Masło orzechowe,15,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Ocet ryżowy,5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Miód,4,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Sos sojowy,14,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Masło orzechowe,17,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Ocet ryżowy,10,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Miód,5,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Olej lniany,2,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Czosnek,3,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Oliwia,Czosnek,5,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Dynia,216.5,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Ziemniaki,133.5,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Oliwia,Masło,10,g
@@ -530,13 +529,12 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Awokado,85,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Edamame,90,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Szczypiorek,20,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej rzepakowy,5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Sos sojowy,9.5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Masło orzechowe,28,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ocet ryżowy,5,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Miód,7,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Sos sojowy,18,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Masło orzechowe,32,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ocet ryżowy,12,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Miód,9,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Olej lniany,4,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Czosnek,3,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Czosnek,6,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Dynia,216.5,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Ziemniaki,133.5,g
 10,Kolacja – zupa dyniowa z chlebem pełnoziarnistym,Albert,Masło,10,g
@@ -611,7 +609,6 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Ziemniaki,250,g
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Masło,5,g
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Warzywa mieszane,100,g
-12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Oliwa z oliwek,7,g
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Schab,200,g
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Jajko,1,szt
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Bułka tarta,32,g
@@ -620,7 +617,6 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Ziemniaki,380,g
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Masło,8,g
 12,Obiad – kotlet schabowy z ziemniakami,Albert,Warzywa mieszane,150,g
-12,Obiad – kotlet schabowy z ziemniakami,Albert,Oliwa z oliwek,10,g
 12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Twaróg chudy,150,g
 12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Chleb żytni razowy,50,g
 12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Warzywa mieszane,120,g
