@@ -133,9 +133,11 @@ więc pokazuje placeholder.
   i sprawdza poprawność numeru w `switchDay()`. Dzień bez wierszy w `mealsCSV` (jeszcze nie
   zaprojektowany) nadal pokazuje się na liście, a jego treść to placeholder
   („Treść dnia N w przygotowaniu..."). Dodanie dnia = wpis w `titles`, nic więcej.
-- Znaczek statusu przy dniu w sidebarze liczy `dayStatus()` w `script.js` z dwóch stałych:
-  `COMPLETE_DAYS` → ✅, `EMPTY_DAYS` → ❌ (dzień bez posiłków), reszta → ⚠️.
-  Zmiana oznaczeń = edycja tylko tych dwóch tablic.
+- Znaczek statusu przy dniu w sidebarze liczy `dayStatus()` w `script.js` z trzech stałych:
+  `COMPLETE_DAYS` → ✅, `EMPTY_DAYS` → ❌ (dzień bez posiłków), `QUESTION_DAYS` → ❓ (treść
+  jest, ale wymaga weryfikacji), reszta → ⚠️. `QUESTION_DAYS` sprawdzane jest **pierwsze**,
+  więc dzień może być w obu tablicach naraz — ❓ wygrywa.
+  Zmiana oznaczeń = edycja tylko tych trzech tablic.
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach. `weights` służy już tylko do
   przeliczania „białko na kg masy ciała" — w nagłówkach tabeli diety wagi **nie ma** (usunięta),

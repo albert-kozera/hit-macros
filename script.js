@@ -1,12 +1,15 @@
-        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza pełnoziarnista (domowa)', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem', 9: 'Kurczak w sosie meksykańskim z ryżem [LIDL]', 10: 'Sałatka z chrupiącym ryżem i krewetkami', 11: 'Kurczak w słodkiej glazurze' };
+        const titles = { 1: 'Zapiekanka z batata', 2: 'Pizza pełnoziarnista (domowa)', 3: 'Pita z kurczakiem', 4: 'Makaron azjatycki', 5: 'Spaghetti bolognese', 6: 'Burger wołowy', 7: 'Gnocchi z kurczakiem', 8: 'Quesadilla z kurczakiem', 9: 'Kurczak w sosie meksykańskim z ryżem [LIDL]', 10: 'Sałatka z chrupiącym ryżem i krewetkami', 11: 'Kurczak w słodkiej glazurze', 12: 'Kotlet schabowy z ziemniakami' };
         let currentDay = 1;
         let currentMultiplier = 1;
         const weights = { Oliwia: 67, Albert: 108 };
-        // Znaczek przy dniu w sidebarze: ✅ gotowy, ❌ pusty (brak posiłków), ⚠️ pozostałe.
+        // Znaczek przy dniu w sidebarze: ✅ gotowy, ❌ pusty (brak posiłków),
+        // ❓ do sprawdzenia (treść jest, ale wymaga weryfikacji), ⚠️ pozostałe.
         const COMPLETE_DAYS = [1, 2, 5, 6, 9, 11];
         const EMPTY_DAYS = [10];
+        const QUESTION_DAYS = [12];
 
         function dayStatus(day) {
+            if (QUESTION_DAYS.includes(day)) return '❓';
             if (COMPLETE_DAYS.includes(day)) return '✅';
             if (EMPTY_DAYS.includes(day)) return '❌';
             return '⚠️';

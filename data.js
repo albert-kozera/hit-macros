@@ -59,7 +59,12 @@ Olej rzepakowy,884,0,100,0
 Keczup,100,1.3,0.2,22
 Ocet ryżowy,18,0,0,0.5
 Sezam,573,17,50,23
-Kolendra,23,2.1,0.5,3.7`;
+Kolendra,23,2.1,0.5,3.7
+Kasza jaglana,346,10.5,2.8,71.5
+Jabłko,52,0.3,0.2,13.8
+Cynamon,247,4,1.2,81
+Schab,122,21.5,3.5,0
+Bułka tarta,350,10,2,72`;
 
         const categoriesCSV = `Product,Category
 Bataty,🥦 Warzywa i Owoce
@@ -122,7 +127,12 @@ Olej rzepakowy,🌾 Spiżarnia / Suche
 Keczup,🌾 Spiżarnia / Suche
 Ocet ryżowy,🌾 Spiżarnia / Suche
 Sezam,🌾 Spiżarnia / Suche
-Kolendra,🥦 Warzywa i Owoce`;
+Kolendra,🥦 Warzywa i Owoce
+Kasza jaglana,🌾 Spiżarnia / Suche
+Jabłko,🥦 Warzywa i Owoce
+Cynamon,🌾 Spiżarnia / Suche
+Schab,🥩 Mięso
+Bułka tarta,🌾 Spiżarnia / Suche`;
 
         const mealsCSV = `Day,Meal,Person,Product,Amount,Unit
 4,Pancakes z serka wiejskiego,Oliwia,Serek wiejski,134,g
@@ -487,4 +497,44 @@ Kolendra,🥦 Warzywa i Owoce`;
 11,Shake proteinowy,Oliwia,Mleko 2%,150,ml
 11,Shake proteinowy,Albert,Odżywka białkowa whey,40,g
 11,Shake proteinowy,Albert,Mleko 2%,150,ml
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Kasza jaglana,50,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Mleko 2%,200,ml
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Jabłko,150,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Cynamon,1,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Skyr naturalny,200,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Kasza jaglana,60,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Mleko 2%,250,ml
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Jabłko,170,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Cynamon,1.5,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Skyr naturalny,250,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Schab,130,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Jajko,1,szt
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Bułka tarta,20,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Mąka pszenna,10,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Olej rzepakowy,12,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Ziemniaki,250,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Masło,5,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Warzywa mieszane,100,g
+12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Oliwa z oliwek,7,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Schab,200,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Jajko,1,szt
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Bułka tarta,32,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Mąka pszenna,15,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Olej rzepakowy,20,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Ziemniaki,380,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Masło,8,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Warzywa mieszane,150,g
+12,Obiad – kotlet schabowy z ziemniakami,Albert,Oliwa z oliwek,10,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Twaróg chudy,150,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Chleb żytni razowy,50,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Warzywa mieszane,120,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Oliwia,Oliwa z oliwek,5,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Albert,Twaróg chudy,250,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Albert,Chleb żytni razowy,80,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Albert,Warzywa mieszane,170,g
+12,Kolacja – twaróg z warzywami i chlebem żytnim,Albert,Oliwa z oliwek,8,g
+12,Shake proteinowy,Oliwia,Odżywka białkowa whey,25,g
+12,Shake proteinowy,Oliwia,Mleko 2%,200,ml
+12,Shake proteinowy,Albert,Odżywka białkowa whey,50,g
+12,Shake proteinowy,Albert,Mleko 2%,350,ml
 `;
