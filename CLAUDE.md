@@ -45,11 +45,16 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    dzienną + rozkład procentowy (B×4, T×9, W×4) i białko na kg masy ciała.
 3. **Lista zakupów** — `renderShoppingList()` sumuje gramatury produktów danego dnia i grupuje
    je w 4 kategorie. Mnożnik (`updateMultiplier`) skaluje ilości ×1/×2/×3/×4/×7.
+   Odhaczone pozycje przeżywają odświeżenie strony (zob. „Stan UI w `localStorage`"),
+   a zeruje je przycisk `↺ Wyczyść odhaczenia` (`resetShopChecks()`).
 4. **Nawigacja** — `renderDayList()` wypełnia `#day-list` w sidebarze przyciskami z pełnymi nazwami
-   dań (`titles`), podświetlając `currentDay`. `switchDay(dayNum, direction)` ustawia dzień, tytuł,
-   woła `renderDiet`/`renderShoppingList` i zamyka mobilny sidebar. Gdy `direction` nie podano,
-   jest wyliczane z porównania z poprzednim dniem (`next`/`prev`), co napędza animacje
-   `.day-section[data-dir]`. Paginacji (`PAGE_SIZE`/`navOffset`) już nie ma.
+   dań (`titles`), podświetlając `currentDay`. `switchDay(dayNum, direction = null)` ustawia dzień,
+   tytuł, zapisuje go jako ostatnio odwiedzony, woła `renderDiet`/`renderShoppingList` i zamyka
+   mobilny sidebar. Gdy `direction` jest `null`, jest wyliczane z porównania z poprzednim dniem
+   (`next`/`prev`), co napędza animacje `.day-section[data-dir]`; jawne `'none'` (podawane przy
+   starcie strony) tę animację gasi. Dlatego wartownikiem jest `null`, a nie `'none'` — inaczej
+   nie dałoby się odróżnić „wylicz kierunek" od „bez animacji".
+   Paginacji (`PAGE_SIZE`/`navOffset`) już nie ma.
    `switchTab(name)` przełącza panele `#tab-meals` (domyślny) / `#tab-cele` / `#tab-ai` / `#tab-burn`
    i przyciski `#tab-btn-*`. `toggleSidebar()`/`closeSidebar()` obsługują nakładkę mobilną.
 5. **Wyszukiwarka** — `searchMeals()` filtruje `mealsDB` po nazwie posiłku lub produkcie;
@@ -63,7 +68,9 @@ Wszystko to płaskie funkcje globalne (wywoływane z atrybutów `onclick` w HTML
    mały skrypt inline w `<head>` `index.html` — **przed** `<link>` do CSS, żeby nie mignęło jasne tło;
    gdy brak zapisu, idzie za `prefers-color-scheme`.
 8. **Start** — `window.onload` → `applyTheme(...)`, `applyMeasView(...)`,
-   `applyMeasReadOnly()`, `switchDay(1)`, `switchTab('meals')`.
+   `applyMeasReadOnly()`, `switchDay(readSavedDay(), 'none')`, `switchTab(readSavedTab())`.
+   Czyli startuje tam, gdzie użytkownik był (zob. „Stan UI w `localStorage`"), a nie na dniu 1 —
+   `'none'` jest podane jawnie, bo to nie nawigacja, więc dzień nie ma wjeżdżać animacją.
 9. **Pomiary** — blok „Pomiary tygodniowe (zakładka Cele)" na końcu `script.js`, jedyny kod
    w apce, który gada z siecią. `loadMeasurements()` albo czyta `measurements.json` z GitHuba
    (szczegóły niżej), wypełnia `measurementsDB` i woła `renderMeasurements()`; ładowanie jest
@@ -138,6 +145,33 @@ bez wierszy dla tego numeru pokaże placeholder („Treść dnia N w przygotowan
   jest, ale wymaga weryfikacji), reszta → ⚠️. `QUESTION_DAYS` sprawdzane jest **pierwsze**,
   więc dzień może być w obu tablicach naraz — ❓ wygrywa.
   Zmiana oznaczeń = edycja tylko tych trzech tablic.
+- **Stan UI w `localStorage`** — apka pamięta między odświeżeniami: motyw
+  (`hit-macros-theme`), widok pomiarów (`hit-macros-meas-view`), ostatni dzień
+  (`hit-macros-day`), ostatnią zakładkę (`hit-macros-tab`) i odhaczone pozycje listy
+  zakupów (`hit-macros-shopping-checked`). Wszystko przez `storeGet`/`storeSet`, czyli
+  w `try/catch` — `file://` potrafi zablokować storage, a brak zapisu nie może wywalić
+  nawigacji ani listy. Dzień i zakładka są **walidowane przy odczycie** (`readSavedDay`
+  przepuszcza tylko numer z `getDays()`, `readSavedTab` — tylko wartość z `UI_TABS`),
+  więc wpis osierocony po usunięciu dnia nie zapętla apki na nieistniejącym widoku;
+  tak samo `readCheckedMap()` oddaje `{}`, gdy wpis nie jest JSON-em.
+  Odhaczenia są kluczowane **parą (dzień, nazwa produktu)** — nie gramaturą ani nie
+  mnożnikiem: przełączenie „Zakupy na: 7 dni" przelicza ilości, ale pozycja zostaje tą
+  samą rzeczą do kupienia, więc odhaczenie musi to przetrwać. Nazwa produktu jedzie do
+  `data-name` przez `escapeAttr()`, bo cudzysłów w nazwie rozsadziłby atrybut i po cichu
+  zgubił odhaczenie. Kliknięcie łapie **jeden delegowany `onchange` na `#shopping-grid`**
+  (przypisanie, nie `addEventListener` — kolejne przerysowania nie mnożą handlerów),
+  a nie `onclick` w każdej pozycji, bo nazwy produktów mają spacje, nawiasy i polskie
+  znaki. `pruneChecked()` usuwa odhaczenia produktów, których w danym dniu już nie ma —
+  bez tego wróciłyby po zmianie przepisu. Mnożnik (`currentMultiplier`) **nie** jest
+  pamiętany i po odświeżeniu wraca do 1 dnia.
+  `resetShopChecks()` (przycisk `↺ Wyczyść odhaczenia` w `.shop-reset-row`) czyści
+  odhaczenia **tylko oglądanego dnia** — kasowanie przy okazji postępu z pozostałych dni
+  byłoby niespodzianką w środku sklepu. Pyta przez `confirm()`, tak jak usuwanie wiersza
+  pomiarów, i przy pustym dniu wychodzi od razu, bez pytania.
+  Przycisk jest w **osobnej linii pod mnożnikiem**, nie szóstym elementem jego rzędu:
+  `.multiplier-controls` to `display: flex` **bez `flex-wrap`**, a same przyciski mnożnika
+  potrzebują ~410 px — na 360-px telefonie ten rząd jest już na styk, więc dokładanie do
+  niego czegokolwiek przesuwa problem na całą stronę (poziomy scroll).
 - Cele kaloryczne i wagi (`weights`) są zaszyte na sztywno w `script.js:4` oraz w kartach celów
   w `index.html` — zmiana celu wymaga edycji w obu miejscach. `weights` służy już tylko do
   przeliczania „białko na kg masy ciała" — w nagłówkach tabeli diety wagi **nie ma** (usunięta),

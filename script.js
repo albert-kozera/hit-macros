@@ -15,6 +15,22 @@
             return '⚠️';
         }
 
+        // Odczyt i zapis localStorage zawsze w try/catch — file:// potrafi go
+        // zablokować, a brak zapisu nie może wywalić nawigacji ani listy zakupów.
+        function storeGet(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+
+        function storeSet(key, value) {
+            try { localStorage.setItem(key, value); } catch (e) {}
+        }
+
+        // Klucze stanu UI. Motyw (hit-macros-theme) i widok pomiarów
+        // (hit-macros-meas-view) mają własne, zapisywane tam, gdzie się zmieniają.
+        const UI_DAY_KEY = 'hit-macros-day';
+        const UI_TAB_KEY = 'hit-macros-tab';
+        const UI_TABS = ['meals', 'cele', 'ai', 'burn'];
+
         function parseProducts() {
             const lines = productsCSV.trim().split('\n').slice(1);
             const products = {};
@@ -108,6 +124,59 @@
             container.innerHTML = html;
         }
 
+        // Odhaczone pozycje listy zakupów trzymamy per dzień i per nazwa produktu.
+        // Nie per gramatura i nie per mnożnik: przełączenie „Zakupy na: 7 dni"
+        // przelicza ilości, ale pozycja zostaje tą samą rzeczą do kupienia.
+        const SHOP_CHECKED_KEY = 'hit-macros-shopping-checked';
+
+        function readCheckedMap() {
+            try { return JSON.parse(storeGet(SHOP_CHECKED_KEY)) || {}; } catch (e) { return {}; }
+        }
+
+        function readChecked(day) {
+            const saved = readCheckedMap()[day];
+            return Array.isArray(saved) ? saved : [];
+        }
+
+        function writeChecked(day, names) {
+            const all = readCheckedMap();
+            if (names.length) all[day] = names; else delete all[day];
+            storeSet(SHOP_CHECKED_KEY, JSON.stringify(all));
+        }
+
+        function toggleShopItem(name, checked) {
+            const names = readChecked(currentDay);
+            const next = checked
+                ? (names.includes(name) ? names : names.concat(name))
+                : names.filter(n => n !== name);
+            writeChecked(currentDay, next);
+        }
+
+        // Zerowanie odhaczeń dotyczy tylko oglądanego dnia — to jego listę widzi
+        // użytkownik, więc kasowanie przy okazji postępu z pozostałych dni byłoby
+        // niespodzianką w środku sklepu. Pytamy, bo klik da się zrobić przez przypadek.
+        function resetShopChecks() {
+            if (!readChecked(currentDay).length) return;
+            if (!confirm('Wyczyścić odhaczenia na liście zakupów dla dnia ' + currentDay + '?')) return;
+            writeChecked(currentDay, []);
+            renderShoppingList();
+        }
+
+        // Produkt wypadł z dnia (np. po zmianie przepisu) — jego odhaczenie musi
+        // wypaść razem z nim, inaczej wróciłoby przy następnej edycji planu.
+        function pruneChecked(day, names) {
+            const saved = readChecked(day);
+            const kept = saved.filter(n => names.includes(n));
+            if (kept.length !== saved.length) writeChecked(day, kept);
+        }
+
+        // Nazwa produktu jedzie do atrybutu data-name, więc nie może rozsadzić
+        // cudzysłowu. Komplet nazw ich nie ma, ale taniej zaszyć to tutaj niż
+        // potem szukać, czemu jeden produkt gubi odhaczenie.
+        function escapeAttr(text) {
+            return String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        }
+
         function renderShoppingList() {
             const grid = document.getElementById('shopping-grid');
             const title = document.getElementById('shopping-title');
@@ -162,6 +231,9 @@
                 categories[data.category].push({ name: prod, base: data.amount, unit: data.unit });
             }
 
+            const checked = readChecked(currentDay);
+            const shown = [];
+
             for (const [catName, items] of Object.entries(categories)) {
                 if (items.length === 0) continue;
                 const box = document.createElement('div');
@@ -169,12 +241,24 @@
                 let itemsHtml = `<span class="category-name">${catName}</span><ul class="category-items">`;
                 items.forEach(item => {
                     const total = item.base * currentMultiplier;
-                    itemsHtml += `<li class="shop-item"><label class="shop-item-label"><input type="checkbox" class="shop-check"><span class="item-text">${item.name} ${total.toLocaleString('pl-PL')} ${item.unit}</span></label></li>`;
+                    shown.push(item.name);
+                    const on = checked.includes(item.name) ? ' checked' : '';
+                    itemsHtml += `<li class="shop-item"><label class="shop-item-label"><input type="checkbox" class="shop-check"${on} data-name="${escapeAttr(item.name)}"><span class="item-text">${item.name} ${total.toLocaleString('pl-PL')} ${item.unit}</span></label></li>`;
                 });
                 itemsHtml += '</ul>';
                 box.innerHTML = itemsHtml;
                 grid.appendChild(box);
             }
+
+            // Jeden delegowany listener na siatkę zamiast onclick w każdej pozycji:
+            // nazwy produktów mają spacje, nawiasy i polskie znaki, więc wpisywanie
+            // ich w atrybut onclick to proszenie się o kłopoty. Przypisanie, nie
+            // addEventListener — kolejne przerysowania nie mnożą handlerów.
+            grid.onchange = (e) => {
+                const item = e.target.closest('.shop-check');
+                if (item) toggleShopItem(item.dataset.name, item.checked);
+            };
+            pruneChecked(currentDay, shown);
         }
 
         function getCategory(prod) {
@@ -187,15 +271,31 @@
             return Object.keys(titles).map(Number).sort((a, b) => a - b);
         }
 
-        function switchDay(dayNum, direction = 'none') {
+        // Dzień i zakładka wracają po odświeżeniu. Bez tego każdy reload — także
+        // „odśwież, bo dopisuję zakupy" na telefonie — zrzucał na dzień 1.
+        function readSavedDay() {
+            const saved = Number(storeGet(UI_DAY_KEY));
+            return getDays().includes(saved) ? saved : 1;
+        }
+
+        function readSavedTab() {
+            const saved = storeGet(UI_TAB_KEY);
+            return UI_TABS.includes(saved) ? saved : 'meals';
+        }
+
+        // Domyślna wartość direction to null, a nie 'none' — dzięki temu 'none'
+        // można podać jawnie (start strony) i wyłączyć animację wejścia dnia,
+        // której nie ma czego udawać, skoro nikt nigdzie nie nawigował.
+        function switchDay(dayNum, direction = null) {
             if (!getDays().includes(dayNum)) return;
 
             const prevDay = currentDay;
-            const dir = direction !== 'none'
+            const dir = direction
                 ? direction
                 : (dayNum > prevDay ? 'next' : dayNum < prevDay ? 'prev' : 'none');
 
             currentDay = dayNum;
+            storeSet(UI_DAY_KEY, String(dayNum));
             document.querySelectorAll('.day-section').forEach(section => section.classList.remove('active'));
             renderDiet(dir);
             document.getElementById('page-title').innerText = titles[dayNum] || 'Dzień ' + dayNum;
@@ -206,6 +306,7 @@
         }
 
         function switchTab(name) {
+            storeSet(UI_TAB_KEY, name);
             document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'tab-' + name));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.id === 'tab-btn-' + name));
             // Pomiary ciągniemy z backendu dopiero przy pierwszym wejściu w zakładkę.
@@ -1066,6 +1167,9 @@ OCZEKIWANY FORMAT ODPOWIEDZI:
             applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
             applyMeasView(readMeasView());
             applyMeasReadOnly();   // z tokenem czy bez — decyduje o kontrolkach edycji
-            switchDay(1);
-            switchTab('meals');
+            // Wracamy tam, gdzie użytkownik był — na zapisany dzień i zakładkę.
+            // 'none' jawnie, bo to start strony, a nie nawigacja: bez tego dzień
+            // wjechałby animacją „next", jakby ktoś go właśnie kliknął.
+            switchDay(readSavedDay(), 'none');
+            switchTab(readSavedTab());
         };

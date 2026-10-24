@@ -64,6 +64,12 @@
                             <button onclick="updateMultiplier(4)" class="multiplier-btn" id="mul-4">4 dni</button>
                             <button onclick="updateMultiplier(7)" class="multiplier-btn" id="mul-7">Tydzień</button>
                         </div>
+                        <!-- Osobna linia, nie szósty przycisk w rzędzie mnożnika: ten rząd
+                             nie ma flex-wrap i na 360 px jest już ciasny. -->
+                        <div class="shop-reset-row">
+                            <button class="shop-reset-btn" onclick="resetShopChecks()"
+                                    title="Czyści tylko listę dnia, który teraz widzisz">↺ Wyczyść odhaczenia</button>
+                        </div>
                     </div>
                     <div id="shopping-grid" class="shopping-grid">
                         <!-- Generowane dynamicznie przez JS -->
