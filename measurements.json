@@ -113,7 +113,7 @@
       "person": "Oliwia",
       "week": 4,
       "weight": 66.9,
-      "waist": 67.0,
+      "waist": 77.0,
       "belly": 91.0,
       "thigh": 59.0,
       "chest": 93.0,
@@ -143,6 +143,102 @@
       "chest": null,
       "bicepsL": null,
       "bicepsP": null
+    },
+    {
+      "id": 13,
+      "person": "Albert",
+      "week": 7,
+      "weight": 104.7,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 14,
+      "person": "Albert",
+      "week": 8,
+      "weight": 105.3,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 15,
+      "person": "Albert",
+      "week": 9,
+      "weight": 104.2,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 16,
+      "person": "Albert",
+      "week": 10,
+      "weight": 103.2,
+      "waist": 87.0,
+      "belly": 96.0,
+      "thigh": 67.0,
+      "chest": 102.0,
+      "bicepsL": 40.5,
+      "bicepsP": 39.0
+    },
+    {
+      "id": 17,
+      "person": "Oliwia",
+      "week": 7,
+      "weight": 65.8,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 18,
+      "person": "Oliwia",
+      "week": 8,
+      "weight": 65.8,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 19,
+      "person": "Oliwia",
+      "week": 9,
+      "weight": 65.5,
+      "waist": null,
+      "belly": null,
+      "thigh": null,
+      "chest": null,
+      "bicepsL": null,
+      "bicepsP": null
+    },
+    {
+      "id": 20,
+      "person": "Oliwia",
+      "week": 10,
+      "weight": 64.4,
+      "waist": 76.0,
+      "belly": 91.0,
+      "thigh": 57.0,
+      "chest": 94.0,
+      "bicepsL": 32.0,
+      "bicepsP": 31.0
     }
   ]
 }
