@@ -527,7 +527,7 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 10,Śniadanie – omlet proteinowy ze skyrem i owocami,Albert,Olej rzepakowy,3,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ryż biały,100,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Kurczak pierś,210,g
-10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ogórek,180,g
+10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Ogórek,90,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Awokado,85,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Edamame,90,g
 10,Obiad – sałatka z chrupiącym ryżem i kurczakiem,Albert,Szczypiorek,20,g
@@ -597,12 +597,12 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Mleko 2%,200,ml
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Jabłko,150,g
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Cynamon,1,g
-12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Skyr naturalny,200,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Oliwia,Skyr naturalny,100,g
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Kasza jaglana,60,g
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Mleko 2%,250,ml
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Jabłko,170,g
 12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Cynamon,1.5,g
-12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Skyr naturalny,250,g
+12,Śniadanie – kasza jaglana z jabłkiem i cynamonem,Albert,Skyr naturalny,125,g
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Schab,130,g
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Jajko,1,szt
 12,Obiad – kotlet schabowy z ziemniakami,Oliwia,Bułka tarta,20,g

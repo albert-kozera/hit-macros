@@ -4,9 +4,9 @@
         const weights = { Oliwia: 67, Albert: 108 };
         // Znaczek przy dniu w sidebarze: ✅ gotowy, ❌ pusty (brak posiłków),
         // ❓ do sprawdzenia (treść jest, ale wymaga weryfikacji), ⚠️ pozostałe.
-        const COMPLETE_DAYS = [1, 2, 3, 5, 6, 9, 11];
+        const COMPLETE_DAYS = [1, 2, 3, 5, 6, 7, 9, 10, 11, 12];
         const EMPTY_DAYS = [];
-        const QUESTION_DAYS = [10, 12];
+        const QUESTION_DAYS = [];
 
         function dayStatus(day) {
             if (QUESTION_DAYS.includes(day)) return '❓';
