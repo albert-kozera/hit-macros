@@ -218,33 +218,35 @@ Day,Meal,Person,Product,Amount,Unit
 6,Shake proteinowy z owocami jagodowymi,Albert,Mleko 2%,171,ml
 6,Shake proteinowy z owocami jagodowymi,Albert,Owoce jagodowe,147,g
 7,Śniadanie – jajka i twaróg,Oliwia,Jajko,2,szt
-7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,110,g
-7,Śniadanie – jajka i twaróg,Oliwia,Awokado,65,g
-7,Śniadanie – jajka i twaróg,Oliwia,Chleb żytni razowy,63,g
-7,Śniadanie – jajka i twaróg,Oliwia,Pomidor,83,g
+7,Śniadanie – jajka i twaróg,Oliwia,Twaróg chudy,70,g
+7,Śniadanie – jajka i twaróg,Oliwia,Awokado,40,g
+7,Śniadanie – jajka i twaróg,Oliwia,Chleb żytni razowy,40,g
+7,Śniadanie – jajka i twaróg,Oliwia,Pomidor,60,g
 7,Śniadanie – jajka i twaróg,Albert,Jajko,3,szt
-7,Śniadanie – jajka i twaróg,Albert,Twaróg chudy,140,g
-7,Śniadanie – jajka i twaróg,Albert,Awokado,86,g
-7,Śniadanie – jajka i twaróg,Albert,Chleb żytni razowy,121,g
-7,Śniadanie – jajka i twaróg,Albert,Pomidor,129,g
-7,Obiad – gnocchi z kurczakiem,Oliwia,Gnocchi,197,g
-7,Obiad – gnocchi z kurczakiem,Oliwia,Kurczak pierś,94,g
-7,Obiad – gnocchi z kurczakiem,Oliwia,Pesto,22,g
-7,Obiad – gnocchi z kurczakiem,Oliwia,Pomidor,83,g
-7,Obiad – gnocchi z kurczakiem,Oliwia,Parmezan,11,g
-7,Obiad – gnocchi z kurczakiem,Albert,Gnocchi,377,g
-7,Obiad – gnocchi z kurczakiem,Albert,Kurczak pierś,150,g
-7,Obiad – gnocchi z kurczakiem,Albert,Pesto,28,g
-7,Obiad – gnocchi z kurczakiem,Albert,Pomidor,129,g
-7,Obiad – gnocchi z kurczakiem,Albert,Parmezan,15,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Chleb żytni razowy,79,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Jajko,2,szt
-7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Twaróg chudy,62,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Oliwia,Warzywa mieszane,83,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Chleb żytni razowy,150,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Jajko,3,szt
-7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Twaróg chudy,81,g
-7,Kolacja – kanapki z jajkiem i twarogiem,Albert,Warzywa mieszane,129,g
+7,Śniadanie – jajka i twaróg,Albert,Twaróg chudy,119,g
+7,Śniadanie – jajka i twaróg,Albert,Awokado,73,g
+7,Śniadanie – jajka i twaróg,Albert,Chleb żytni razowy,103,g
+7,Śniadanie – jajka i twaróg,Albert,Pomidor,110,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Gnocchi,306,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Kurczak pierś,145,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Pesto,33,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Pomidor,124,g
+7,Obiad – gnocchi z kurczakiem,Oliwia,Parmezan,17,g
+7,Obiad – gnocchi z kurczakiem,Albert,Gnocchi,465,g
+7,Obiad – gnocchi z kurczakiem,Albert,Kurczak pierś,185,g
+7,Obiad – gnocchi z kurczakiem,Albert,Pesto,35,g
+7,Obiad – gnocchi z kurczakiem,Albert,Pomidor,159,g
+7,Obiad – gnocchi z kurczakiem,Albert,Parmezan,19,g
+7,Kolacja – tortilla z wołowiną,Oliwia,Tortilla,60,g
+7,Kolacja – tortilla z wołowiną,Oliwia,Wołowina mielona chuda,69,g
+7,Kolacja – tortilla z wołowiną,Oliwia,Mozzarella light,31,g
+7,Kolacja – tortilla z wołowiną,Oliwia,Warzywa mieszane,83,g
+7,Kolacja – tortilla z wołowiną,Oliwia,Jogurt naturalny,28,g
+7,Kolacja – tortilla z wołowiną,Albert,Tortilla,120,g
+7,Kolacja – tortilla z wołowiną,Albert,Wołowina mielona chuda,108,g
+7,Kolacja – tortilla z wołowiną,Albert,Mozzarella light,62,g
+7,Kolacja – tortilla z wołowiną,Albert,Warzywa mieszane,125,g
+7,Kolacja – tortilla z wołowiną,Albert,Jogurt naturalny,45,g
 7,Shake proteinowy z kakao i bananem,Oliwia,Odżywka białkowa whey,23,g
 7,Shake proteinowy z kakao i bananem,Oliwia,Mleko 2%,110,ml
 7,Shake proteinowy z kakao i bananem,Oliwia,Kakao,3,g
