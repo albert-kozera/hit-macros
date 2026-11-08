@@ -43,6 +43,7 @@ Rzodkiewka,16,1,0,3
 Szczypiorek,30,3,0,5
 Bułka burger,250,8,3,48
 Ziemniaki,77,2,0,17
+Frytki,119,2.1,3.3,18.8
 Sałata,15,1,0,3
 Rukola,25,2,0,4
 Owoce jagodowe,50,1,0,12
@@ -96,6 +97,7 @@ Papryka,🥦 Warzywa i Owoce
 Kukurydza,🥦 Warzywa i Owoce
 Salsa,🥦 Warzywa i Owoce
 Ziemniaki,🥦 Warzywa i Owoce
+Frytki,🍱 Gotowe posiłki
 Gnocchi,🥦 Warzywa i Owoce
 Jajko,🥚 Nabiał i Jajka
 Skyr naturalny,🥚 Nabiał i Jajka
@@ -355,13 +357,13 @@ Pieprz czarny,🌾 Spiżarnia / Suche`;
 6,Obiad – burger wołowy,Oliwia,Wołowina mielona chuda,125,g
 6,Obiad – burger wołowy,Oliwia,Mozzarella light,23,g
 6,Obiad – burger wołowy,Oliwia,Warzywa mieszane,55,g
-6,Obiad – burger wołowy,Oliwia,Ziemniaki,169,g
+6,Obiad – burger wołowy,Oliwia,Frytki,170,g
 6,Obiad – burger wołowy,Oliwia,Oliwa z oliwek,6,g
 6,Obiad – burger wołowy,Albert,Bułka burger,119,g
 6,Obiad – burger wołowy,Albert,Wołowina mielona chuda,160,g
 6,Obiad – burger wołowy,Albert,Mozzarella light,29,g
 6,Obiad – burger wołowy,Albert,Warzywa mieszane,85,g
-6,Obiad – burger wołowy,Albert,Ziemniaki,440,g
+6,Obiad – burger wołowy,Albert,Frytki,170,g
 6,Obiad – burger wołowy,Albert,Oliwa z oliwek,8,g
 6,Kolacja – pinsa z mozzarellą,Oliwia,Pinsa pełnoziarnista,175,g
 6,Kolacja – pinsa z mozzarellą,Oliwia,Mozzarella light,70,g
